@@ -1,0 +1,177 @@
+    .cjart-bus .bus .bus-header{
+        background: #fff;
+        text-align: center;
+        line-height: 42px;
+        text-indent: 20%;
+        font-size: 18px;
+    }
+    .cjart-bus .bus .bus-header .bus-myOrder{
+        display: inline-block;
+        width: 25%;
+        float: right;
+        color: #4aa4fa;
+        text-indent: 0px;
+        font-size: 14px;
+    }
+    .cjart-bus .bus .bus-center  .busct-place{
+        width:98%;
+        margin:0 auto;
+        margin-top:12px;
+        background: #fff;
+    }
+    .cjart-bus .bus .bus-center  .busct-depeture .busct-circle{
+        width: 10%;
+        display: inline-block;
+        text-align: center;
+    }   
+    .cjart-bus .bus .bus-center  .busct-depeture .busct-circletop{
+        color: #7dd6ca;
+    }
+    .cjart-bus .bus .bus-center  .busct-depeture .busct-circlebottom{
+        color: #d8496e;
+    }
+    .cjart-bus .bus .bus-center  .busct-depeture .busct-name{
+        width: 86%;
+        display: inline-block;
+    }
+
+    .cjart-bus .bus .bus-center  .busct-depeture{
+        height: 45px;
+        line-height: 45px;
+    }
+    /* 包车方式 */
+    .bus .carcetbus{
+        width: 98%;
+        background: #fff;
+        margin: 0 auto;
+        line-height: 46px;
+    }
+    .bus .carcetbus .carcetbus-tips{
+        display: inline-block;
+        width: 20%;
+        text-align: center;
+    }
+    .bus .carcetbus .carcetbus-div{
+        display: inline-block;
+        width: 76%;
+        height: 100%;
+    }
+    .bus .carcetbus .carcetbus-icons{
+        width: 53px;
+        height: 34px;
+        display: inline-block;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 4px;
+        color: #fff;
+    }
+    .bus .carcetbus  .carcetbus-iconsright{
+        background: red;
+    }
+    .bus .carcetbus .carcetbus-iconsleft{
+        background: red;
+    }
+    .bus-div{
+        width: 98%;
+        background: #fff;
+        margin: 0 auto;
+        line-height: 46px;
+    }
+    /* 时间设置 */
+    .bus .time{
+        margin-top:4px;
+    }
+    .bus .time .time-icons{
+        width: 10%;
+        display: inline-block;
+        text-align: center;
+    }
+    .bus .time .time-center{
+        width: 86%;
+        display: inline-block;
+    }
+    /* 联系人设置 */
+    .bus  .tell-person  .tell-icons {
+        width: 10%;
+        display: inline-block;
+        text-align: center;
+    }
+    .bus  .tell-person  .tell-input{
+        width: 86%;
+        display: inline-block;
+    }
+    .bus  .tell-person  .tell-input input{
+        display: block;
+        width: 89%;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;  
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+    /* 去选车 */
+    .bus #selectionCar{
+        width:80%;
+        background: #007aff;
+        color: #fff;
+        display: block;
+        text-align: center;
+        margin:0 auto;
+        height:45px;
+        line-height: 45px;
+        font-size: 16px;
+        border-radius: 3px;
+        margin-top: 20px;
+    }
+    /* 提示信息 */
+    .bus .tell-mytrips .tell-flex{
+        display: flex;
+        text-align: center;
+        margin: 20px;
+        color: #999;
+    }
+    .bus .tell-mytrips .tell-flexdiv{
+        flex: 1;
+    }
+    .bus .tell-mytrips .tell-haoma{
+        margin:30px 0px;
+        text-align: center;
+    }
+    .bus .tell-mytrips .tell-haoma .tell-haomaright{
+        color: #2290f9
+    }
+/* 选车页面的设置 */
+    /* 头部设置 */
+    .selectcar .selectcar-hd{
+        background: #fff;
+        text-align: center;
+        line-height: 42px;
+        font-size: 18px;
+    }
+    .selectcar .selectcar-hd .selectcar-hdicon{
+        display: inline-block;
+        width: 20%;
+    }
+    .selectcar .selectcar-hd .selectcar-hddiv .selectcar-hdxian{
+        display: inline-block;
+        width: 11px;
+        border: 1px solid #666;
+        margin-bottom: 5px;
+    }
+    .selectcar .selectcar-hd  .selectcar-hddiv {
+        display: inline-block;
+        width: 76%;
+        text-indent: -7%;
+    }
+    /* 行程设置 */
+    .selectcar {
+        
+    }

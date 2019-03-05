@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>包车</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./charteredBus/css/react.css">
+    <!-- 图标 -->
+    <link rel="shortcut icon" href="./charteredBus/img/bus.jpg">   
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_1071099_syjm4wbrh7i.css">
+    <link rel="stylesheet" href="./charteredBus/css/charteredBus.css">
+</head>
+<body>
+    <!-- 最大的div，所有内容 -->
+<div class="cjart-bus clearfix">
+    <!-- 主要内容区,可以设置颜色，让人无法点击 -->
+    <div class="bus clearfix" style="display: none;">
+        <div class="bus-header clearfix">
+            定制包车
+            <div class="bus-myOrder">
+                我的订单
+            </div>
+        </div>
+        <!-- 中间内容的div -->
+        <div class="bus-center clearfix">
+            <!-- 上车点 -->
+            <div class="busct-place  clearfix">
+                <!-- 出发地 -->
+                <div class="busct-depeture clearfix">
+                    <span class="busct-circle busct-circletop iconfont iconcircle"></span>
+                    <span class="busct-name" style="border-bottom: 1px solid #f2f2f2;">从哪儿上车</span>
+                </div>
+                <!-- 目的地 -->
+                <div class="busct-depeture clearfix" style="border-bottom:1px solid #f2f2f2">
+                    <span class="busct-circle busct-circlebottom iconfont iconcircle"></span>
+                    <span class="busct-name">您要去哪儿</span>
+                </div>
+            </div>
+            <!-- 包车方式 -->
+            <div class="carcetbus clearfix">
+                <span class="carcetbus-tips">包车方式</span>
+                <div class="carcetbus-div clearfix">
+                    <span class="carcetbus-iconsleft carcetbus-icons">单程</span>
+                    <span class="carcetbus-iconsright carcetbus-icons">往返</span>
+                </div>
+            </div>
+            <!-- 选择时间 -->
+            <div class="bus-div  time clearfix">
+                <div class="time-div clearfix">
+                    <span class="time-icons iconfont iconshijian"></span>
+                    <span class="time-center" style="border-bottom: 1px solid #f2f2f2;">请选择上车时间</span>
+                </div>
+                <div class="time-div clearfix"  style="border-bottom: 1px solid #f2f2f2;">
+                    <span class="time-icons iconfont  iconshijian-"></span>
+                    <span class="time-center">请选择返程时间</span>
+                </div>
+            </div>
+            <!-- 添加联系人 -->
+            <div class="bus-div tell-person clearfix">
+                <div class="tell-div clearfix">
+                    <span class="tell-icons iconfont iconwo"></span>
+                    <div class="tell-input clearfix" >
+                         <input type="text" placeholder="为谁订车">
+                    </div>
+                </div>
+                <div class="tell-div">
+                    <span class="tell-icons iconfont iconshouji1"></span>
+                    <div  class="tell-input clearfix" >
+                        <input type="text" placeholder="联系人电话">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="selectionCar">
+            去选车
+        </div>
+        <!-- 提示 -->
+        <div class="tell-mytrips clearfix">
+            <div class="tell-flex">
+                <div class="tell-flexdiv clearfix">
+                    <span class="iconfont iconquerenfapiao"></span>
+                    <span>车型丰富</span>
+                </div>
+                <div class="tell-flexdiv clearfix">
+                    <span class="iconfont iconjiage"></span>
+                    <span>一价全包</span>
+                </div>
+                <div class="tell-flexdiv clearfix">
+                    <span class="iconfont iconanquan"></span>
+                    <span>安全保障</span>
+                </div>
+            </div>
+            <div class="tell-haoma">
+                <span class="tell-haomaleft">客服热线:</span>
+                <span class="tell-haomaright">0519-8888-2002</span>
+            </div>
+        </div>
+    </div>
+    <!-- 车型和提交订单页面 -->
+    <div class="selectcar clearfix">
+        <div class="selectcar-hd clearfix">
+            <span class="selectcar-hdicon iconfont iconfanhui"></span>
+            <div class="selectcar-hddiv clearfix">
+                <span class="selectcar-hdcfcity">苏州市</span>
+                <span class="selectcar-hdxian"></span>
+                <span class="selectcar-hdmdcity">苏州市</span>
+            </div>
+        </div>
+        <div class="selectcar-time clearfix">
+            <div class="selectcar-timeleft">
+                <div>
+                    05月13日  00:00上车
+                </div>
+                <div class="clearfix">
+                    <span>出发</span>
+                    <span>周庄汽车站</span>
+                    <span></span>
+                </div>
+                <div class="clearfix">
+                    <span>到达</span>
+                    <span>汽车东站</span>
+                </div>
+            </div>
+            <div class="selectcar-timeright">
+                <div class="iconfont iconhuan2"></div>
+                <div class="clearfix">
+                    <div>
+                        05月13日  00:00上车
+                    </div>
+                    <div class="clearfix">
+                        <span>出发</span>
+                        <span>汽车东站</span>
+                        <span></span>
+                    </div>
+                    <div class="clearfix">
+                        <span>到达</span>
+                        <span>周庄汽车站</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 地图页 -->
+    <div class="clearfix" style="display: none">
+
+    </div>
+    <!-- 我的订单-->
+    <div class="clearfix" style="display: none">
+
+    </div>
+    <!-- 我的详情页 -->
+    <div class="clearfix" style="display: none">
+
+    </div>
+    <!-- 重要信息提示页 -->
+    <div class="clearfix" style="display: none">
+
+    </div>
+</div>
+    <script src="./charteredBus/js/jquery.min.js"></script>
+    <script src="./charteredBus/js/chartereBus.js"></script>
+</body>
+</html>
