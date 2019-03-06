@@ -149,6 +149,9 @@
         color: #2290f9
     }
 /* 选车页面的设置 */
+    .selectcar{
+        position: relative;
+    }
     /* 头部设置 */
     .selectcar .selectcar-hd{
         background: #fff;
@@ -159,6 +162,9 @@
     .selectcar .selectcar-hd .selectcar-hdicon{
         display: inline-block;
         width: 20%;
+        color: #257ddc;
+        font-size: 18px;
+        font-weight: bolder;
     }
     .selectcar .selectcar-hd .selectcar-hddiv .selectcar-hdxian{
         display: inline-block;
@@ -172,6 +178,391 @@
         text-indent: -7%;
     }
     /* 行程设置 */
-    .selectcar {
-        
+    .selectcar-time{
+        margin: 10px auto;
+    }
+    .selectcar-time .selectcar-tis{
+        margin: 10px;
+        font-size: 16px;
+        color: #3490f3;
+        margin-left: 14px;
+    }
+    .selectcar-time .selectcar-timeleft{
+        position: relative;
+    }
+    .selectcar-time .selectcar-timeleft .selectcar-tcity{
+        display: inline-block;
+        width: 25%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        float: left;
+    }
+    .selectcar-time .selectcar-timeleft .selectcar-ticon{
+        position: absolute;
+        top: 18px;
+        left: 17px;
+        font-size: 8px;
+    }
+    .selectcar-time .selectcar-timeleft .selectcar-tdate{
+        display: inline-block;
+        width: 53%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        float: left;
+    }
+    .selectcar  .selectcar-time .selectcar-tspan{
+        display: inline-block;
+        width: 26px;
+        height: 14px;
+        font-size: 10px;
+        text-align: center;
+        color: #fff;
+        line-height: 14px;
+        border-radius: 1px;
+        margin: 4px 10px;
+        float: left;
+    }   
+    /* 注意事项 */
+    .selectcar-be{
+        margin-top: 10px;
+        margin-bottom: 20px;
+        background: #fff;
+    }
+    .selectcar-be  .selectcar-behd {
+        padding: 18px 24px 14px 12px;
+    }
+    .selectcar-be .selectcar-behdleft{ 
+        width: 20%;
+        color: #242323;
+        display: inline-block;
+        text-align: left;
+        float: left;
+    }
+    .selectcar-be .selectcar-behdright{
+        display: inline-block;
+        width: 78%;
+        float: right;
+        font-size: 12px;
+    }
+    /* 注意事项 跳转设置 */
+    .selectcar-be .selectcar-bect{
+        height: 46px;
+        line-height: 46px;
+        border-top: 1px solid #f2f2f2;
+    }
+    .selectcar-be .selectcar-bect .selectcar-bectleft{
+        display: inline-block;
+        margin-left: 12px;
+        color: #302f2f;
+    }
+    .selectcar-be .selectcar-bect .selectcar-bectleftright{
+        display: inline-block;
+        float: right;
+        margin-right: 24px;
+        color: #aa9f9f;
+    }
+    /* 提交订单 */
+    .selectcar-submit{
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        background: #fff;
+        height: 50px;
+        line-height: 50px;
+        width: 100%;
+        z-index: 999;
+        border-top: 1px solid #f2f2f2;
+    }
+    .selectcar-submit .selectcar-submitleft{
+        display: inline-block;
+        margin-left: 12px;
+        color: #322f2f;
+        font-size: 15px;
+    }
+    .selectcar-submit .selectcar-submitright{
+        width: 30%;
+        background: #f4334a;
+        display: inline-block;
+        float: right;
+        text-align: center;
+        font-size: 17px;
+        color: #fff;
+    }
+/* 信息提示页 */
+    /* 头部设置 */
+    .careful .careful-header{
+        background: #fff;
+        line-height: 42px;
+        font-size: 18px;
+    }
+    .careful .careful-header .careful-hdicon{
+        display: inline-block;
+        float: left;
+        width: 20%;
+        text-align: center;
+        color: #257ddc;
+        font-weight: bolder;
+    }
+    .careful .careful-header .careful-hdspan{
+        float: right;
+        width: 80%;
+        text-align: center;
+        text-indent: -20%;
+    }
+    .careful .careful-center .careful-ctheader{
+        height: 30px;
+        line-height: 30px;
+        background: #fff;
+        display: block;
+        font-size: 15px;
+        color: #2d2a2a;
+        text-indent: 12px;
+    }
+    .careful .careful-center .careful-ctcenter{
+        background: #e7ecf0;
+        padding: 10px 16px 10px 12px;
+    }
+    .careful .careful-center .careful-ctcenter p{
+        font-size: 13px;
+    }
+/* 我的订单页 */
+    .myorder .myorder-header{
+        background: #fff;
+        line-height: 42px;
+        font-size: 18px;
+    }
+    .myorder .myorder-header .myorder-hdreturn{
+        display: inline-block;
+        width: 20%;      
+        color: #257ddc;       
+        font-size: 18px;       
+        font-weight: bolder;     
+        text-align: center;
+        float: left;
+    }
+    .myorder .myorder-header .myorder-hdmyorder{
+        float: left;
+        width: 60%;
+        text-align: center;
+    }
+    .myorder .myorder-header .myorder-hdselect{
+        display: inline-block;
+        width: 20%; 
+        text-align: center;
+        color: #64b0f2;
+        float: left;
+        font-size: 16px;
+    }
+    /* 我的订单的样式设置 */
+    .myorder #idmyorder .tjorder{
+        background: #fff;
+        margin: 5px 2%;
+        border-radius: 5px;
+        padding: 6px 14px 12px 10px;
+        font-size:12px;
+    }
+    .myorder #idmyorder .tjorder .tjorder-hd{
+        height: 24px;
+        line-height: 24px;
+    }
+    .myorder #idmyorder .tjorder .tjorder-hd .tjorder-hdleft{
+        display: inline-block;
+        float: left;
+    }
+    .myorder #idmyorder .tjorder .tjorder-hd .tjorder-hdleft .tjorder-hdlefticon{
+        font-size: 14px;
+        color: #56ded7;
+        display: inline-block;
+    }
+    .myorder #idmyorder .tjorder .tjorder-hd .tjorder-hdleft  .tjorder-hdleftnr{
+        display: inline-block;
+        padding-left: 10px;
+        font-size: 15px;
+    }
+    .myorder #idmyorder .tjorder .tjorder-hd  .tjorder-hdright{
+        display: inline-block;
+        float: right;
+    }
+    /* 中间设置 */
+    .myorder #idmyorder .tjorder .tjorder-ct{
+        height: 24px;
+        line-height: 24px;
+        color: #111010;
+    }
+    .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctleft{
+        width: 42%;
+        float: left;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-left: -34px;
+    }
+    .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctcenter{
+        float: left;
+        width: 6%;
+        font-weight: bolder;
+        font-size: 19px;
+        text-align: center;
+    }
+    .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctright{
+        width: 42%;
+        float: left;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    /* 提交的时间设置 */
+    .myorder .tjorder-date{
+        line-height: 30px;
+        height: 30px;
+        font-size: 13px;
+    }
+    .myorder .tjorder-date .tjorder-dateleft {
+        margin-left: 22px;
+        display: inline-block;
+        width: 60%;
+        float:left;
+    }   
+    .myorder .tjorder-date .tjorder-dateleft .tjorder-dateleftts{
+        width: 40%;
+        display: inline-block;
+        float: left;
+    }
+    .myorder .tjorder-date .tjorder-dateleft .tjorder-datelefttime{
+        display: inline-block;
+        width: 60%;
+        float: left;
+    }
+    .myorder .tjorder-date .tjorder-dateright{
+        display: inline-block;
+        width: 32%;
+        float: right;
+        text-align: right;
+        color: #090909;
+    }
+    .myorder .tjorder-date .tjorder-daterighticon{
+        font-size: 14px;
+    }
+    .myorder .tjorder-date .tjorder-daterightmoney{
+        width: 50%;
+        display: inline-block;
+        text-align: left;
+    }
+    .myorder .tjorder-button{
+        border-top: 1px solid #f2f2f2;
+    }
+    .myorder .tjorder-button .tjorder-submitbutton{
+        display: inline-block;
+        width: 86px;
+        height: 30px;
+        border: 1px solid #f2f2f2;
+        float: right;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 3px;
+        margin-top: 4px;
+        font-size: 13px;
+        background: #f2f2f2;
+        margin-left: 6px;
+    }
+/* 选择城市页 */
+    #searchcity {
+        width: 100%;
+        height: 100%;
+    }
+    #searchcity .searchcity-hd{
+        background: #fff;
+        line-height: 42px;
+        font-size: 18px;
+    }
+    #searchcity .searchcity-hd .searchcity-hdicon{
+        display: inline-block;
+        width: 20%;
+        color: #257ddc;
+        font-size: 18px;
+        font-weight: bolder;
+        text-align: center;
+        float: left;
+    }
+    #searchcity .searchcity-hd .searchcity-hdcenter{
+        display: inline-block;
+        float: right;
+        text-align: center;
+        width: 80%;
+        text-indent: -20%;
+    }
+    #searchcity .nowcity {
+        width: 100%;
+        height: 90px;
+    }
+    #searchcity .nowcity .dangq {
+        height: 30px;
+        width: 100%;
+        text-indent: 10px;
+        background: #e8edf2;
+        line-height: 30px;
+    }
+    #searchcity .nowcity .nowcityval {
+        width: 100%;
+        height: 60px;
+        background: #fff;
+    }
+    #searchcity .nowcity .nowcityval div {
+        margin-left: 15px;
+        width: 106px;
+        height: 40px;
+        background: #ff8700;
+        border-radius: 4px;
+        text-align: center;
+        line-height: 40px;
+        color: #fff;
+        box-shadow: 4px 4px 2px #c1c1c1;
+        -webkit-box-shadow: 4px 4px 2px #c1c1c1;
+        margin-top: 10px;
+    }
+    #searchcity .xzcity {
+        width: 100%;
+    }
+    #searchcity .xzcity .quanbu {
+        height: 30px;
+        width: 100%;
+        text-indent: 10px;
+        background: #e8edf2;
+        line-height: 30px;
+    }
+    #searchcity .xzcity .ulone,
+    #searchcity .xzcity .ultwo,
+    #searchcity .xzcity .ulthree {
+        width: 100%;
+        background: #fff;
+        height: 60px;
+        display: block;
+        border-bottom: 1px solid #c1c1c1;
+        margin-bottom: 20px;
+    }
+    #searchcity .xzcity .ulone li,
+    #searchcity .xzcity .ultwo li,
+    #searchcity .xzcity .ulthree li {
+        margin-left: 5%;
+        width: 25%;
+        height: 40px;
+        background: #fff;
+        border-radius: 4px;
+        text-align: center;
+        line-height: 40px;
+        border: 1px solid #c1c1c1;
+        box-shadow: 4px 4px 2px #c1c1c1;
+        -webkit-box-shadow: 4px 4px 2px #c1c1c1;
+        margin-top: 10px;
+        display: inline-block;
+    }
+    #searchcity .xzcity .ulone .ulliactive,
+    #searchcity .xzcity .ultwo .ulliactive,
+    #searchcity .xzcity .ulthree .ulliactive {
+        color: #fff;
+        background: #ff8700;
     }
