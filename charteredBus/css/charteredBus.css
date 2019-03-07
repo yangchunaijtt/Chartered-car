@@ -100,23 +100,6 @@
         width: 86%;
         display: inline-block;
     }
-    .bus  .tell-person  .tell-input input{
-        display: block;
-        width: 89%;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        color: #555;  
-        background-color: #fff;
-        background-image: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    }
     /* 去选车 */
     .bus #selectionCar{
         width:80%;
@@ -149,9 +132,6 @@
         color: #2290f9
     }
 /* 选车页面的设置 */
-    .selectcar{
-        position: relative;
-    }
     /* 头部设置 */
     .selectcar .selectcar-hd{
         background: #fff;
@@ -227,7 +207,7 @@
     /* 注意事项 */
     .selectcar-be{
         margin-top: 10px;
-        margin-bottom: 20px;
+        margin-bottom:80px;
         background: #fff;
     }
     .selectcar-be  .selectcar-behd {
@@ -265,7 +245,7 @@
     }
     /* 提交订单 */
     .selectcar-submit{
-        position: absolute;
+        position: fixed;
         bottom: 0px;
         left: 0px;
         background: #fff;
@@ -289,6 +269,115 @@
         text-align: center;
         font-size: 17px;
         color: #fff;
+    }
+    /* 车主选择的设置 */
+    .selectcar    .selectcar-cardiv{
+        width: 100%;
+        overflow: hidden;
+        height: 107px;
+        overflow-x: auto;
+        background: #fff;
+    }
+    .selectcar .selectcar-car{
+        width: 320%;
+        height: 100%;
+    }
+    .selectcar .selectcar-car .selectcar-carimg{
+        width: 12%;
+        display: inline-block;
+        float: left;
+        height: 96px;
+        border:1px solid #7e7d7d;
+        margin-left: 0.25%;
+        margin-top: 5px;
+    }
+    .selectcar .selectcar-car .selectcar-carimg span{
+        display: block;
+
+        font-size: 18px;
+        
+        width: 96%;
+        
+        text-align: right;
+        
+        line-height: 26px;
+    }
+    .selectcar .selectcar-car .selectcar-carimg img{
+        width: 80%;
+
+        height: 40px;
+        
+        margin: 0 auto;
+        
+        display: block;
+    }
+    .selectcar .selectcar-car .selectcar-carimg p{
+        height: 30px;
+
+        line-height: 30px;
+        
+        text-align: center;
+    }
+    /* 东西设置 */
+    .selectcar .selectcar-goods{
+        height: 52px;
+        line-height: 52px;
+        background: #fff;
+        margin-top: 4px;
+    }
+    .selectcar .selectcar-goods .selectcar-goodsleft{
+        width: 26%;
+
+        display: inline-block;
+        
+        float: left;
+        
+        margin-left: 12px;
+    }
+    .selectcar .selectcar-goods .selectcar-goodsleft .selectcar-goodslficonone{
+        font-size: 14px;
+    }
+    .selectcar .selectcar-goods .selectcar-goodsleft .selectcar-goodslftwo{
+        font-size: 12px;
+
+        color: #909090;
+    }
+    /* 给司机留言 */
+    .selectcar  .selectcar-driver{
+        background: #fff;
+
+        margin-top: 12px;
+    }
+    .selectcar  .selectcar-driver .selectcar-drtext{
+        line-height: 40px;
+        
+        margin-left: 12px;
+        
+        font-size: 15px;
+        
+        color: #383838;
+        
+        height: 40px;    
+        
+    }
+    .selectcar  .selectcar-driver .selectcar-drtextarea{
+        width: 100%;
+
+        margin: 0;
+        
+        border: none;
+        text-indent: 12px;
+    }
+    .selectcar  .selectcar-driver .selectcar-drxz{
+        display: block;
+
+        line-height: 26px;
+        
+        text-align: right;
+        
+        width: 96%;
+        
+        float: left;
     }
 /* 信息提示页 */
     /* 头部设置 */
@@ -565,4 +654,245 @@
     #searchcity .xzcity .ulthree .ulliactive {
         color: #fff;
         background: #ff8700;
+    }
+/* 地图页 */
+    .busMap{
+        position: relative;
+    }     
+    .busMap #container{
+        width:100%;
+    }
+    .busMap .busMap-header{
+        line-height: 42px;
+        height:42px;
+        font-size: 18px;
+        border-bottom: 1px solid #f2f2f2;
+        background: #448aff;
+        color: #fff;
+    }
+    .busMap .busMap-header .busMap-hdleft{
+        display: inline-block;
+        width: 20%;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bolder;
+        text-align: center;
+        float:left;
+    }
+    .busMap .busMap-header .busMap-hdright{
+        float:right;
+        width:80%;
+        text-align: center;
+        text-indent: -20%;
+    }
+    /* 搜索设置 */
+    .busMap .busMap-city {
+        position: absolute;
+        top: 43px;
+        left: 0px;
+        width: 100%;
+        background: #fff;
+        border-top: 1px solid #f2f2f2;
+        height: 44px;
+        line-height: 44px;
+        font-size: 12px;
+        z-index: 999;
+    }
+    .busMap .busMap-city .busMap-cityleft{
+        display: inline-block;
+        width: 25%;
+        float: left;
+    }
+    .busMap .busMap-city .busMap-cityleft .busMap-ctlfname{
+        display: inline-block;
+        width: 70%;
+        text-align: right;
+        float: left;
+    } 
+    .busMap .busMap-city .busMap-cityleft .busMap-ctlficon{
+        float: left;
+        font-size: 12px;
+        width: 20%;
+        display: inline-block;
+        text-align: left;
+    }
+    .busMap .busMap-city .busMap-cityleft .busMap-ctlfxian{
+        float:right;
+        display: inline-block;
+        border: 1px solid #bab4b4;
+        width: 0px;
+        height: 20px;
+        margin-top: 10px;
+    }
+    .busMap .busMap-city .busMap-cityright{
+        float: right;
+        width: 70%;
+        position: relative;
+    }
+    .busMap .busMap-city .busMap-cityright .busMap-ctrticon{
+        position: absolute;
+        left: 6px;
+        font-size: 24px;
+        color: #5a5a5a;
+        margin-top: 1px;
+    }   
+    .busMap .busMap-city .busMap-cityright .busMap-ctrtinput{
+        float: right;
+        height: 19px;
+        margin-top: 4px;
+        text-indent: 14px;
+    }
+    .busMap .busMap-dz{
+        position: absolute;
+        bottom: 0px;
+        width: 92%;
+        background: #fff;
+        z-index: 999;
+        margin: 2%;
+        border-radius: 4px;
+        padding: 0px 2% 2% 2%;
+    }
+    .busMap .busMap-dz  .busMap-dzheader{
+        height: 36px;
+        line-height: 36px;
+    }
+    .busMap .busMap-dz  .busMap-dzheader .busMap-dzhdicon{
+        font-size: 8px;
+        color: #448aff;
+        margin-left: 10px;
+    }
+    .busMap .busMap-dz  .busMap-dzheader .busMap-dzhdcity{
+        margin-left: 10px;
+    }
+    .busMap .busMap-dz  .busMap-dzcity{
+        display: block;
+        margin-left: 32px;
+        color: #448aff;
+    }
+    .busMap .busMap-dz  .busMap-dzbutton{
+        height: 45px;
+        line-height: 45px;
+        font-size: 18px;
+        background: #448aff;
+        display: block;
+        margin-bottom: 5px;
+        margin-top: 6px;
+        text-align: center;
+        color: #fff;
+        border-radius: 4px;
+    }
+/* 城市具体选择页 */
+    /* 头部设置 */
+    .address .address-header{
+        line-height: 42px;
+        height: 42px;
+        font-size: 18px;
+        border-bottom: 1px solid #f2f2f2;
+        background: #448aff;
+        color: #fff;
+    }
+    .address .address-header .address-hdleft{
+        display: inline-block;
+        width: 20%;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bolder;
+        text-align: center;
+        float: left;
+    }
+    .address .address-header .address-hdright{
+        float: right;
+        width: 80%;
+        text-align: center;
+        text-indent: -20%;
+    }
+    /* 中间设置 */
+    .address .address-city{
+        top: 43px;
+        left: 0px;
+        width: 100%;
+        background: #fff;
+        border-top: 1px solid #f2f2f2;
+        height: 44px;
+        line-height: 44px;
+        font-size: 12px;
+        z-index: 999;
+    }
+    .address .address-city .address-cityleft{
+        display: inline-block;
+        width: 25%;
+        float: left;
+    }
+    .address .address-city .address-cityleft .address-ctlfname{
+        display: inline-block;
+        width: 70%;
+        text-align: right;
+        float: left;
+    }
+    .address .address-city .address-cityleft .address-ctlficon{
+        float: left;
+        font-size: 12px;
+        width: 20%;
+        display: inline-block;
+        text-align: left;
+    }
+    .address .address-city .address-cityleft .address-ctlfxian{
+        float: right;
+        display: inline-block;
+        border: 1px solid #bab4b4;
+        width: 0px;
+        height: 20px;
+        margin-top: 10px;
+    }
+    .address .address-city  .address-cityright{
+        float: right;
+        width: 70%;
+        position: relative;
+    }
+    .address .address-city  .address-cityright .address-ctrticon{
+        position: absolute;
+        left: 6px;
+        font-size: 24px;
+        color: #5a5a5a;
+        margin-top: 1px;
+    }
+    .address .address-city  .address-cityright .address-ctrtinput{
+        float: right;
+        height: 19px;
+        margin-top: 4px;
+        text-indent: 14px;
+    }
+    /* 内容嵌套设置 */
+    .address #add-address{
+        margin: 0px 10px;
+        margin-top: 0px;
+        margin-top: 10px;
+        background: #fff;
+    }
+    .address #add-address .addselect{
+        border-bottom: 1px solid #f2f2f2;
+        height: 62px;
+    }
+    .address #add-address  .addselect-left{
+        float: left;
+        width: 10%;
+        height: 100%;
+        line-height: 62px;
+        text-align: center;
+        font-size: 20px;
+    }
+    .address #add-address .addselect-right{
+        float: right;
+        display: inline-block;
+        width: 90%;
+        line-height: 31px;
+        height: 31px;
+        text-indent: 6px;
+    }
+    .address #add-address .addselect-right .addselect-rtone{
+        display: block;
+    }
+    .address #add-address .addselect-right .addselect-rttwo{
+        display: block;
+        color: #999;
     }
