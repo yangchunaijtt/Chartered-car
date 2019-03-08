@@ -11,12 +11,15 @@
     <!-- 字体图标 -->
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_1071099_gkxg4x4brx.css">
     <link rel="stylesheet" href="./charteredBus/css/charteredBus.css">
+    <!-- 时间css的引入 -->
+    <link rel="stylesheet" href="./charteredBus/css/mobiscroll.custom-2.16.1.min.css">
+    <link rel="stylesheet" href="./charteredBus/css/mobiscroll.android-ics-2.5.2.css">
 </head>
 <body>
     <!-- 最大的div，所有内容 -->
-<div class="cjart-bus clearfix">
+<div class="cjart-bus clearfix" style="position:relative;">
     <!-- 首页 -->
-    <div class="bus clearfix" >
+    <div class="bus clearfix"  style="display: none;">
         <div class="bus-header clearfix">
             定制包车
             <div class="bus-myOrder">
@@ -30,12 +33,12 @@
                 <!-- 出发地 -->
                 <div class="busct-depeture clearfix">
                     <span class="busct-circle busct-circletop iconfont iconcircle"></span>
-                    <span class="busct-name" style="border-bottom: 1px solid #f2f2f2;">从哪儿上车</span>
+                    <span  id="bus-dpcity" class="busct-name" style="border-bottom: 1px solid #f2f2f2;">从哪儿上车</span>
                 </div>
                 <!-- 目的地 -->
                 <div class="busct-depeture clearfix" style="border-bottom:1px solid #f2f2f2">
                     <span class="busct-circle busct-circlebottom iconfont iconcircle"></span>
-                    <span class="busct-name">您要去哪儿</span>
+                    <span  id="bus-arcity" class="busct-name">您要去哪儿</span>
                 </div>
             </div>
             <!-- 包车方式 -->
@@ -48,13 +51,13 @@
             </div>
             <!-- 选择时间 -->
             <div class="bus-div  time clearfix">
-                <div class="time-div clearfix">
+                <div id="time-divtop" class=" time-div clearfix">
                     <span class="time-icons iconfont iconshijian"></span>
-                    <span class="time-center" style="border-bottom: 1px solid #f2f2f2;">请选择上车时间</span>
+                    <span  id="dt-a-0" class="start_time_default pfull time-center" data-val=""  style="border-bottom: 1px solid #f2f2f2;">请选择上车时间</span>
                 </div>
-                <div class="time-div clearfix"  style="border-bottom: 1px solid #f2f2f2;">
+                <div  id="time-divbottom" class="time-div clearfix"  style="display:none;border-bottom: 1px solid #f2f2f2;">
                     <span class="time-icons iconfont  iconshijian-"></span>
-                    <span class="time-center">请选择返程时间</span>
+                    <span  id="dt-c-1" class="start_time_default pfull time-center" data-val="">请选择返程时间</span>
                 </div>
             </div>
             <!-- 添加联系人 -->
@@ -68,7 +71,7 @@
                 <div class="tell-div">
                     <span class="tell-icons iconfont iconshouji1"></span>
                     <div  class="tell-input clearfix" >
-                        <input class="businput" type="text" placeholder="联系人电话">
+                        <input id="tell-phone" class="businput" type="text" placeholder="联系人电话">
                     </div>
                 </div>
             </div>
@@ -102,11 +105,11 @@
     <div class="selectcar clearfix" style="display: none;">
         <!-- 导航栏 -->
         <div class="selectcar-hd clearfix">
-            <span class="selectcar-hdicon iconfont iconfanhui1"></span>
+            <span id="selectcar-return" class="selectcar-hdicon iconfont iconfanhui1"></span>
             <div class="selectcar-hddiv clearfix">
-                <span class="selectcar-hdcfcity">苏州市</span>
+                <span id="selectcar-dpcity" class="selectcar-hdcfcity">苏州市</span>
                 <span class="selectcar-hdxian"></span>
-                <span class="selectcar-hdmdcity">苏州市</span>
+                <span  id="selectcar-arcity" class="selectcar-hdmdcity">苏州市</span>
             </div>
         </div>
         <!-- 前一页的数据 -->
@@ -115,57 +118,56 @@
             <div class="selectcar-timeleft">
                 <div class="selectcar-tdiv clearfix">
                     <span class="selectcar-tspan" style="background:#37d2a1">出发</span>
-                    <span class="selectcar-tcity">周庄汽车站</span>
-                    <span class="selectcar-ticon iconfont iconhuan1"></span>
-                    <span class="selectcar-tdate">05月13日  00:00上车</span>
+                    <span  id="selectcar-departure" class="selectcar-tcity">周庄汽车站</span>
+                    <span   id="selectcar-departureTime" class="selectcar-tdate"></span>
                 </div>
-                <div class="selectcar-tdiv clearfix">
+                <div id="selectcar-ardiv" class="selectcar-tdiv clearfix" style="display: none;">
                     <span class="selectcar-tspan" style="background:#f69690">到达</span>
-                    <span class="selectcar-tcity">汽车东站</span>
-                    <span class="selectcar-tdate">05月13日  00:00返程</span>
+                    <span   id="selectcar-arrival" class="selectcar-tcity"></span>
+                    <span  id="selectcar-arrivalTime" class="selectcar-tdate"></span>
                 </div>
             </div>
         </div>
         <!-- 选车 选择车的型号-->
         <div  class="selectcar-cardiv clearfix">
-            <div class="selectcar-car clearfix">
-                <div class="selectcar-carimg clearfix">
-                    <span class="iconfont icondui"></span>
+            <div  class="selectcar-car clearfix">
+                <div id="selectcar-carone" class="selectcar-carimg clearfix">
+                    <span id="selectcar-carspanone" class="iconfont icondui"></span>
                     <img src="./charteredBus/img/buscarone.png">
                     <p>舒适型</p>
                 </div>
-                <div class="selectcar-carimg clearfix">
-                    <span class="iconfont icondui"></span>
+                <div  id="selectcar-cartwo" class="selectcar-carimg clearfix">
+                    <span id="selectcar-carspantwo"  class="iconfont icondui"></span>
                     <img src="./charteredBus/img/buscarfour.png">
                     <p>商务型</p>
                 </div>
-                <div class="selectcar-carimg clearfix">
-                    <span class="iconfont icondui"></span>
+                <div   id="selectcar-carthree" class="selectcar-carimg clearfix">
+                    <span  id="selectcar-carspanthree" class="iconfont icondui"></span>
                     <img src="./charteredBus/img/buscarthree.png">
                     <p>11人小巴</p>
                 </div>  
-                <div class="selectcar-carimg clearfix">
-                    <span class="iconfont icondui"></span>
+                <div  id="selectcar-carfour"  class="selectcar-carimg clearfix">
+                    <span id="selectcar-carspanfour"  class="iconfont icondui"></span>
                     <img src="./charteredBus/img/buscarthree.png">
                     <p>19人中巴</p>
                 </div> 
-                <div class="selectcar-carimg clearfix">
-                    <span class="iconfont icondui"></span>
+                <div  id="selectcar-carfive"  class="selectcar-carimg clearfix">
+                    <span id="selectcar-carspanfive"  class="iconfont icondui"></span>
                     <img src="./charteredBus/img/buscartwo.png">
                     <p>33人大巴</p>
                 </div> 
-                <div class="selectcar-carimg clearfix">
-                    <span class="iconfont icondui"></span>
+                <div  id="selectcar-carsix"   class="selectcar-carimg clearfix">
+                    <span  id="selectcar-carspansix" class="iconfont icondui"></span>
                     <img src="./charteredBus/img/buscartwo.png">
                     <p>45人大巴</p>
                 </div>  
-                <div class="selectcar-carimg clearfix">
-                    <span class="iconfont icondui"></span>
+                <div   id="selectcar-carseven" class="selectcar-carimg clearfix">
+                    <span id="selectcar-carspanseven"  class="iconfont icondui"></span>
                     <img src="./charteredBus/img/buscartwo.png">
                     <p>49人大巴</p>
                 </div> 
-                <div class="selectcar-carimg clearfix">
-                    <span class="iconfont icondui"></span>
+                <div   id="selectcar-careight" class="selectcar-carimg clearfix">
+                    <span id="selectcar-carspaneight"  class="iconfont icondui"></span>
                     <img src="./charteredBus/img/buscartwo.png">
                     <p>53人大巴</p>
                 </div> 
@@ -176,12 +178,12 @@
             <div class="selectcar-goodsleft clearfix">
                 <span class="selectcar-goodslficonone iconfont iconren1"></span>
                 <span class="selectcar-goodslftwo iconfont iconcheng"></span>
-                <span>5</span>
+                <span id="selectcar-goodspeople">4</span>
             </div>
             <div class="selectcar-goodsleft selectcar-goodsright clearfix">
                 <span class="selectcar-goodslficonone iconfont icon1"></span>
                 <span class="selectcar-goodslftwo iconfont iconcheng"></span>
-                <span>5</span>
+                <span id="selectcar-goodsmatter">2</span>
             </div>
         </div>
         <!-- 给司机留言 -->
@@ -202,7 +204,7 @@
                     <p>3. 9座及以上座位数车型请至少提前2天预订，以保证订单成功派车（高速限行时间夜间22：00~次日05：00）</p>
                 </div>
             </div>
-            <div class="selectcar-bect">
+            <div id="selectcar-tishi" class="selectcar-bect">
                 <span class="selectcar-bectleft">用车、发票、退改说明</span>
                 <span class="selectcar-bectleftright iconfont iconyou"></span>
             </div>
@@ -279,20 +281,20 @@
     <!-- 地图页 -->
     <div class="busMap clearfix"  style="display: none;">
         <div class="busMap-header clearfix">
-            <span class="busMap-hdleft iconfont iconfanhui1"></span>
+            <span id="busMap-return" class="busMap-hdleft iconfont iconfanhui1"></span>
             <span class="busMap-hdright">选择起点</span>
         </div>
         <div id="container">
         </div>
         <div class="busMap-city clearfix">
             <div class="busMap-cityleft clearfix">
-                <span class="busMap-ctlfname">请选择</span>
+                <span id="busMap-city" class="busMap-ctlfname">常州市</span>
                 <span class="busMap-ctlficon iconfont iconyou"></span>
                 <span class="busMap-ctlfxian"></span>
             </div>
             <div class="busMap-cityright clearfix">
                 <span class="busMap-ctrticon iconfont iconsousuo"></span>
-                <input  class="busMap-ctrtinput businput" type="text" placeholder="请输入要查询的地址">
+                <input  id="busMap-input" class="busMap-ctrtinput businput" type="text" placeholder="请输入要查询的地址">
             </div>
         </div>
         <div class="busMap-dz clearfix">
@@ -307,12 +309,12 @@
     <!-- 城市具体地址选择页 -->
     <div class="address clearfix" style="display: none;">
         <div class="address-header clearfix">
-            <span class="address-hdleft iconfont iconfanhui1"></span>
+            <span id="address-return" class="address-hdleft iconfont iconfanhui1"></span>
             <span class="address-hdright">地址选择</span>
         </div>
         <div class="address-city clearfix">
             <div class="address-cityleft clearfix">
-                <span class="address-ctlfname">请选择</span>
+                <span id="address-city" class="address-ctlfname">常州市</span>
                 <span class="address-ctlficon iconfont iconyou"></span>
                 <span class="address-ctlfxian"></span>
             </div>
@@ -342,7 +344,7 @@
     <!-- 我的订单-->
     <div class="myorder clearfix"  style="display:none;">
         <div class="myorder-header clearfix">
-            <span class="myorder-hdreturn iconfont iconfanhui1"></span>
+            <span id="myorder-return" class="myorder-hdreturn iconfont iconfanhui1"></span>
             <span class="myorder-hdmyorder">我的订单</span>
             <span class="myorder-hdselect">筛选</span>
             <!-- 筛选弹出的div -->
@@ -427,48 +429,48 @@
     <!-- 城市选择页 -->
     <div id="searchcity" class="clearfix"  style="display:none;">
         <div class="searchcity-hd clearfix">
-            <span class="searchcity-hdicon iconfont iconfanhui1"></span>
+            <span id="searchcity-return" class="searchcity-hdicon iconfont iconfanhui1"></span>
             <span class="searchcity-hdcenter">选择城市</span>
         </div>
         <div class="nowcity clearfix">
             <div class="dangq">当前</div>
             <div class="nowcityval clearfix">
-                <div>常州市</div>
+                <div id="searchcity-nowcity"></div>
             </div>
         </div>
         <div class="xzcity clearfix">
             <div class="quanbu">全部</div>
             <ul class="ulone clearfix">
-                <li class="ulliwx">
-                    杭州市
-                </li>
-                <li class="ullish">
+                <li id="searchcity-cz" class="ulliwx">
                     常州市
                 </li>
-                <li  class="ullisz">
-                    苏州市
+                <li  id="searchcity-wx" class="ullish">
+                    无锡市
+                </li>
+                <li   id="searchcity-sh"  class="ullisz">
+                    上海市
                 </li>
             </ul>
             <ul class="ultwo clearfix">
-                <li  class="ullinj">
+                <li   id="searchcity-sz"  class="ullinj">
+                    苏州市
+                </li>
+                <li   id="searchcity-tz"  class="ullint">
+                    泰州市
+                </li>
+                <li   id="searchcity-nj"  class="ulliyz">
                     南京市
-                </li>
-                <li  class="ullint">
-                    上海市
-                </li>
-                <li  class="ulliyz">
-                    无锡市
                 </li>
             </ul>
             <ul class="ulthree clearfix">
-                <li  class="ullitz">
+                <li   id="searchcity-hz"  class="ullitz">
+                    杭州市
+                </li>
+                <li  id="searchcity-nt"   class="ullizjg">
                     南通市
                 </li>
-                <li  class="ullizjg">
+                <li   id="searchcity-zj"  class="ullics">
                     镇江市
-                </li>
-                <li  class="ullics">
-                    泰州市
                 </li>
             </ul>
         </div>
@@ -544,6 +546,13 @@
     <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
     <!-- jquery的引入 -->
     <script src="./charteredBus/js/jquery.min.js"></script>
+    <!-- 调用后台的js -->
+    <script src="./charteredBus/js/app.js"></script>
+    <!-- jquery时间插件 的使用 -->
+    <script src="./charteredBus/js/mobiscroll.custom-2.16.1.min.js"></script>
+    <script src="./charteredBus/js/mobiscroll.android-ics-2.5.2.js"></script>
+    <!-- 秒支付button的使用 -->
+    <script id='spay-script' src='https://jspay.beecloud.cn/1/pay/jsbutton/returnscripts?appId=dbf34cab-2454-4f97-88f0-0a7e34aa426e'></script>
     <!-- 自己定义的js -->
     <script src="./charteredBus/js/chartereBus.js"></script>
 </body>
