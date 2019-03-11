@@ -5,11 +5,11 @@ $(function(){
         newPageData.openid = localCache("openid-kongbatong");
         newPageData.phone = localCache("mobile-kongbatong");
         newPageData.openid = openid;
-        console.log("openid",openid,nowusermsg.openid);
+        console.log("openid",openid,newPageData.uid,newPageData.openid);
         if(null == nowusermsg.uid || "" == nowusermsg.uid) {
             register("http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/Register_content.html");   //返回注册登录页面
         } else {
-            
+
         }
     },location.search);
     // 设置高度
@@ -136,10 +136,15 @@ $(function(){
     $("#busMap-qrclick").bind("touch click",function(){
         // 使用搜索数据
         if(location.hash==="#busMap?dpcity"){
+            releaseData.dpCity = $("#busMap-city").text();
+            // 如果搜索页被点击了，则不使用定位数据
             if( releaseData.sfaddress === true ){
                 releaseData.dwsjUsed = false;
             }
+        }else if ( location.hash=== "#busMap?arcity"){
+            releaseData.arCity = $("#busMap-city").text();
         }
+
         window.location.hash = "#bus";
     })
 // 城市具体地址选择
@@ -213,6 +218,18 @@ $(function(){
     $("#selectcar-tijiao").bind("touch click",function(){
         selectcar.tijiao();
     })
+    //监控输入
+    $("#textarea").keyup(function(){
+        var remain = $(this).val().length;
+        if(remain >100){
+            var num=$(".textarea").val().substr(0,100);
+            $(".textarea").val(num);
+            showMessage1btn("字数超过限制!","",0);
+        }else {
+            var result = 100 - remain;
+            $("#textarea-length").text(result+"/100");
+        }
+    });
 // 定位
     container.dwlocationg();
 // 监控路由
@@ -439,18 +456,13 @@ $(function(){
         },
         tijiao:function(){
             var tellTrips = "";
-            console.log(releaseData);
-            // 判断用户是否登录
-            // if( newPageData.uid===0){
-            //     tellTrips = "请登录";
-            // }else if ( newPageData.openid === 0){
-            //     tellTrips = "请登录";
-            // }
-
-            // if ( releaseData.fabudpData ==="" ){
-            //     tellTrips = "请选择出发地";
-            // }else 
-            if ( releaseData.useType === "往返" ){
+            
+            //判断用户是否登录
+            if( newPageData.uid===0){
+                tellTrips = "请登录";
+            }else if ( newPageData.openid === 0){
+                tellTrips = "请登录";
+            }else if ( releaseData.useType === "往返" ){
                 if( releaseData.returnTime===0){
                     tellTrips = "请选择返程时间";
                 }
@@ -460,25 +472,6 @@ $(function(){
                 return false;
             }
 
-            // var releaseData = {
-            //     uid:0,				 //用户id
-            //     outTradeNo:0,		     //订单号（"CAO"开头）
-            //     dpCity:"",			    //出发城市
-            //     departure:"",		    //出发地
-            //     dLng:0,				//出发地经度
-            //     dLat:0,				//出发地纬度
-            //     arCity:"",			    //到达城市
-            //     arrival:"",			//目的地
-            //     aLng:0,				//目的地经度
-            //     aLat:0,				//目的地纬度
-            //     departureTime:0,	    //出发时间
-            //     returnTime:0,       //返回时间
-            //     useType:"单程",			//包车方式
-            //     carType:"舒适型",		//车辆类型
-            //     contact:"",			//联系人
-            //     contactNumber:0,	    //联系人电话
-            //     remark:"",			    //备注
-            // }
             // 生成随机数
                 var rand = "";
                 for(var i = 0; i < 3; i++){
@@ -501,8 +494,8 @@ $(function(){
                 // 使用定位数据
                 departure = releaseData.dwlocationg.addressComponent.street+releaseData.dwlocationg.addressComponent.streetNumber;
                 dpCity = releaseData.dpCity;
-                dLng = releaseData.position.R;
-                dLat = releaseData.position.P;
+                dLng = releaseData.dwlocationg.position.R;
+                dLat = releaseData.dwlocationg.position.P;
             }else if ( releaseData.dwsjUsed === false ){
                 // 使用搜索数据
                 departure = releaseData.fabudpData.name;
@@ -510,6 +503,7 @@ $(function(){
                 dLng =  releaseData.fabudpData.location.R;
                 dLat =  releaseData.fabudpData.location.P;
             }
+            console.log(releaseData);
             $.ajax({
                 type:"post",
                 url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/saveMadeChaOrders.asp",
@@ -734,6 +728,7 @@ $(function(){
             releaseData.dwlocationg = result;
             var val = releaseData.dwlocationg;
             if( val !=="" ){
+                $("#busMap-dzname").text(val.formattedAddress);
                 $("#busMap-dzcity").text(val.addressComponent.city);
                 var textval = val.addressComponent.street+val.addressComponent.streetNumber;
                 $("#busMap-dzcityname").text(textval);
