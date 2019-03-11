@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_1071099_gkxg4x4brx.css">
     <link rel="stylesheet" href="./charteredBus/css/charteredBus.css">
     <!-- 时间css的引入 -->
-    <link rel="stylesheet" href="./charteredBus/css/mobiscroll.custom-2.16.1.min.css">
-    <link rel="stylesheet" href="./charteredBus/css/mobiscroll.android-ics-2.5.2.css">
+    <link rel="stylesheet" href="css/mobiscroll.custom-2.16.1.min.css">
+    <link rel="stylesheet" href="css/mobiscroll.android-ics-2.5.2.css">
 </head>
 <body>
     <!-- 最大的div，所有内容 -->
@@ -65,7 +65,7 @@
                 <div class="tell-div clearfix">
                     <span class="tell-icons iconfont iconwo"></span>
                     <div class="tell-input clearfix" >
-                         <input class="businput" type="text" placeholder="为谁订车">
+                         <input id="bus-personinput" class="businput" type="text" placeholder="为谁订车">
                     </div>
                 </div>
                 <div class="tell-div">
@@ -189,7 +189,7 @@
         <!-- 给司机留言 -->
         <div class="selectcar-driver clearfix">
             <span class="selectcar-drtext">给司机留言</span> 
-            <textarea  class="selectcar-drtextarea" name="" rows="5" placeholder="提前告知行程事项，例，中途要去软件园接人" maxlength="100"></textarea> 
+            <textarea  id="textarea" class="selectcar-drtextarea" name="" rows="5" placeholder="提前告知行程事项，例，中途要去软件园接人" maxlength="100"></textarea> 
             <span  class="selectcar-drxz">0/100</span> 
         </div>
         <!-- 注意事项 -->
@@ -212,7 +212,7 @@
         <!-- 提交订单 -->
         <div class="selectcar-submit clearfix">
             <span class="selectcar-submitleft">订单总额(客服会联系您)</span>
-            <span class="selectcar-submitright">立即包车</span>
+            <span  id="selectcar-tijiao" class="selectcar-submitright">立即包车</span>
         </div>
     </div>
     <!-- 我的订单详情页()-->
@@ -282,13 +282,13 @@
     <div class="busMap clearfix"  style="display: none;">
         <div class="busMap-header clearfix">
             <span id="busMap-return" class="busMap-hdleft iconfont iconfanhui1"></span>
-            <span class="busMap-hdright">选择起点</span>
+            <span class="busMap-hdright"></span>
         </div>
         <div id="container">
         </div>
         <div class="busMap-city clearfix">
             <div class="busMap-cityleft clearfix">
-                <span id="busMap-city" class="busMap-ctlfname">常州市</span>
+                <span id="busMap-city" class="busMap-ctlfname"></span>
                 <span class="busMap-ctlficon iconfont iconyou"></span>
                 <span class="busMap-ctlfxian"></span>
             </div>
@@ -300,10 +300,15 @@
         <div class="busMap-dz clearfix">
             <div class="busMap-dzheader clearfix">
                 <span class="busMap-dzhdicon iconfont iconyuan"></span>
-                <span class="busMap-dzhdcity">请选择地址</span>
+                <span id="busMap-dzname" class="busMap-dzhdcity">请选择地址</span>
             </div>
-            <span class="busMap-dzcity">请选择城市</span>
-            <span class="busMap-dzbutton">确定</span>
+            <div class="busMap-dzheader clearfix">
+                <span class="busMap-dzhdicon iconfont iconyuan"></span>
+                <span id="busMap-dzcityname" class="busMap-dzhdcity">请选择地址</span>
+            </div>
+            <span id="busMap-dzcity" class="busMap-dzcity">请选择城市</span>
+            <input id="lnglat" type="text" style="display:none">
+            <span id="busMap-qrclick" class="busMap-dzbutton">确定</span>
         </div>
     </div>
     <!-- 城市具体地址选择页 -->
@@ -314,31 +319,17 @@
         </div>
         <div class="address-city clearfix">
             <div class="address-cityleft clearfix">
-                <span id="address-city" class="address-ctlfname">常州市</span>
+                <span id="address-city" class="address-ctlfname"></span>
                 <span class="address-ctlficon iconfont iconyou"></span>
                 <span class="address-ctlfxian"></span>
             </div>
             <div class="address-cityright clearfix">
                 <span class="address-ctrticon iconfont iconsousuo"></span>
-                <input  class="address-ctrtinput businput" type="text" placeholder="请输入要查询的地址">
+                <input id="address-input"  class="address-ctrtinput businput" type="text" placeholder="请输入要查询的地址">
             </div>
         </div>
         <!-- 添加搜索地址的地方 -->
         <div id="add-address" class="clearfix">
-            <div class="addselect clearfix">
-                <span class="addselect-left iconfont iconzhifeiji1"></span>
-                <div class="addselect-right clearfix">
-                    <span class="addselect-rtone">常州汽车客运站</span>
-                    <span class="addselect-rttwo">江苏省常州市天宁区竹林西路51号</span>
-                </div>
-            </div>
-            <div class="addselect clearfix">
-                <span class="addselect-left iconfont iconzhifeiji1"></span>
-                <div class="addselect-right clearfix">
-                    <span class="addselect-rtone">常州汽车客运站</span>
-                    <span class="addselect-rttwo">江苏省常州市天宁区竹林西路51号</span>
-                </div>
-            </div>
         </div>
     </div>
     <!-- 我的订单-->
@@ -544,15 +535,18 @@
     <!-- 高德地图的两个引入 -->
     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.11&key=5eeab4fb86fdb2ea40bb70b720de1927&plugin=AMap.Geocoder"></script>
     <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
-    <!-- jquery的引入 -->
-    <script src="./charteredBus/js/jquery.min.js"></script>
-    <!-- 调用后台的js -->
-    <script src="./charteredBus/js/app.js"></script>
-    <!-- jquery时间插件 的使用 -->
-    <script src="./charteredBus/js/mobiscroll.custom-2.16.1.min.js"></script>
-    <script src="./charteredBus/js/mobiscroll.android-ics-2.5.2.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <!-- 后台给的调用的js -->
+    <script src="js/app.js"></script>
     <!-- 秒支付button的使用 -->
     <script id='spay-script' src='https://jspay.beecloud.cn/1/pay/jsbutton/returnscripts?appId=dbf34cab-2454-4f97-88f0-0a7e34aa426e'></script>
+    <!-- jquery时间插件 的使用 -->
+    <script src="js/mobiscroll.custom-2.16.1.min.js"></script>
+    <script src="js/mobiscroll.android-ics-2.5.2.js"></script>
+    <!-- 秒支付button的使用 -->
+    <script id='spay-script' src='https://jspay.beecloud.cn/1/pay/jsbutton/returnscripts?appId=dbf34cab-2454-4f97-88f0-0a7e34aa426e'></script>
+    <!-- 转换md5引入的文件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
     <!-- 自己定义的js -->
     <script src="./charteredBus/js/chartereBus.js"></script>
 </body>

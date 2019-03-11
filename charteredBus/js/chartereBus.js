@@ -1,5 +1,17 @@
 
 $(function(){
+    getOpenid(function(openid){
+        newPageData.uid = localCache("uid-kongbatong");
+        newPageData.openid = localCache("openid-kongbatong");
+        newPageData.phone = localCache("mobile-kongbatong");
+        newPageData.openid = openid;
+        console.log("openid",openid,nowusermsg.openid);
+        if(null == nowusermsg.uid || "" == nowusermsg.uid) {
+            register("http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/Register_content.html");   //返回注册登录页面
+        } else {
+            
+        }
+    },location.search);
     // 设置高度
     // 提交订单页设置高度
     $(".selectcar").height($(document.body).height());
@@ -14,13 +26,11 @@ $(function(){
     })
     // 从哪儿出发
     $("#bus-dpcity").bind("touch click",function(){
-        window.location.hash  = "#busMap";
-        $(".busMap-hdright").text("选择起点");
+        window.location.hash  = "#busMap?dpcity";
     })
     // 点击去哪儿
     $("#bus-arcity").bind("touch click",function(){
-        window.location.hash  = "#busMap";
-        $(".busMap-hdright").text("选择目的地");
+        window.location.hash  = "#busMap?arcity";
     })
     // 选择包车方式
     $(".carcetbus-iconsleft").bind("touch click",function(){
@@ -47,8 +57,6 @@ $(function(){
         })
         $("#time-divbottom").slideDown();
     })
-    // 时间点击事件
-
     // 电话输入的限制
     $("#tell-phone").bind("keyup", function () {
                 $(this).val($(this).val().replace(/[^\d.]/g, ""));
@@ -62,7 +70,8 @@ $(function(){
     // 选车
     $("#selectionCar").bind("touch click",function(){
         bus.newselectcar();
-    })
+    }) 
+    
 // 选车操作页绑定的操作
     $("#selectcar-return").bind("touch click",function(){
         window.location.hash = "#bus";
@@ -120,22 +129,35 @@ $(function(){
     $("#busMap-return").bind("touch click",function(){
         window.location.hash = "#bus";
     })
-    $(".busMap-cityleft").bind("touch click",function(){
-        window.location.hash = "#searchcity";
-    })
     $("#busMap-input").bind("focus",function(){
         $("#address-city").text($("#busMap-city").text());
-        window.location.hash = "#address";
+        window.location.hash = "#address?"+obtainData.busMap;
+    })
+    $("#busMap-qrclick").bind("touch click",function(){
+        // 使用搜索数据
+        if(location.hash==="#busMap?dpcity"){
+            if( releaseData.sfaddress === true ){
+                releaseData.dwsjUsed = false;
+            }
+        }
+        window.location.hash = "#bus";
     })
 // 城市具体地址选择
     $("#address-return").bind("touch click",function(){
-        window.location.hash = "#busMap";
+        var val = window.location.hash;
+        var hashone = val.split("?");
+        window.location.hash = "#busMap?"+hashone[1];
     })
     $("#address-city").bind("touch click",function(){
         window.location.hash = "#searchcity";
     })
     // Input输入事件
-
+    $("#address-input").bind("input",function(){
+        address.addinput();
+    })
+    $("#address-input").bind("focus",function(){
+        $("#address-input").val("");
+    })
     // 下面数据点击事件
 // 城市选择页面
     $("#searchcity-return").bind("touch click",function(){
@@ -187,6 +209,12 @@ $(function(){
         searchcity.clickCity("#searchcity-zj");
         searchcity.returnPage();
      })
+    //  提交操作
+    $("#selectcar-tijiao").bind("touch click",function(){
+        selectcar.tijiao();
+    })
+// 定位
+    container.dwlocationg();
 // 监控路由
     window.onhashchange = hashChange;
     hashChange();
@@ -232,6 +260,12 @@ $(function(){
             hashcsh();
             $(".details").show();
         }else if ( hashval ==="#busMap" ){
+            obtainData.busMap = hashzhi;
+            if(hashzhi==="dpcity"){
+                $(".busMap-hdright").text("选择起点");
+            }else if (hashzhi==="arcity") {
+                $(".busMap-hdright").text("选择目的地");
+            }
             hashcsh();
             $(".busMap").show();
         }else if ( hashval ==="#address" ){
@@ -263,18 +297,56 @@ $(function(){
     var bus = {
         newselectcar:function () {
             // 还要判断
-            // if ( releaseData.useType ) {
-
-            // }else if () {
-
-            // }else if () {
-                
-            // }else if () {
-                
-            // }else if () {
-                
+            var tellTips = "";
+            // if( newPageData.uid ===0 ){
+            //     tellTips ="请登录";
+            // }else if ( newPageData.openid ===0) {
+            //     tellTips ="请登录";
             // }
-
+            releaseData.contact = $("#bus-personinput").val();
+    
+            releaseData.contactNumber = $("#tell-phone").val();
+            if( releaseData.fabudpData===""){
+                if( releaseData.dwlocationg===""){
+                    tellTips ="请选择出发地";
+                }
+            }else if (releaseData.fabuarData==="") {
+                tellTips ="请选择到达地";
+            }else if (releaseData.contact === ""){
+                tellTips ="请填写联系人姓名";
+            }else if (releaseData.contactNumber===0) {
+                tellTips ="请填写联系人电话";
+            }
+            // 判断时间对不对
+            else if ( releaseData.useType === "单程" ) {
+                if ($("#dt-a-0").text()==="请选择上车时间"){
+                    tellTips = "请选择上车时间!";
+                }else{
+                    var cfsj =  $("#dt-a-0").attr("data-val");
+                    releaseData.departureTime = cfsj;
+                }
+            }else if ( releaseData.useType === "往返" ){
+                if($("#dt-a-0").text()==="请选择上车时间"){
+                    tellTips = "请选择出发时间!";
+                }else if($("#dt-c-1").text()==="请选择返程时间"){
+                    tellTips = "请选择返程时间!";
+                }else {
+                    var cfsj =  $("#dt-a-0").attr("data-val");
+                    var mdsj =  $("#dt-c-1").attr("data-val");
+                    if(Date.parse(mdsj)>Date.parse(cfsj)){
+                        // 赋值
+                        releaseData.departureTime = cfsj;
+                        releaseData.returnTime = mdsj;
+                    }else {
+                        tellTips = "返程时间不能小于上车时间";
+                    }
+                }
+            }
+            if (tellTips!=="") {
+                showMessage1btn(tellTips,"",0);
+                console.log(tellTips);
+                return false;
+            }
             window.location.hash = "#selectcar";
         }
     }
@@ -364,14 +436,120 @@ $(function(){
             $("#selectcar-carspaneight").css("color","#555");
             $(divname).css("border-color","rgb(0, 141, 255)");
             $(spanname).css("color","rgb(0, 141, 255)");
-            
+        },
+        tijiao:function(){
+            var tellTrips = "";
+            console.log(releaseData);
+            // 判断用户是否登录
+            // if( newPageData.uid===0){
+            //     tellTrips = "请登录";
+            // }else if ( newPageData.openid === 0){
+            //     tellTrips = "请登录";
+            // }
+
+            // if ( releaseData.fabudpData ==="" ){
+            //     tellTrips = "请选择出发地";
+            // }else 
+            if ( releaseData.useType === "往返" ){
+                if( releaseData.returnTime===0){
+                    tellTrips = "请选择返程时间";
+                }
+            }
+            if(tellTrips!==""){
+                showMessage1btn(tellTrips,"",0);
+                return false;
+            }
+
+            // var releaseData = {
+            //     uid:0,				 //用户id
+            //     outTradeNo:0,		     //订单号（"CAO"开头）
+            //     dpCity:"",			    //出发城市
+            //     departure:"",		    //出发地
+            //     dLng:0,				//出发地经度
+            //     dLat:0,				//出发地纬度
+            //     arCity:"",			    //到达城市
+            //     arrival:"",			//目的地
+            //     aLng:0,				//目的地经度
+            //     aLat:0,				//目的地纬度
+            //     departureTime:0,	    //出发时间
+            //     returnTime:0,       //返回时间
+            //     useType:"单程",			//包车方式
+            //     carType:"舒适型",		//车辆类型
+            //     contact:"",			//联系人
+            //     contactNumber:0,	    //联系人电话
+            //     remark:"",			    //备注
+            // }
+            // 生成随机数
+                var rand = "";
+                for(var i = 0; i < 3; i++){
+                    var r = Math.floor(Math.random() * 10);
+                    rand += r ;
+                }
+                // 生成时间戳 "yyyyMMddhhmmss" 格式
+                function pad2(n) { return n < 10 ? '0' + n : n };
+                function generateTimeReqestNumber() {
+                    var date = new Date();
+                    return date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds());
+                }
+                var sjc = "CAO"+generateTimeReqestNumber();
+            // 用定位数据还是搜索数据
+            var dpCity="";          //出发城市
+            var departure = "";     //出发地名
+            var dLng = 0;           // 出发经度
+            var dLat = 0;           // 出发纬度
+            if( releaseData.dwsjUsed === true ){
+                // 使用定位数据
+                departure = releaseData.dwlocationg.addressComponent.street+releaseData.dwlocationg.addressComponent.streetNumber;
+                dpCity = releaseData.dpCity;
+                dLng = releaseData.position.R;
+                dLat = releaseData.position.P;
+            }else if ( releaseData.dwsjUsed === false ){
+                // 使用搜索数据
+                departure = releaseData.fabudpData.name;
+                dpCity = releaseData.dpCity;
+                dLng =  releaseData.fabudpData.location.R;
+                dLat =  releaseData.fabudpData.location.P;
+            }
+            $.ajax({
+                type:"post",
+                url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/saveMadeChaOrders.asp",
+
+                data:{
+                    uid:newPageData.uid,				 //用户id
+                    outTradeNo:sjc,		     //订单号（"CAO"开头）
+                    dpCity:dpCity,			    //出发城市
+                    departure:departure,		    //出发地
+                    dLng:dLng,				//出发地经度
+                    dLat:dLat,				//出发地纬度
+                    arCity:releaseData.arCity,			    //到达城市
+                    arrival:releaseData.fabuarData.name,		//目的地
+                    aLng:releaseData.fabuarData.location.lng,				//目的地经度
+                    aLat:releaseData.fabuarData.location.lat,				//目的地纬度
+                    departureTime:releaseData.departureTime,	    //出发时间
+                    returnTime:releaseData.returnTime,       //返回时间
+                    useType:releaseData.useType,			//包车方式
+                    carType:releaseData.carType,		//车辆类型
+                    contact:releaseData.contact,			//联系人
+                    contactNumber:releaseData.contact,	    //联系人电话
+                    remark:$("#textarea").val(),			    //备注
+                },
+                success:function(result){
+                    console.log("添加成功的数据",result);
+                },
+                error:function(result){
+                    console.log("添加失败",result);
+                }
+            })
         }
     }
 // 介绍页面初始化数据
     var newPageData = {
         uid:0,   // 用户的uid
+        phone:0,    //  电话
+        openid:0,   //  openid
+        
     }
-// 发布信息数据
+// 发布信息数据 
     var releaseData = {
         uid:0,				 //用户id
         outTradeNo:0,		     //订单号（"CAO"开头）
@@ -389,20 +567,231 @@ $(function(){
         carType:"舒适型",		//车辆类型
         contact:"",			//联系人
         contactNumber:0,	    //联系人电话
-        remark:""			    //备注
+        remark:"",			    //备注
+        // 上面是发布需要的数据，下面是是其他数据
+        dwlocationg:"",         // 定位的数据
+        searchMap:"",           // 搜索得到的数据
+        dpsearch:"",            // 起点确认的数据
+        arsearch:"",            // 到达点确认的数据
+        fabudpData:"",          // 确认的起点的数据
+        fabuarData:"",          // 确认的到达地的数据
+        dwsjUsed:true,              // 出发地用定位数据还是搜索数据,默认使用定位数据
+        sfaddress:false,        // 是否点击了搜索数据
     }
 // 获取到数据(包含ajax，和地图数据)
     var obtainData = {
-
+        busMap:"",   // 存储busmap的值
+        template:{
+            address:'<div id="address-addselect" class="addselect clearfix"><span class="addselect-left iconfont iconzhifeiji1"></span><div class="addselect-right clearfix"><span class="addselect-rtone" id="address-rtone"></span><span class="addselect-rttwo" id="address-rttwo"></span></div></div>',
+        }
     }
 // 页面ajax的几个地方
     var carnewajax = {
 
     }
+// 城市地址选择页
+    var address = {
+        addinput:function(){
+            var keywords = document.getElementById("address-input").value;
+            AMap.plugin('AMap.Autocomplete', function(){
+                    var autoOptions = {
+                        city:"常州"
+                    }                 
+                    var searchval = "";
+              // 实例化Autocomplete             
+                searchval = $("#address-city").text()+keywords;
+              var autoComplete = new AMap.Autocomplete(autoOptions);             
+              autoComplete.search(searchval, function(status,result) {
+                    if(status==="complete"){
+                        releaseData.searchMap = result.tips;
+                        var hash =  window.location.hash;
+                        if(hash==="#address?dpcity"){
+                            releaseData.dpsearch = result.tips;
+                        }else if (hash === "#address?arcity"){
+                            releaseData.arsearch = result.tips;
+                        }
+                        $("#add-address").empty();
+                        if(result.tips.length>10){
+                            result.tips.length = 10;
+                        }
+                        for(var i = 0;i<result.tips.length;i++){
+                            address.search(i,releaseData.searchMap[i]);
+                        }
+                        address.divclick();
+                    }
+              })
+            })
+        },
+        search:function(i,val){
+            $("#add-address").append(obtainData.template.address);
+
+            $("#address-rtone").text(val.name);
+            var rtone = "address-rtone"+i;
+            $("#address-rtone").attr("id",rtone);
+
+            $("#address-rttwo").text(val.address);
+            var rttwo = "address-rttwo"+i;
+            $("#address-rttwo").attr("id",rttwo);
+
+            var rtthree = "address-addselect"+i;
+            $("#address-addselect").attr("id",rtthree);
+        },
+        divclick:function(){
+            $("#address-addselect0").bind("touch click",function(){
+                address_addselect(0);
+            })
+            $("#address-addselect1").bind("touch click",function(){
+                address_addselect(1);
+            })
+            $("#address-addselect2").bind("touch click",function(){
+                address_addselect(2);
+            })
+            $("#address-addselect3").bind("touch click",function(){
+                address_addselect(3);
+            })
+            $("#address-addselect4").bind("touch click",function(){
+                address_addselect(4);
+            })
+            $("#address-addselect5").bind("touch click",function(){
+                address_addselect(5);
+            })
+            $("#address-addselect6").bind("touch click",function(){
+                address_addselect(6);
+            })
+            $("#address-addselect7").bind("touch click",function(){
+                address_addselect(7);
+            })
+            $("#address-addselect8").bind("touch click",function(){
+                address_addselect(8);
+            })
+            $("#address-addselect9").bind("touch click",function(){
+                address_addselect(9);
+            })
+            function address_addselect(i){
+                // 点击时候，赋值给发布数据。
+                // 同时在地图上画点。画点用户点击时画不了的。(完成)
+                // 给地图页赋值，赋城市名和地址名。
+                // 给首页页赋值
+                var sjval = "";
+                var hash = window.location.hash;
+                if(hash==="#address?dpcity"){
+                    sjval = releaseData.dpsearch[i];
+                    releaseData.fabudpData = sjval;
+                    
+                }else if ( hash === "#address?arcity") {
+                    sjval = releaseData.arsearch[i];
+                    releaseData.fabuarData = sjval;
+                }
+                console.log("点击的数据",sjval);
+                // 赋值
+                var dzname = sjval.name;   // 名字
+                var cityname = $("#address-city").text();  //城市名
+                var dzwz  = sjval.address;      //位置
+                $("#busMap-dzname").text(dzname);
+                $("#busMap-dzcityname").text(dzwz);
+                // 赋城市名
+                $("#busMap-city").text(cityname);
+                $("#busMap-dzcity").text(cityname);
+                console.log(hash);
+                if(hash==="#address?dpcity"){
+                    releaseData.sfaddress = true;
+                    $("#bus-dpcity").text(dzname);
+                    window.location.hash = "#busMap?dpcity";
+                }else if ( hash === "#address?arcity") {
+                    $("#bus-arcity").text(dzname);
+                    window.location.hash = "#busMap?arcity";
+                }
+                var result =  {P:parseFloat(sjval.location.lat),R:parseFloat(sjval.location.lng),lat:parseFloat(sjval.location.P),lng:parseFloat(sjval.location.R)};
+                container.onclick(result,sjval);
+            }
+        }
+    }
 // 地图操作的函数
     var container = {
-        
+        dwlocationg:function(){
+            // 定位功能  
+            AMap.plugin('AMap.Geolocation', function() {
+                var geolocation = new AMap.Geolocation({
+                    enableHighAccuracy: true, //是否使用高精度定位，默认:true
+                    timeout: 10000,          //超过10秒后停止定位，默认：5s
+                    buttonPosition:'RB',     //定位按钮的停靠位置
+                    buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                    zoomToAccuracy: true  //定位成功后是否自动调整地图视野到定位点
+                });
+                map.addControl(geolocation);
+                geolocation.getCurrentPosition(function(status,result){
+                    if(status=='complete'){
+                        container.onsuccess(result);
+                    }else{
+                        onError(result);
+                        console.log("定位失败",result);
+                    }
+                });
+            });
+        },
+        onsuccess:function(result){   // 定位成功得到的数据
+            console.log("定位成功",result);
+            releaseData.dwlocationg = result;
+            var val = releaseData.dwlocationg;
+            if( val !=="" ){
+                $("#busMap-dzcity").text(val.addressComponent.city);
+                var textval = val.addressComponent.street+val.addressComponent.streetNumber;
+                $("#busMap-dzcityname").text(textval);
+                // 定位后，还得把几个城市更新
+                $("#busMap-city").text(val.addressComponent.city);
+                $("#address-city").text(val.addressComponent.city);
+            }
+        },
+        onclick:function(result,sjval){   //用于画maker，并聚焦用。
+            console.log(result);
+            // 第一步
+            document.getElementById('lnglat').value = result;
+            // 第二步
+            var position = [result.R, result.P]; 
+            map.setCenter(position); 
+            // 获取地图中心点
+            var currentCenter = map.getCenter(); 
+            // 第三部
+            if(result==false){
+                document.getElementById('lnglat').value = {};
+                regeoCode();
+            }
+            document.getElementById('lnglat').value = result;
+            regeoCode(result);
+
+        }
     }
+// 时间
+    var geocoder,marker;
+    function regeoCode(result) {
+        if(!geocoder){
+            geocoder = new AMap.Geocoder({
+                city: "常州", //城市设为北京，默认：“全国”
+                radius: 1000 //范围，默认：500
+            });
+        }
+        var lnglat  = document.getElementById('lnglat').value.split(',');
+        marker = new AMap.Marker({
+            position: result
+        });
+        map.add(marker);
+       
+        marker.setPosition(lnglat);
+        
+        geocoder.getAddress(lnglat, function(status, result) {
+            if (status === 'complete'&&result.regeocode) {
+            }else{alert(JSON.stringify(result))}
+        });
+    }
+/* 绑定 */
+    document.getElementById('lnglat').onkeydown = function(e) {
+        if (e.keyCode === 13) {
+            regeoCode();
+            return false;
+        }
+        return true;
+    }; 
+
 // 地图的初始化
     var map = new AMap.Map('container', {
         center:[117.000923,36.675807],
@@ -414,7 +803,7 @@ $(function(){
             console.log(1);
             setTimeout(function(){
                 window.history.back(-1);
-            },1000);
+            },500);
         },
         clickCity:function(divname){
             var val = $(divname).text();
@@ -533,4 +922,13 @@ $(function(){
         var optSDateTime_0 = $.extend(opt['sdatetime'], opt['sdtdefault_0']);
         $("#dt-a-0").mobiscroll().datetime(optSDateTime_0);  
         $("#dt-c-1").mobiscroll().datetime(optSDateTime_0); 
+    }
+
+// 发布的操作
+    var busSubmit = {
+        buttonSubmit:function(){
+            // 获取时间
+            $("#dt-a-0").data("val");
+            $("#dt-c-1").data("val");
+        }
     }

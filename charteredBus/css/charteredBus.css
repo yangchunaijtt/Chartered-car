@@ -762,9 +762,16 @@
         font-size: 8px;
         color: #448aff;
         margin-left: 10px;
+        float:left;
     }
     .busMap .busMap-dz  .busMap-dzheader .busMap-dzhdcity{
         margin-left: 10px;
+        float: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        width: 74%;
     }
     .busMap .busMap-dz  .busMap-dzcity{
         display: block;
@@ -897,6 +904,9 @@
     .address #add-address .addselect-right .addselect-rttwo{
         display: block;
         color: #999;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 /* 默认设置 */
     #selectcar-carone{
