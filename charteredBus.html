@@ -130,47 +130,8 @@
         </div>
         <!-- 选车 选择车的型号-->
         <div  class="selectcar-cardiv clearfix">
-            <div  class="selectcar-car clearfix">
-                <div id="selectcar-carone" class="selectcar-carimg clearfix">
-                    <span id="selectcar-carspanone" class="iconfont icondui"></span>
-                    <img src="./charteredBus/img/buscarone.png">
-                    <p>舒适型</p>
-                </div>
-                <div  id="selectcar-cartwo" class="selectcar-carimg clearfix">
-                    <span id="selectcar-carspantwo"  class="iconfont icondui"></span>
-                    <img src="./charteredBus/img/buscarfour.png">
-                    <p>商务型</p>
-                </div>
-                <div   id="selectcar-carthree" class="selectcar-carimg clearfix">
-                    <span  id="selectcar-carspanthree" class="iconfont icondui"></span>
-                    <img src="./charteredBus/img/buscarthree.png">
-                    <p>11人小巴</p>
-                </div>  
-                <div  id="selectcar-carfour"  class="selectcar-carimg clearfix">
-                    <span id="selectcar-carspanfour"  class="iconfont icondui"></span>
-                    <img src="./charteredBus/img/buscarthree.png">
-                    <p>19人中巴</p>
-                </div> 
-                <div  id="selectcar-carfive"  class="selectcar-carimg clearfix">
-                    <span id="selectcar-carspanfive"  class="iconfont icondui"></span>
-                    <img src="./charteredBus/img/buscartwo.png">
-                    <p>33人大巴</p>
-                </div> 
-                <div  id="selectcar-carsix"   class="selectcar-carimg clearfix">
-                    <span  id="selectcar-carspansix" class="iconfont icondui"></span>
-                    <img src="./charteredBus/img/buscartwo.png">
-                    <p>45人大巴</p>
-                </div>  
-                <div   id="selectcar-carseven" class="selectcar-carimg clearfix">
-                    <span id="selectcar-carspanseven"  class="iconfont icondui"></span>
-                    <img src="./charteredBus/img/buscartwo.png">
-                    <p>49人大巴</p>
-                </div> 
-                <div   id="selectcar-careight" class="selectcar-carimg clearfix">
-                    <span id="selectcar-carspaneight"  class="iconfont icondui"></span>
-                    <img src="./charteredBus/img/buscartwo.png">
-                    <p>53人大巴</p>
-                </div> 
+            <div id="selectcar-addcar" class="selectcar-car clearfix">
+               
             </div>       
         </div>
         <!-- 车能做多少人，货多少 -->
@@ -221,63 +182,88 @@
     <div class="details clearfix" style="display: none;">
         <!-- 头部内容 -->
         <div class="details-header">
-            <span class="iconfont iconfanhui1"></span>
-            <span>订单详情</span>
+            <span class="details-hdleft iconfont iconfanhui1"></span>
+            <span class="details-hdright">订单详情</span>
         </div>
-        <!-- 支付的情况。未打电话则显示为空，让他确认支付。
-        支付后，显示支付情况。
-        取消订单后，显示退款状态。 -->
-        <div class="clearfix">
-
+        <!-- 按钮部分内容 暂时不需要-->
+        <div class="details-button clearfix" style="display: none;">
+            <!-- 添加按钮的地方 -->
         </div>
-        <!-- 哪里到哪里，日期等
-            出发城市
-            出发地
-            到达城市
-            目的地
-            出发时间
-            到达时间
-        使用方式（单程：Single，往返：Return）
-        -->
+        <!-- 支付信息 -->
+        <!-- 要根据状态来改变 -->
+        <div class="details-price clearfix">
+            <span class="details-priceleft left">支付</span>
+            <div class="details-priceright right clearfix">
+                <span id="details-priceje">199.33(金额)</span>
+                <span id="details-pricetime">2019-03-12 16:03:30</span>
+                <span id="details-pricedh">CAO211241223651(支付单号)</span>
+            </div>
+        </div>
+        <!-- 有没退款，有退款则显示 -->
+        <div class="clearfix" id="details-refund">
+            <span class="details-refundleft left">退款</span>
+            <div class="details-refundright right clearfix">
+                <span id="details-refundje">199.33(金额)</span>
+                <span id="details-refundtime">2019-03-12 16:03:30</span>
+                <span id="details-refunddh">CAO211241223651(退款单号)</span>
+            </div>
+        </div>
+        <!-- 内容区，存储内容的地方 -->
         <div class="details-center clearfix">
-            <div class="details-ctleft clearfix">
-                <span>苏州市</span>
-                <div class="clearfix">
-                    <span>苏州南站</span>
-                    <span class="iconfont iconditu"></span>
+            <span>单程</span>
+            <!-- 位置 -->
+            <div class="cearfix">
+                <div class="left clearfix">
+                    出发地
+                </div>
+                <div class="right clearfix">
+                    <div class="clearfix">
+                        <span>2019-12-13 23:30:00</span>
+                        <span>点击查看位置</span>
+                    </div>
+                    <div class="clearfix">
+                        <span>常州汽车客运总站(北广场)(公交站)</span>
+                        <span>常州市</span>
+                    </div>
                 </div>
             </div>
-            <div class="details-ctct clearfix">
-                <span>2019-12-02 16:52:00</span>
-                <span></span>
-                <span></span>
-                <span>2019-12-02 16:52:00</span>
-            </div>
-            <div class="details-ctright clearfix">
-                <span>常州市</span>
-                <div class="clearfix">
-                    <span>常州总站</span>
-                    <span class="iconfont iconditu"></span>
+            <div class="cearfix">
+                <div class="left clearfix">
+                        目的地
+                </div>
+                <div class="right clearfix">
+                    <div class="clearfix">
+                        <span>无返程</span>
+                        <span>点击查看位置</span>
+                    </div>
+                    <div class="clearfix">
+                        <span>常州汽车客运总站(北广场)(公交站)</span>
+                        <span>常州市</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- 
-            车辆类型
-            联系人
-            联系电话
-            备注
-            添加日期
-            跟单人
-            价格
-            -->
-        <div class="clearfix">
-            <div class="">
-
+            <!-- 车信息 -->
+            <div class="clearfix">
+                <img class="left" src="./charteredBus/img/buscarfour.png">
+                <div class="right clearfix">
+                    <span>舒适型</span>
+                    <div class="cleafix">
+                        <span class="iconfont iconren1"></span>
+                        <span class="iconfont iconcheng"></span>
+                        <span>4</span>
+                    </div>
+                    <div class="cleafix">
+                        <span class="iconfont icon1"></span>
+                        <span class="iconfont iconcheng"></span>
+                        <span>2</span>
+                    </div>
+                </div>
             </div>
-        </div>
-        <!-- 操作按钮,取消订单,确认支付 -->
-        <div class="clearfix">
-            
+            <!-- 留言信息 -->
+            <div class="clearfix">
+                <span>备注</span>
+                <span>发的三个三个大使馆</span>
+            </div>
         </div>
     </div>
     <!-- 地图页 -->
@@ -290,7 +276,7 @@
         </div>
         <div class="busMap-city clearfix">
             <div class="busMap-cityleft clearfix">
-                <span id="busMap-city" class="busMap-ctlfname"></span>
+                <span id="busMap-city" class="busMap-ctlfname">常州市</span>
                 <span class="busMap-ctlficon iconfont iconyou"></span>
                 <span class="busMap-ctlfxian"></span>
             </div>
@@ -321,7 +307,7 @@
         </div>
         <div class="address-city clearfix">
             <div class="address-cityleft clearfix">
-                <span id="address-city" class="address-ctlfname"></span>
+                <span id="address-city" class="address-ctlfname">常州市</span>
                 <span class="address-ctlficon iconfont iconyou"></span>
                 <span class="address-ctlfxian"></span>
             </div>
@@ -335,88 +321,59 @@
         </div>
     </div>
     <!-- 我的订单-->
-    <div class="myorder clearfix"  style="display:none;">
+    <div class="myorder clearfix"  style="display:none;position: relative;">
         <div class="myorder-header clearfix">
             <span id="myorder-return" class="myorder-hdreturn iconfont iconfanhui1"></span>
-            <span class="myorder-hdmyorder">我的订单</span>
-            <span class="myorder-hdselect">筛选</span>
+            <span class="myorder-hdmyorder" >我的订单</span>
+            <span id="myorder-selectclick" class="myorder-hdselect">筛选</span>
             <!-- 筛选弹出的div -->
-            <div class="clearfix" style="display:none;">
-                <div class="clearfix">
-                    <span>订单时间</span>
+            <div  id="myorder-selectdiv" class="myorder-select clearfix" style="display: none;">
+                <div class="myorder-sttop clearfix">
+                    <span class="myorder-sttopdiv" style="color: #aeae42;">订单时间:</span>
+                    <div id="myorder-today" class="myorder-sttopdiv clearfix">
+                        <span class="myorder-sttopspan">日内</span>
+                        <span class="myorder-sttopxian"></span>
+                    </div>
+                    <div  id="myorder-week" class="myorder-sttopdiv clearfix">
+                        <span class="myorder-sttopspan">一周内</span>
+                        <span class="myorder-sttopxian"></span>
+                    </div>
+                    <div   id="myorder-month" class="myorder-sttopdiv clearfix">
+                         <span class="myorder-sttopspan">一月内</span>
+                        <span class="myorder-sttopxian"></span>
+                    </div>
+                    <span id="myorder-timeqb" class="myorder-sttopdiv" style="color:red;">全部</span>    
                 </div>
-                <div class="clearfix">
-                    <span>订单状态</span>
+                <div class="myorder-stbottom clearfix">
+                    <span class="myorder-stbtdiv" style="color: #aeae42;width:20%;">订单状态:</span>
+                    <div   id="myorder-stsqx" class="myorder-stbtdiv clearfix">
+                        <span class="myorder-stbtspan">已取消</span>
+                        <span class="myorder-stbtspanxian"></span>
+                    </div>
+                    <div id="myorder-ststk"  class="myorder-stbtdiv clearfix">
+                        <span class="myorder-stbtspan">待退款</span>
+                        <span class="myorder-stbtspanxian"></span>
+                    </div>
+                    <div id="myorder-stsxd"  class="myorder-stbtdiv clearfix">
+                        <span class="myorder-stbtspan">已下单</span>
+                        <span class="myorder-stbtspanxian"></span>
+                    </div>
+                    <div id="myorder-stswc"  class="myorder-stbtdiv clearfix">
+                        <span class="myorder-stbtspan">已完成</span>
+                        <span class="myorder-stbtspanxian"></span>
+                    </div>
+                    <div  id="myorder-stsdfk"  class="myorder-stbtdiv clearfix">
+                        <span class="myorder-stbtspan">待付款</span>
+                        <span class="myorder-stbtspanxian"></span>
+                    </div>
+                    <span id="myorder-stsqb"    class="myorder-stbtdiv" style="color:red;">全部</span>
                 </div>
-                <span></span>
+                <span  id="myorder-stsbutton" class="myorder-stbutton">确定</span>
             </div>
         </div>
         <!-- 循环添加订单的地方 -->
         <div class="clearfix" id="idmyorder">
-            <div class="tjorder clearfix">
-                <div class="tjorder-hd clearfix">
-                    <div class="tjorder-hdleft clearfix">
-                        <span class="tjorder-hdlefticon iconfont iconkeche"></span>
-                        <span class="tjorder-hdleftnr">市内</span>
-                    </div>
-                    <p class="tjorder-hdright">出票成功</p>
-                </div>
-                <div  class="tjorder-ct clearfix">
-                    <span class="tjorder-ctleft">
-                        常州总站(常州市)
-                    </span>
-                    <span class="tjorder-ctcenter">-</span>
-                    <span  class="tjorder-ctright">
-                        南京南站(南京市)
-                    </span>
-                </div>
-                <div class="tjorder-date clearfix">
-                    <div class="tjorder-dateleft clearfix">
-                        <span class="tjorder-dateleftts">出发时间:</span>
-                        <span class="tjorder-datelefttime">2月2日 12:00</span>
-                    </div>
-                    <div class="tjorder-dateright clearfix">
-                        <span class="tjorder-daterighticon iconfont iconrenminbi1688"></span>
-                        <span class="tjorder-daterightmoney">113</span>
-                    </div>
-                </div>
-                <div class="tjorder-button clearfix">
-                    <span class="tjorder-submitbutton">确认订单</span>
-                    <span class="tjorder-submitbutton">取消订单</span>
-                </div>
-            </div>
-            <div class="tjorder clearfix">
-                    <div class="tjorder-hd clearfix">
-                        <div class="tjorder-hdleft clearfix">
-                            <span class="tjorder-hdlefticon iconfont iconkeche"></span>
-                            <span class="tjorder-hdleftnr">市内</span>
-                        </div>
-                        <p class="tjorder-hdright">出票成功</p>
-                    </div>
-                    <div  class="tjorder-ct clearfix">
-                        <span class="tjorder-ctleft">
-                            常州总站(常州市)
-                        </span>
-                        <span class="tjorder-ctcenter">-</span>
-                        <span  class="tjorder-ctright">
-                            南京南站(南京市)
-                        </span>
-                    </div>
-                    <div class="tjorder-date clearfix">
-                        <div class="tjorder-dateleft clearfix">
-                            <span class="tjorder-dateleftts">出发时间:</span>
-                            <span class="tjorder-datelefttime">2月2日 12:00</span>
-                        </div>
-                        <div class="tjorder-dateright clearfix">
-                            <span class="tjorder-daterighticon iconfont iconrenminbi1688"></span>
-                            <span class="tjorder-daterightmoney">113</span>
-                        </div>
-                    </div>
-                    <div class="tjorder-button clearfix">
-                        <span class="tjorder-submitbutton">确认订单</span>
-                        <span class="tjorder-submitbutton">取消订单</span>
-                    </div>
-            </div>
+            
         </div>
     </div>
     <!-- 城市选择页 -->
@@ -537,7 +494,8 @@
     <!-- 高德地图的两个引入 -->
     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.11&key=5eeab4fb86fdb2ea40bb70b720de1927&plugin=AMap.Geocoder"></script>
     <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
-    <script src="./js/jquery.min.js"></script>
+
+    <script src="js/jquery.min.js"></script>
     <!-- 后台给的调用的js -->
     <script src="js/app.js"></script>
     <!-- 秒支付button的使用 -->

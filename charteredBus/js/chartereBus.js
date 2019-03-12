@@ -1,17 +1,27 @@
-
+// 页面初始化数据
+var newPageData = {
+    uid:0,   // 用户的uid
+    phone:0,    //  电话
+    openid:0,   //  openid
+    
+}
+getOpenid(function(openid){
+    newPageData.uid = localCache("uid-kongbatong");
+    newPageData.openid = localCache("openid-kongbatong");
+    newPageData.phone = localCache("mobile-kongbatong");
+    newPageData.openid = openid;
+    console.log("openid",openid,newPageData.uid,newPageData.openid);
+    if(null == newPageData.uid || "" == newPageData.uid) {
+        register("http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/Register_content.html");   //返回注册登录页面
+    } else {
+        // 得到订单数据
+        myorder.myorderPage("","","");
+        // 获取车辆类型
+        selectcar.cartype();
+    }
+},location.search);
 $(function(){
-    getOpenid(function(openid){
-        newPageData.uid = localCache("uid-kongbatong");
-        newPageData.openid = localCache("openid-kongbatong");
-        newPageData.phone = localCache("mobile-kongbatong");
-        newPageData.openid = openid;
-        console.log("openid",openid,newPageData.uid,newPageData.openid);
-        if(null == nowusermsg.uid || "" == nowusermsg.uid) {
-            register("http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/Register_content.html");   //返回注册登录页面
-        } else {
-
-        }
-    },location.search);
+   
     // 设置高度
     // 提交订单页设置高度
     $(".selectcar").height($(document.body).height());
@@ -76,48 +86,6 @@ $(function(){
     $("#selectcar-return").bind("touch click",function(){
         window.location.hash = "#bus";
     })
-    // 点击选车
-    $("#selectcar-carone").bind("touch click",function(e){
-        e.preventDefault();
-        selectcar.clickbus(1,"#selectcar-carone");
-        e.stopPropagation()
-    })
-    $("#selectcar-cartwo").bind("touch click",function(e){
-        e.preventDefault()
-        selectcar.clickbus(2,"#selectcar-cartwo");
-        e.stopPropagation()
-    })
-    $("#selectcar-carthree").bind("touch click",function(e){
-        e.preventDefault();
-        selectcar.clickbus(3,"#selectcar-carthree");
-        e.stopPropagation()
-    })
-    $("#selectcar-carfour").bind("touch click",function(e){
-        e.preventDefault();
-        selectcar.clickbus(4,"#selectcar-carfour");
-        e.stopPropagation()
-    })
-    $("#selectcar-carfive").bind("touch click",function(e){
-        e.preventDefault();
-        selectcar.clickbus(5,"#selectcar-carfive");
-        e.stopPropagation()
-    })
-    
-    $("#selectcar-carsix").bind("touch click",function(e){
-        e.preventDefault();
-        selectcar.clickbus(6,"#selectcar-carsix");
-        e.stopPropagation()
-    })
-    $("#selectcar-carseven").bind("touch click",function(e){
-        e.preventDefault();
-        selectcar.clickbus(7,"#selectcar-carseven");
-        e.stopPropagation()
-    })
-    $("#selectcar-careight").bind("touch click",function(e){
-        e.preventDefault();
-        selectcar.clickbus(8,"#selectcar-careight");
-        e.stopPropagation()
-    })
     $("#selectcar-tishi").bind("touch click",function(){
         window.location.hash = "#careful";
     })
@@ -134,6 +102,10 @@ $(function(){
         window.location.hash = "#address?"+obtainData.busMap;
     })
     $("#busMap-qrclick").bind("touch click",function(){
+        // 没有数据则不让跳转
+        if(releaseData.dwlocationg==="" && releaseData.searchMap===""){
+            return false;
+        }
         // 使用搜索数据
         if(location.hash==="#busMap?dpcity"){
             releaseData.dpCity = $("#busMap-city").text();
@@ -141,10 +113,12 @@ $(function(){
             if( releaseData.sfaddress === true ){
                 releaseData.dwsjUsed = false;
             }
+            $("#bus-dpcity").text($("#busMap-dzname").text());
         }else if ( location.hash=== "#busMap?arcity"){
             releaseData.arCity = $("#busMap-city").text();
+            $("#bus-arcity").text($("#busMap-dzname").text());
         }
-
+       
         window.location.hash = "#bus";
     })
 // 城市具体地址选择
@@ -230,6 +204,58 @@ $(function(){
             $("#textarea-length").text(result+"/100");
         }
     });
+// 我的订单页的操作
+    $("#myorder-selectclick").bind("touch click",function(){
+        $("#myorder-selectdiv").slideToggle();
+    })
+    // 选择时间
+    $("#myorder-today").bind("touch click",function(){
+        myorder.dateRange = "today";
+        myorder.myorderSelect(1,"#myorder-today");
+    })
+    $("#myorder-week").bind("touch click",function(){
+        myorder.dateRange = "weekday";
+        myorder.myorderSelect(1,"#myorder-week");
+    })
+    $("#myorder-month").bind("touch click",function(){
+        myorder.dateRange = "month";
+        myorder.myorderSelect(1,"#myorder-month");
+    })
+    $("#myorder-timeqb").bind("touch click",function(){
+        myorder.dateRange = "";
+        myorder.myorderSelect(1,"#myorder-timeqb");
+    })
+    // 选择订单
+    //状态（-2:待退款；-1:取消；0：下单；1：完成；2：待付款）
+    $("#myorder-stsqx").bind("touch click",function(){
+        myorder.status  = -1;
+        myorder.myorderSelect(2,"#myorder-stsqx");
+    })
+    $("#myorder-ststk").bind("touch click",function(){
+        myorder.status  = -2;
+        myorder.myorderSelect(2,"#myorder-ststk");
+    })
+    $("#myorder-stsxd").bind("touch click",function(){
+        myorder.status  = 0;
+        myorder.myorderSelect(2,"#myorder-stsxd");
+    })
+    $("#myorder-stswc").bind("touch click",function(){
+        myorder.status  = 1;
+        myorder.myorderSelect(2,"#myorder-stswc");
+    })
+    $("#myorder-stsdfk").bind("touch click",function(){
+        myorder.status  = 2;
+        myorder.myorderSelect(2,"#myorder-stsdfk");
+    })
+    $("#myorder-stsqb").bind("touch click",function(){
+        myorder.status  = "";
+        myorder.myorderSelect(2,"#myorder-stsqb");
+    })
+    // 完成
+    $("#myorder-stsbutton").bind("touch click",function(){
+        $("#myorder-selectdiv").slideUp();
+        myorder.myorderScreen();
+    })
 // 定位
     container.dwlocationg();
 // 监控路由
@@ -275,6 +301,7 @@ $(function(){
             $(".selectcar").show(); 
         }else if ( hashval ==="#details" ){
             hashcsh();
+            details.newPage();
             $(".details").show();
         }else if ( hashval ==="#busMap" ){
             obtainData.busMap = hashzhi;
@@ -308,6 +335,150 @@ $(function(){
             $(".myorder").hide();
             $("#searchcity").hide();
             $(".careful").hide();
+        }
+    }
+// 我的订单页的操作
+    var myorder = {
+        coid:"",
+        status:"",
+        dateRange:"",
+        myorderData:"",
+        myorderPage:function(coid,status,dateRange){
+            $.ajax({
+                url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders.asp",
+                type:"post",
+                data:{
+                    cur:1,       	//查看页码
+                    uid:newPageData.uid,       	//用户id 
+                    coid:coid,			//订单id
+                    status:status,		    //状态
+                    dateRange:dateRange   	//日期范围（"today","weekday","month"）
+                },
+                success:function(data){
+                    console.log("请求订单成功",data);
+                    $("#idmyorder").empty();
+                    if( data.result>0){
+                        myorder.myorderData =  data.obj.coList;
+                        for(var i = 0;i<myorder.myorderData.length;i++){
+                            $("#idmyorder").append(obtainData.template.myorder);
+                            myorder.myorderRender(i,myorder.myorderData[i]);
+                        }
+                    }
+                },
+                error:function(data){
+                    console.log("请求订单失败",data);
+                }
+            })
+        },
+        myorderRender:function(i,val){
+            // 还要根据订单状态，添加按钮
+
+            // 最大的div
+            var myorder_od = "myorder-od"+i;
+            $("#myorder-od").attr("id",myorder_od);
+            // 状态（-2:待退款；-1:取消；0：下单；1：完成；2：待付款）
+            // 结果，还要添加什么按钮
+            var odstatus = "";
+            if(val.status===-2){
+                odstatus = "待退款";
+            }else if (val.status===-1){
+                odstatus = "已取消";
+            }else if (val.status===0){
+                odstatus = "已下单";
+            }else if (val.status===1){
+                odstatus = "已完成";
+            }else if (val.status===2){
+                odstatus = "待付款";
+            }
+            $("#myorder-odstatus").text(odstatus);
+            var myorder_odstatus = "myorder-odstatus"+i;
+            $("#myorder-odstatus").attr("id",myorder_odstatus);
+            // 城际市内
+            if(val.dpCity==="常州市" && val.arCity==="常州市"){
+                $("#myorder-oddistance").text("市内");
+            }else {
+                $("#myorder-oddistance").text("城际");
+            }
+            // 起点
+            $("#myorder-oddpcity").text(val.departure);
+            var myorder_oddpcity = "myorder-oddpcity"+i;
+            $("#myorder-oddpcity").attr("id",myorder_oddpcity);
+            // 终点
+            $("#myorder-odarcity").text(val.arrival);
+            var myorder_odarcity = "myorder-odarcity"+i;
+            $("#myorder-odarcity").attr("id",myorder_odarcity);
+            // 出发时间
+            $("#myorder-oddptime").text(val.departureTime);
+            var myorder_oddptime = "myorder-oddptime"+i;
+            $("#myorder-oddptime").attr("id",myorder_oddptime);
+            // 返程时间
+            if(val.useType==="Return"){
+                $("#myorder-odartime").text(val.returnTime);
+            }else {
+                $("#myorder-odartime").text("无返程");
+            }
+            var myorder_odartime = "myorder-odartime"+i;
+            $("#myorder-odartime").attr("id",myorder_odartime);
+            // 价格
+            if(val.price == null || val.price == ""){
+                $("#myorder-odprice").text("无");
+            }else {
+                $("#myorder-odprice").text(val.price);
+            }
+            var myorder_odprice = "myorder-odprice"+i;
+            $("#myorder-odprice").attr("id",myorder_odprice);    
+            // a标签
+            var ahref = "http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/charteredBus.html#details"+"?uid="+val.uid+"&id="+val.id;
+            $("#myorder-odahref").attr("href",ahref);
+            var myorder_odahref = "myorder-odahref"+i;
+            $("#myorder-odahref").attr("id",myorder_odahref);
+        },
+        myorderScreen:function(){   //点击确认按钮
+            myorder.myorderPage(myorder.coid,myorder.status,myorder.dateRange);
+        },
+        myorderSelect:function(val,divname){
+            if(val === 1){
+                $("#myorder-today").css("color","#555");
+                $("#myorder-week").css("color","#555");
+                $("#myorder-month").css("color","#555");
+                $("#myorder-timeqb").css("color","#555");
+            }else if ( val ===2){
+                $("#myorder-stsqx").css("color","#555");
+                $("#myorder-ststk").css("color","#555");
+                $("#myorder-stsxd").css("color","#555");
+                $("#myorder-stswc").css("color","#555");
+                $("#myorder-stsdfk").css("color","#555");
+                $("#myorder-stsqb").css("color","#555");
+            }
+            $(divname).css("color","red");
+        }
+    }
+// 详情页的设置
+    var details = {
+        detailsData:"",     //详情页的数据
+        newPage:function(){
+            var hash = window.location.hash;
+            var hashone =  hash.split("?");
+            var hashval = hashone[0]; // 用来判断路由
+            var hashzhi = hashone[1]; // 用来取数据   uid=3&id=2
+            console.log("路由值",hashzhi);  
+            var hashtwo = hashzhi.split("&");   //  uid= 3  id=2
+            var uida = hashtwo[0].split("=");   
+            var ida  = hashtwo[1].split("=");
+            $.ajax({
+                type:"post",
+                url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/getChaOrderDetails.asp",
+                data:{
+                    uid:parseInt(uida[1]),
+                    id:parseInt(ida[1]) 
+                },
+                success:function(data){
+                    console.log("详情页获取成功的数据",data);
+                },
+                error:function(data){
+                    console.log("详情页获取失败的数据",data);
+                }
+            })
         }
     }
 // 首页操作的函数
@@ -369,6 +540,109 @@ $(function(){
     }
 // 车型选择页的操作
     var  selectcar  = {
+        carTypeData:"",     // 存储的数据
+        cartype:function(){
+            $.ajax({
+                type:"post",
+                url:"http://qckj.czgdly.com/bus/MobileWeb/buyTicket/readChaCarTypes.asp",
+                data:{
+                    top:0,
+                    id:""
+                },
+                success:function(data){
+                    console.log("车辆类型数据",data);
+                    selectcar.carTypeData = data.obj.lilist;
+                    if(data.result>0){
+                        $("#selectcar-addcar").empty();
+                        for(var i = 0;i<data.obj.lilist.length;i++){
+                            $("#selectcar-addcar").append(obtainData.template.selectcar);
+                            selectcar.selectcarRender(i,data.obj.lilist[i]);
+                        }
+                        selectcar.selectcarBind();
+                    }
+                },
+                error:function(data){
+                    console.log(data);
+                }
+            })
+        },
+        selectcarRender:function(i,val){
+            console.log(i,val);
+            // id号，给用户找数据用
+            $("#selectcar-id").text(i);
+            var sid =  "selectcar-id"+i;
+            $("#selectcar-id").attr("id",sid);
+            // icon
+            var icon = "selectcar-carspan"+i;
+            $("#selectcar-carspan").attr("id",icon);
+            // img
+            var imgsrc = "";
+            if(val.name==="舒适型"){
+                imgsrc = "./charteredBus/img/buscarone.png";
+            }else if (val.name==="商务型"){
+                imgsrc = "./charteredBus/img/buscarfour.png";
+            }else if (val.name==="11座小巴"){
+                imgsrc ="./charteredBus/img/buscarthree.png";
+            }else if (val.name ==="19座中巴") {
+                imgsrc ="./charteredBus/img/buscarthree.png";
+            }else {
+                imgsrc = "./charteredBus/img/buscartwo.png";
+            }
+            var imgdiv = "selectcar-img"+i;
+            $("#selectcar-img").attr("src",imgsrc);
+            $("#selectcar-img").attr("id",imgdiv);
+            // 名字
+            $("#selectcar-name").text(val.name);
+            var name = "selectcar-name"+i;
+            $("#selectcar-name").attr('id',name);
+            // div
+            var cardiv = "selectcar-car"+i;
+            $("#selectcar-car").attr("id",cardiv);
+        },
+        selectcarBind:function(){
+            // 点击选车
+            $("#selectcar-car0").bind("touch click",function(e){
+                e.preventDefault();
+                selectcar.clickbus(0,"#selectcar-car0");
+                e.stopPropagation()
+            })
+            $("#selectcar-car1").bind("touch click",function(e){
+                e.preventDefault()
+                selectcar.clickbus(1,"#selectcar-car1");
+                e.stopPropagation()
+            })
+            $("#selectcar-car2").bind("touch click",function(e){
+                e.preventDefault();
+                selectcar.clickbus(2,"#selectcar-car2");
+                e.stopPropagation()
+            })
+            $("#selectcar-car3").bind("touch click",function(e){
+                e.preventDefault();
+                selectcar.clickbus(3,"#selectcar-car3");
+                e.stopPropagation()
+            })
+            $("#selectcar-car4").bind("touch click",function(e){
+                e.preventDefault();
+                selectcar.clickbus(4,"#selectcar-car4");
+                e.stopPropagation()
+            })
+            
+            $("#selectcar-car5").bind("touch click",function(e){
+                e.preventDefault();
+                selectcar.clickbus(5,"#selectcar-car5");
+                e.stopPropagation()
+            })
+            $("#selectcar-car6").bind("touch click",function(e){
+                e.preventDefault();
+                selectcar.clickbus(6,"#selectcar-car6");
+                e.stopPropagation()
+            })
+            $("#selectcar-car7").bind("touch click",function(e){
+                e.preventDefault();
+                selectcar.clickbus(7,"#selectcar-car7");
+                e.stopPropagation()
+            })
+        },
         newPage:function () {
             $("#selectcar-dpcity").text(releaseData.dpCity);
             $("#selectcar-arcity").text(releaseData.arCity);
@@ -377,95 +651,53 @@ $(function(){
             }else if ( releaseData.useType === "往返" ) {
                 $("#selectcar-ardiv").show();
             }
-            $("#selectcar-departure").text(releaseData.departure+"上车");
-            $("#selectcar-departureTime").text(releaseData.departureTime);
-            $("#selectcar-arrival").text(releaseData.arrival+"返程");
-            $("#selectcar-arrivalTime").text(releaseData.returnTime);
-
+            $("#selectcar-departure").text($("#bus-dpcity").text()+"上车");
+            $("#selectcar-departureTime").text($("#dt-a-0").attr("data-val")+"上车");
+            $("#selectcar-arrival").text($("#bus-arcity").text()+"返程");
+            $("#selectcar-arrivalTime").text($("#dt-c-1").attr("data-val")+"返程");
         },
         clickbus:function(val,divname){
+            console.log(val,divname);
+            // 得到数据
+            var sjData = selectcar.carTypeData[val];
             // 车辆类型
-            var carType = "";
-            var people = 0;
-            var matter = 0;
-            var spanname = "";
-            if ( val === 1 ) {
-                carType = "舒适型"
-                people = 4;
-                matter = 2;
-                spanname = "#selectcar-carspanone";
-            }else if ( val === 2 ) {
-                carType = "商务型"
-                people = 6;
-                matter = 4;
-                spanname = "#selectcar-carspantwo";
-            }else if ( val === 3 ) {
-                carType = "11人小巴"
-                people = 11;
-                matter = 6;
-                spanname = "#selectcar-carspanthree";
-            }else if ( val === 4 ) {
-                carType = "19人中巴"
-                people = 19;
-                matter = 10;
-                spanname = "#selectcar-carspanfour";
-            }else if ( val === 5 ) {
-                carType = "33人大巴"
-                people = 33;
-                matter = 14;
-                spanname = "#selectcar-carspanfive";
-            }else if ( val === 6 ) {
-                carType = "45人大巴"
-                people = 45;
-                matter = 16;
-                spanname = "#selectcar-carspansix";
-            }else if ( val === 7 ) {
-                carType = "49人大巴"
-                people = 49;
-                matter = 20;
-                spanname = "#selectcar-carspanseven";
-            }else if ( val === 8 ) {
-                carType = "53人大巴"
-                people = 53;
-                matter = 20;
-                spanname = "#selectcar-carspaneight";
-            }
+            var people = sjData.pseats;
+            var matter = sjData.trunks;
+            var spanname = "#selectcar-carspan"+val;
             $("#selectcar-goodspeople").text(people);
             $("#selectcar-goodsmatter").text(matter);
-            releaseData.carType =carType;
 
-            $("#selectcar-carone").css("border-color","#7e7d7d");
-            $("#selectcar-cartwo").css("border-color","#7e7d7d");
-            $("#selectcar-carthree").css("border-color","#7e7d7d");
-            $("#selectcar-carfour").css("border-color","#7e7d7d");
-            $("#selectcar-carfive").css("border-color","#7e7d7d");
-            $("#selectcar-carsix").css("border-color","#7e7d7d");
-            $("#selectcar-carseven").css("border-color","#7e7d7d");
-            $("#selectcar-careight").css("border-color","#7e7d7d");
+            releaseData.carType =sjData.id;
 
-            $("#selectcar-carspanone").css("color","#555");
-            $("#selectcar-carspantwo").css("color","#555");
-            $("#selectcar-carspanthree").css("color","#555");
-            $("#selectcar-carspanfour").css("color","#555");
-            $("#selectcar-carspanfive").css("color","#555");
-            $("#selectcar-carspansix").css("color","#555");
-            $("#selectcar-carspanseven").css("color","#555");
-            $("#selectcar-carspaneight").css("color","#555");
+            $("#selectcar-car0").css("border-color","#7e7d7d");
+            $("#selectcar-car1").css("border-color","#7e7d7d");
+            $("#selectcar-car2").css("border-color","#7e7d7d");
+            $("#selectcar-car3").css("border-color","#7e7d7d");
+            $("#selectcar-car4").css("border-color","#7e7d7d");
+            $("#selectcar-car5").css("border-color","#7e7d7d");
+            $("#selectcar-car6").css("border-color","#7e7d7d");
+            $("#selectcar-car7").css("border-color","#7e7d7d");
+
+            $("#selectcar-carspan0").css("color","#555");
+            $("#selectcar-carspan1").css("color","#555");
+            $("#selectcar-carspan2").css("color","#555");
+            $("#selectcar-carspan3").css("color","#555");
+            $("#selectcar-carspan4").css("color","#555");
+            $("#selectcar-carspan5").css("color","#555");
+            $("#selectcar-carspan6").css("color","#555");
+            $("#selectcar-carspan7").css("color","#555");
             $(divname).css("border-color","rgb(0, 141, 255)");
             $(spanname).css("color","rgb(0, 141, 255)");
         },
         tijiao:function(){
             var tellTrips = "";
-            
             //判断用户是否登录
             if( newPageData.uid===0){
                 tellTrips = "请登录";
             }else if ( newPageData.openid === 0){
                 tellTrips = "请登录";
             }else if ( releaseData.useType === "往返" ){
-                if( releaseData.returnTime===0){
-                    tellTrips = "请选择返程时间";
-                }
+                
             }
             if(tellTrips!==""){
                 showMessage1btn(tellTrips,"",0);
@@ -503,46 +735,57 @@ $(function(){
                 dLng =  releaseData.fabudpData.location.R;
                 dLat =  releaseData.fabudpData.location.P;
             }
-            console.log(releaseData);
+
+            if(releaseData.useType==="单程"){
+                releaseData.returnTime = "";
+            }
+            if(releaseData.useType==="单程"){
+                releaseData.useType ="Single";
+            }else if (releaseData.useType==="往返"){
+                releaseData.useType ="Return";
+            }
+            // 读取车辆类型
             $.ajax({
                 type:"post",
                 url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/saveMadeChaOrders.asp",
-
                 data:{
                     uid:newPageData.uid,				 //用户id
                     outTradeNo:sjc,		     //订单号（"CAO"开头）
                     dpCity:dpCity,			    //出发城市
                     departure:departure,		    //出发地
-                    dLng:dLng,				//出发地经度
-                    dLat:dLat,				//出发地纬度
+                    dLng:dLng.toFixed(6),				//出发地经度
+                    dLat:dLat.toFixed(6),				//出发地纬度
                     arCity:releaseData.arCity,			    //到达城市
                     arrival:releaseData.fabuarData.name,		//目的地
-                    aLng:releaseData.fabuarData.location.lng,				//目的地经度
-                    aLat:releaseData.fabuarData.location.lat,				//目的地纬度
-                    departureTime:releaseData.departureTime,	    //出发时间
-                    returnTime:releaseData.returnTime,       //返回时间
+                    aLng:releaseData.fabuarData.location.lng.toFixed(6),				//目的地经度
+                    aLat:releaseData.fabuarData.location.lat.toFixed(6),				//目的地纬度
+                    departureTime:$("#dt-a-0").attr("data-val"),	    //出发时间
+                    returnTime:$("#dt-c-1").attr("data-val"),       //返回时间
                     useType:releaseData.useType,			//包车方式
                     carType:releaseData.carType,		//车辆类型
                     contact:releaseData.contact,			//联系人
-                    contactNumber:releaseData.contact,	    //联系人电话
+                    contactNumber:releaseData.contactNumber,	    //联系人电话
                     remark:$("#textarea").val(),			    //备注
                 },
                 success:function(result){
                     console.log("添加成功的数据",result);
+                    // 要阻止他提交多次
+
+                    if(result.result>0){
+                        showMessage1btn("提交成功!","",0);
+                        setTimeout(function(){
+                           window.location.hash = "#bus";
+                        },500);
+                    }
                 },
                 error:function(result){
                     console.log("添加失败",result);
+                    showMessage1btn("网络出错,请重试!","",0);
                 }
             })
         }
     }
-// 介绍页面初始化数据
-    var newPageData = {
-        uid:0,   // 用户的uid
-        phone:0,    //  电话
-        openid:0,   //  openid
-        
-    }
+
 // 发布信息数据 
     var releaseData = {
         uid:0,				 //用户id
@@ -558,7 +801,7 @@ $(function(){
         departureTime:0,	    //出发时间
         returnTime:0,       //返回时间
         useType:"单程",			//包车方式
-        carType:"舒适型",		//车辆类型
+        carType:1,		//车辆类型
         contact:"",			//联系人
         contactNumber:0,	    //联系人电话
         remark:"",			    //备注
@@ -577,6 +820,8 @@ $(function(){
         busMap:"",   // 存储busmap的值
         template:{
             address:'<div id="address-addselect" class="addselect clearfix"><span class="addselect-left iconfont iconzhifeiji1"></span><div class="addselect-right clearfix"><span class="addselect-rtone" id="address-rtone"></span><span class="addselect-rttwo" id="address-rttwo"></span></div></div>',
+            myorder:'<div id="myorder-od" class="tjorder clearfix"><a id="myorder-odahref" style="display:block;width:100%;height:100%;"><div class="tjorder-hd clearfix"> <div class="tjorder-hdleft clearfix"><span class="tjorder-hdlefticon iconfont iconkeche"></span><span id="myorder-oddistance"  class="tjorder-hdleftnr">市内</span></div><p id="myorder-odstatus" class="tjorder-hdright">出票成功</p></div><div  class="tjorder-ct clearfix"><span  id="myorder-oddpcity" class="tjorder-ctleft">常州总站(常州市)</span><span class="tjorder-ctcenter">-</span><span  id="myorder-odarcity"  class="tjorder-ctright">南京南站(南京市)</span></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">出发时间:</span><span id="myorder-oddptime" class="tjorder-datelefttime">2月2日 12:00</span></div><div class="tjorder-dateright clearfix"><span class="tjorder-daterighticon iconfont iconrenminbi1688"></span><span id="myorder-odprice" class="tjorder-daterightmoney">113</span></div></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">返程时间:</span><span id="myorder-odartime" class="tjorder-datelefttime">无返程</span></div></div><div id="myorder-odbutton" class="tjorder-button clearfix"><span class="tjorder-submitbutton">确认订单</span><span class="tjorder-submitbutton">取消订单</span></div></a></div>',
+            selectcar:'<div id="selectcar-car" class="selectcar-carimg clearfix"><div id="selectcar-id" style="display: none;"></div><span id="selectcar-carspan" class="iconfont icondui"></span><img id="selectcar-img" src=""><p id="selectcar-name"></p></div>',
         }
     }
 // 页面ajax的几个地方
@@ -717,7 +962,6 @@ $(function(){
                     if(status=='complete'){
                         container.onsuccess(result);
                     }else{
-                        onError(result);
                         console.log("定位失败",result);
                     }
                 });
@@ -917,13 +1161,4 @@ $(function(){
         var optSDateTime_0 = $.extend(opt['sdatetime'], opt['sdtdefault_0']);
         $("#dt-a-0").mobiscroll().datetime(optSDateTime_0);  
         $("#dt-c-1").mobiscroll().datetime(optSDateTime_0); 
-    }
-
-// 发布的操作
-    var busSubmit = {
-        buttonSubmit:function(){
-            // 获取时间
-            $("#dt-a-0").data("val");
-            $("#dt-c-1").data("val");
-        }
     }

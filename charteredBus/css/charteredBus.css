@@ -915,3 +915,92 @@
     #selectcar-carone #selectcar-carspanone{
         color:rgb(0, 141, 255);
     }
+/* 我的订单筛选的样式 */
+    .myorder-select{
+        border-top: 1px solid #f2f2f2;
+        position: absolute;
+        top: 42px;
+        left: 0px;
+        width: 100%;
+        background: #ffff;
+        border-bottom: 1px solid #f2f2f2;
+    }
+    .myorder-select  .myorder-sttop{
+
+    }
+    .myorder-select  .myorder-sttop .myorder-sttopdiv{
+        width: 20%;
+        float: left;
+        display: inline-block;
+        text-align: center;
+        font-size: 12px;
+    }
+    .myorder-select  .myorder-sttop .myorder-sttopspan{
+
+    }
+    .myorder-select  .myorder-sttop .myorder-sttopxian{
+        float: right;
+        width: 0px;
+        border: 1px solid #f2f2f2;
+        height: 20px;
+        margin-top: 8px;
+        border-top: none;
+        border-bottom: none;
+    }
+    /* 下部 */
+    .myorder-select  .myorder-stbottom{
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid #f2f2f2;
+        font-size: 14px;
+    }
+    .myorder-select  .myorder-stbottom .myorder-stbtdiv{
+        width: 13%;
+        float: left;
+        display: inline-block;
+        text-align: center;
+        font-size: 12px;
+    }
+    .myorder-select  .myorder-stbottom .myorder-stbtspan{
+
+    }
+    .myorder-select  .myorder-stbottom .myorder-stbtspanxian{
+        float: right;
+        width: 0px;
+        border: 1px solid #f2f2f2;
+        height: 20px;
+        margin-top: 8px;
+        border-top: none;
+        border-bottom: none;
+    }
+    .myorder-select  .myorder-stbutton{
+        width: 100%;
+        text-align: center;
+        display: block;
+        font-size: 16px;
+        height: 36px;
+        line-height: 36px;
+    }
+/* 详情页的设置 */
+    .details .details-header{
+        background: #fff;
+        line-height: 42px;
+        height: 42px;
+        font-size: 18px;
+    }
+    .details .details-header .details-hdleft{
+        display: inline-block;
+        width: 20%;
+        color: #257ddc;
+        font-size: 18px;
+        font-weight: bolder;
+        text-align: center;
+        float: left;
+    }
+    .details .details-header .details-hdright{
+        float: left;
+        width: 60%;
+        text-align: center;
+    }
+    /* 支付的设置 */
+    
