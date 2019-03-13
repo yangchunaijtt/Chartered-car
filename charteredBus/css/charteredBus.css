@@ -1004,36 +1004,151 @@
     }
     /* 支付的设置 */
     .details .details-center{
-
+        background: #fff;
+        border-top:1px solid #f2f2f2;
     }
     .details .details-center .details-ctleft{
-
+        line-height: 32px;
+        text-indent: 16px;
+        font-size: 15px;
+        color: #1e79bd;
+        width: 20%;
     }
     .details .details-center .details-ctright{
-
+        width: 80%;
+        display: inline-block;
+        line-height: 26px;
+        font-size: 13px;
+        text-indent: 20px;
     }
     .details .details-center .details-ctrightje{
-
+        display: block;
     }
     .details .details-center .details-ctrighttime{
-
+        display: block;
     }
     .details .details-center .details-ctrightdh{
-
+        display: block;
     }
     /* footer部分 */
-    .details .details-center{
+    .details .details-footer {
+        background: #fff;
+    }
+    .details .details-footer .details-ftdadiv{
+        background: #fff;
+        border-top: 1px solid #f2f2f2;
+        height: 53px;
+    }
+    .details .details-footer .details-ftdadiv .details-ftleft{
+        line-height: 32px;
+        text-indent: 16px;
+        font-size: 15px;
+        color: #1e79bd;
+        width: 20%;
+    }
+    /* 主要设置 */
+    .details .details-footer .details-ftdadiv .details-ftright{
+        width: 80%;
+        display: inline-block;
+        line-height: 26px;
+        font-size: 13px;
+    }
+    .details .details-footer .details-ftdadiv .details-ftright .details-ftrttop{
 
     }
-    .details .details-center{
+    .details .details-footer .details-ftdadiv .details-ftright .details-ftrttop .details-ftrttopspan{
+        float: left;
+        width: 60%;
+        display: inline-block;
+        text-indent: 20px;
+    }
+    .details .details-footer .details-ftdadiv .details-ftright .details-ftrttop .details-ftrttopbutton{
+        float: left;
+        width: 40%;
+        display: inline-block;
+        text-align: center;
+        text-indent: 0px;
+        color: #0043ff;
+    }
+    
+    .details .details-footer .details-ftdadiv .details-ftright .details-ftrtbottom {
 
     }
-    .details .details-center{
-
+    .details .details-footer .details-ftdadiv .details-ftright .details-ftrtbottom .details-ftrtbttop{
+        float: left;
+        width: 60%;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-indent: 20px;
     }
-    .details .details-center{
-
+    .details .details-footer .details-ftdadiv .details-ftright .details-ftrtbottom .details-ftrtbtcity{
+        float: left;
+        width: 40%;
+        display: inline-block;
+        text-align: center;
+        text-indent: 0px;
     }
-    .details .details-center{
-
+    /* 车的信息 */
+    .details-car{
+        background: #fff;
+        border-top: 1px solid #f2f2f2;
     }
+    .details-car .details-carleft{
+        width: 20%;
+        display: inline-block;
+    }
+    /* 主要内容 */
+    .details-car .details-carright{
+        display: inline-block;
+        line-height: 26px;
+        font-size: 13px;
+        text-indent: 20px;
+        width: 80%;
+    }
+    .details-car .details-carright .details-carrtdiv{
+        display: block;
+    }
+    .details-car .details-carright .details-carrtdiv .details-caricon{
+        font-size: 14px;
+        display: inline-block;
+        text-align: center;
+        width: 20px;
+        float: left;
+    }
+    .details-car .details-carright .details-carrtdiv .details-carspan{
+        
+    }
+    /* 留言*/
+    .details-macker{
+        background: #fff;
+        border-top: 1px solid #f2f2f2;
+        width: 20%;
+        float: left;
+    }
+    .details-macker .details-mackerleft{
+        line-height: 32px;
+        text-indent: 16px;
+        font-size: 15px;
+        color: #1e79bd;
+        width: 20%;
+        
+    }
+    .details-macker .details-mackerright{
+        float: right;
+        width: 80%;
+        font-size: 12px;
+        line-height: 32px;
+        text-indent: 20px;
+    }
+    /* 单程什么的 */
+    .details-biaoti{
+        line-height: 50px;
+        font-size: 16px;
+        text-indent: 26px;
+        color: #2a2aaf;
+    }
+    
+     
+

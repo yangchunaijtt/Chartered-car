@@ -459,9 +459,7 @@ $(function(){
         newPage:function(){
             var hash = window.location.hash;
             var hashone =  hash.split("?");
-            var hashval = hashone[0]; // 用来判断路由
             var hashzhi = hashone[1]; // 用来取数据   uid=3&id=2
-            console.log("路由值",hashzhi);  
             var hashtwo = hashzhi.split("&");   //  uid= 3  id=2
             var uida = hashtwo[0].split("=");   
             var ida  = hashtwo[1].split("=");
@@ -474,11 +472,72 @@ $(function(){
                 },
                 success:function(data){
                     console.log("详情页获取成功的数据",data);
+                    if(data.result>0){
+                        details.detailsData = data.obj;
+                        details.renderPage(data.obj);
+                    }
                 },
                 error:function(data){
                     console.log("详情页获取失败的数据",data);
                 }
             })
+        },
+        renderPage:function(val){
+            // 单程？
+                if(val.useType==="Return"){
+                    $("#details-reType").text("往返");
+                    $("#details-artime").text(val.returnTime);
+                }else {
+                    $("#details-reType").text("单程");
+                    $("#details-artime").text("无返程");
+                }
+            // 支付
+            if(val.payPrice===null|| val.payPrice===""){
+                $("#details-price").hide();
+            }else {
+                // 进行渲染
+                $("#details-priceje").text(val.payPrice+"(已支付金额)");
+                $("#details-pricetime").text(val.payDate);
+                $("#details-pricedh").text(val.price+"(价格")
+                // 存在数据则渲染
+                $("#details-price").show();
+            }
+            // 退款
+            if (val.refundPrice==null || val.refundPrice=="" ) {
+                $("#details-refund").hide();
+            }else {
+                $("#details-refundje").text(val.refundPrice+"(退款金额)");
+                $("#details-refundtime").text(val.refundDate);
+                $("#details-refunddh").text(val.refundNo+"(单号)");
+
+                $("#details-refund").show();
+            } 
+            // 位置信息
+            $("#details-dptime").text(val.departureTime);
+            $("#details-dpname").text(val.departure);
+            $("#details-dpcity").text(val.dpCity);
+
+            $("#details-arname").text(val.arrival);
+            $("#details-arcity").text(val.arCity);
+            // 车的信息
+            $("#details-carperson").text(val.carInfo.pseats);
+            $("#details-cardx").text(val.carInfo.trunks);
+            $("#details-carname").text(val.carInfo.name);
+            var details_img = "";
+            if (val.carInfo.name==="舒适型") {
+                details_img = "./charteredBus/img/buscarone.png";
+            }else if (val.carInfo.name ==="商务型"){
+                details_img = "./charteredBus/img/buscarfour.png";
+            }else if (val.carInfo.name ==="11座小巴"){
+                details_img = "./charteredBus/img/buscarthree.png";
+            }else if (val.carInfo.name ==="19座中巴"){
+                details_img = "./charteredBus/img/buscarthree.png";
+            }else {
+                details_img = "./charteredBus/img/buscartwo.png";
+            }
+            $("#details-carname").attr("src",details_img);
+            // 留言信息
+            $("#details-mackera").text(val.remark);
         }
     }
 // 首页操作的函数

@@ -189,81 +189,83 @@
         <div class="details-button clearfix" style="display: none;">
             <!-- 添加按钮的地方 -->
         </div>
+        <div class="details-biaoti clearfix">
+            <span id="details-reType">单程</span>
+        </div>
         <!-- 支付信息 -->
         <!-- 要根据状态来改变 -->
-        <div class="details-center clearfix" id="details-price">
+        <div class="details-center clearfix" id="details-price" style="display: none;">
             <span class="details-ctleft left">支付</span>
             <div class="details-ctright right clearfix">
-                <span id="details-priceje" class="details-ctrightje">199.33(金额)</span>
-                <span id="details-pricetime" class="details-ctrighttime">2019-03-12 16:03:30</span>
-                <span id="details-pricedh" class="details-ctrightdh">CAO211241223651(支付单号)</span>
+                <span id="details-priceje" class="details-ctrightje"></span>
+                <span id="details-pricetime" class="details-ctrighttime"></span>
+                <span id="details-pricedh" class="details-ctrightdh"></span>
             </div>
         </div>
         <!-- 有没退款，有退款则显示 -->
-        <div class="details-center  clearfix" id="details-refund">
+        <div class="details-center  clearfix" id="details-refund" style="display: none;">
             <span class="details-ctleft left">退款</span>
-            <div class="details-refundright right clearfix">
-                <span id="details-refundje" class="details-ctrightje">199.33(金额)</span>
-                <span id="details-refundtime" class="details-ctrighttime">2019-03-12 16:03:30</span>
-                <span id="details-refunddh" class="details-ctrightdh">CAO211241223651(退款单号)</span>
+            <div class="details-ctright right clearfix">
+                <span id="details-refundje" class="details-ctrightje"></span>
+                <span id="details-refundtime" class="details-ctrighttime"></span>
+                <span id="details-refunddh" class="details-ctrightdh"></span>
             </div>
         </div>
         <!-- 内容区，存储内容的地方 -->
         <div class="details-footer clearfix">
-            <span>单程</span>
             <!-- 位置 -->
-            <div class="cearfix">
-                <div class="left clearfix">
+            <div class="details-ftdadiv cearfix">
+                <div class="details-ftleft left clearfix">
                     出发地
                 </div>
-                <div class="right clearfix">
-                    <div class="clearfix">
-                        <span>2019-12-13 23:30:00</span>
-                        <span>点击查看位置</span>
+                <div class="details-ftright right clearfix">
+                    <div class="details-ftrttop clearfix">
+                        <span id="details-dptime" class="details-ftrttopspan"></span>
+                        <span class="details-ftrttopbutton">点击查看位置</span>
                     </div>
-                    <div class="clearfix">
-                        <span>常州汽车客运总站(北广场)(公交站)</span>
-                        <span>常州市</span>
+                    <div class="details-ftrtbottom clearfix">
+                        <span id="details-dpname" class="details-ftrtbttop"></span>
+                        <span  id="details-dpcity" class="details-ftrtbtcity"></span>
                     </div>
                 </div>
             </div>
-            <div class="cearfix">
-                <div class="left clearfix">
+            <div class="details-ftdadiv cearfix">
+                <div class="details-ftleft left clearfix">
                         目的地
                 </div>
-                <div class="right clearfix">
-                    <div class="clearfix">
-                        <span>无返程</span>
-                        <span>点击查看位置</span>
+                <div class="details-ftright right clearfix">
+                    <div class="details-ftrttop clearfix">
+                        <span  id="details-artime"  class="details-ftrttopspan"></span>
+                        <span class="details-ftrttopbutton"></span>
                     </div>
-                    <div class="clearfix">
-                        <span>常州汽车客运总站(北广场)(公交站)</span>
-                        <span>常州市</span>
-                    </div>
-                </div>
-            </div>
-            <!-- 车信息 -->
-            <div class="clearfix">
-                <img class="left" src="./charteredBus/img/buscarfour.png">
-                <div class="right clearfix">
-                    <span>舒适型</span>
-                    <div class="cleafix">
-                        <span class="iconfont iconren1"></span>
-                        <span class="iconfont iconcheng"></span>
-                        <span>4</span>
-                    </div>
-                    <div class="cleafix">
-                        <span class="iconfont icon1"></span>
-                        <span class="iconfont iconcheng"></span>
-                        <span>2</span>
+                    <div class="details-ftrtbottom clearfix">
+                        <span  id="details-arname"  class="details-ftrtbttop"></span>
+                        <span  id="details-arcity"   class="details-ftrtbtcity"></span>
                     </div>
                 </div>
             </div>
-            <!-- 留言信息 -->
-            <div class="clearfix">
-                <span>备注</span>
-                <span>发的三个三个大使馆</span>
-            </div>
+        </div>
+        <!-- 车信息 -->
+        <div class="details-car clearfix">
+                <img id="details-carimg" class="details-carleft left" src="">
+                <div class="details-carright right clearfix">
+                    <span id="details-carname" class="details-carrtdiv"></span>
+                    <div class="details-carrtdiv cleafix">
+                        <span class="details-caricon iconfont iconren1"></span>
+                        <span class="details-caricon iconfont iconcheng"></span>
+                        <span id="details-carperson"  class="details-carspan"></span>
+                    </div>
+                    <div class="details-carrtdiv cleafix">
+                        <span class="details-caricon iconfont icon1"></span>
+                        <span class="details-caricon iconfont iconcheng"></span>
+                        <span id="details-cardx" class="details-carspan"></span>
+                    </div>
+                </div>
+        </div>
+        <!-- 留言信息 -->
+        <div class="details-macker clearfix">
+            <span class="details-mackerleft">备注</span>
+            <span class="details-mackerright" id="details-mackera"></span>
         </div>
     </div>
     <!-- 地图页 -->
