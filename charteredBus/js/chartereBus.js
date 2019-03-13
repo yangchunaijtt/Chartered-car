@@ -5,6 +5,11 @@ var newPageData = {
     openid:0,   //  openid
     
 }
+   // 禁用效果 
+   $(document.body).css({
+    "overflow-x":"hidden",
+    "overflow-y":"hidden"
+    });
 getOpenid(function(openid){
     newPageData.uid = localCache("uid-kongbatong");
     newPageData.openid = localCache("openid-kongbatong");
@@ -278,19 +283,15 @@ $(function(){
     // 看出发的位置
     $("#details-clicklookdp").bind("touch click",function(){
         // 设置地图页的样式
-        $(".busMap-city").hide();//隐藏
-        $(".busMap-dz").hide();
-        window.location.hash ="#busMap";
-        var result =  {P:parseFloat(details.detailsData.aLat),R:parseFloat(details.detailsData.aLng),lat:parseFloat(details.detailsData.aLat),lng:parseFloat(details.detailsData.aLng)};
+        window.location.hash ="#busMap?xq";
+        var result =  {P:parseFloat(details.detailsData.dLat),R:parseFloat(details.detailsData.dLng),lat:parseFloat(details.detailsData.dLat),lng:parseFloat(details.detailsData.dLng)};
         container.onclick(result);
     })
     // 看到达的位置
     $("#details-clicklookar").bind('touch click',function(){
         // 设置地图页的样式
-        $(".busMap-city").hide();//隐藏
-        $(".busMap-dz").hide();
         window.location.hash ="#busMap";
-        var result =  {P:parseFloat(details.detailsData.dLat),R:parseFloat(details.detailsData.dLng),lat:parseFloat(details.detailsData.dLat),lng:parseFloat(details.detailsData.dLng)};
+        var result =  {P:parseFloat(details.detailsData.aLat),R:parseFloat(details.detailsData.aLng),lat:parseFloat(details.detailsData.aLat),lng:parseFloat(details.detailsData.aLng)};
         container.onclick(result);
     })
 // 定位
@@ -341,14 +342,20 @@ $(function(){
             details.newPage();
             $(".details").show();
         }else if ( hashval ==="#busMap" ){
-            $(".busMap-city").show();//显示
-            $(".busMap-dz").show();
-
-            obtainData.busMap = hashzhi;
-            if(hashzhi==="dpcity"){
+            if(hashzhi==="xq"){
+                $(".busMap-hdright").text("查看位置");
+                $(".busMap-city").hide();//显示
+                $(".busMap-dz").hide();
+            }else if(hashzhi==="dpcity"){
+                obtainData.busMap = hashzhi;
                 $(".busMap-hdright").text("选择起点");
+                $(".busMap-city").show();//显示
+                $(".busMap-dz").show();
             }else if (hashzhi==="arcity") {
+                obtainData.busMap = hashzhi;
                 $(".busMap-hdright").text("选择目的地");
+                $(".busMap-city").show();//显示
+                $(".busMap-dz").show();
             }
             hashcsh();
             $(".busMap").show();
@@ -670,8 +677,6 @@ $(function(){
             // 赋值最大页数 
             runvownerval.loadcount = data.page;
             runvownerval.page = runvownerval.page+1;
-                // 调用处理全部车主页的函数 
-                setqbVowneraa(data);
                 if( data.result>0){
                     for(var i = 0;i<data.obj.coList.length;i++){
                         $("#idmyorder").append(obtainData.template.myorder);
@@ -1268,6 +1273,10 @@ $(function(){
             }
         },
         onclick:function(result){   //用于画maker，并聚焦用。
+
+            // 先清除macker，在画macker
+            
+
             console.log(result);
             // 第一步
             document.getElementById('lnglat').value = result;
@@ -1322,6 +1331,8 @@ $(function(){
         center:[117.000923,36.675807],
         zoom:11
     });
+
+
 // 城市选择页操作
     var searchcity = {
         returnPage:function(){
