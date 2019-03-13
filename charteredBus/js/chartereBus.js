@@ -30,6 +30,8 @@ getOpenid(function(openid){
 $(function(){
    
 // 设置高度
+    // 首页大小
+    $(".bus").height(window.screen.height);
     // 提交订单页设置高度
     $(".selectcar").height($(document.body).height());
     // 地图页大小
@@ -290,7 +292,7 @@ $(function(){
     // 看到达的位置
     $("#details-clicklookar").bind('touch click',function(){
         // 设置地图页的样式
-        window.location.hash ="#busMap";
+        window.location.hash ="#busMap?xq";
         var result =  {P:parseFloat(details.detailsData.aLat),R:parseFloat(details.detailsData.aLng),lat:parseFloat(details.detailsData.aLat),lng:parseFloat(details.detailsData.aLng)};
         container.onclick(result);
     })
@@ -1273,9 +1275,7 @@ $(function(){
             }
         },
         onclick:function(result){   //用于画maker，并聚焦用。
-
-            // 先清除macker，在画macker
-            
+            // 先清除所有macker，在画macker
 
             console.log(result);
             // 第一步

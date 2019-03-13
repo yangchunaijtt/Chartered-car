@@ -981,6 +981,8 @@
         font-size: 16px;
         height: 36px;
         line-height: 36px;
+        background: #64b0f2;
+        color: #fff;
     }
 /* 详情页的设置 */
     .details .details-header{
