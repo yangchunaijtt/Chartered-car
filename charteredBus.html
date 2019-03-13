@@ -182,7 +182,7 @@
     <div class="details clearfix" style="display: none;">
         <!-- 头部内容 -->
         <div class="details-header">
-            <span class="details-hdleft iconfont iconfanhui1"></span>
+            <span id="details-return" class="details-hdleft iconfont iconfanhui1"></span>
             <span class="details-hdright">订单详情</span>
         </div>
         <!-- 按钮部分内容 暂时不需要-->
@@ -221,7 +221,7 @@
                 <div class="details-ftright right clearfix">
                     <div class="details-ftrttop clearfix">
                         <span id="details-dptime" class="details-ftrttopspan"></span>
-                        <span class="details-ftrttopbutton">点击查看位置</span>
+                        <span id="details-clicklookdp" class="details-ftrttopbutton">点击查看位置</span>
                     </div>
                     <div class="details-ftrtbottom clearfix">
                         <span id="details-dpname" class="details-ftrtbttop"></span>
@@ -236,7 +236,7 @@
                 <div class="details-ftright right clearfix">
                     <div class="details-ftrttop clearfix">
                         <span  id="details-artime"  class="details-ftrttopspan"></span>
-                        <span class="details-ftrttopbutton"></span>
+                        <span id="details-clicklookar"  class="details-ftrttopbutton">点击看位置</span>
                     </div>
                     <div class="details-ftrtbottom clearfix">
                         <span  id="details-arname"  class="details-ftrtbttop"></span>
@@ -377,6 +377,11 @@
         <div class="clearfix" id="idmyorder">
             
         </div>
+        <div class="runvownerNode-load-status">
+            <p class="infinite-scroll-request jzxsjgaa"  style="display:none">稍等...</p>
+            <p class="infinite-scroll-last jzxsjgaa" style="display:none">加载内容结束</p>
+            <p class="infinite-scroll-error jzxsjgaa" style="display:none">没有数据加载页面了！去其他地方逛逛吧！</p>
+        </div>
     </div>
     <!-- 城市选择页 -->
     <div id="searchcity" class="clearfix"  style="display:none;">
@@ -507,6 +512,8 @@
     <script src="js/mobiscroll.android-ics-2.5.2.js"></script>
     <!-- 秒支付button的使用 -->
     <script id='spay-script' src='https://jspay.beecloud.cn/1/pay/jsbutton/returnscripts?appId=dbf34cab-2454-4f97-88f0-0a7e34aa426e'></script>
+    <!-- 无限滚动插件的使用 -->
+    <script src="js/infinite-scroll.pkgd.min.js"></script>
     <!-- 转换md5引入的文件 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
     <!-- 自己定义的js -->

@@ -18,16 +18,30 @@ getOpenid(function(openid){
         myorder.myorderPage("","","");
         // 获取车辆类型
         selectcar.cartype();
+        // 我的订单页绑定无限滚动效果
+        hdrunvowner();
     }
 },location.search);
 $(function(){
    
-    // 设置高度
+// 设置高度
     // 提交订单页设置高度
     $(".selectcar").height($(document.body).height());
     // 地图页大小
     $(".busMap").height(window.screen.height);
     $("#container").height(window.screen.height-42);
+    //我的订单
+    //全部行程页 车主页的高度 
+    $(".myorder").height($(document.body).height());
+    // 详情页
+    $(".details").height($(document.body).height());
+    // 选车页
+    $(".selectcar").height($(document.body).height());
+    // 重要信息提示页
+    $(".careful").height($(document.body).height());
+    //城市具体地址选择页
+    $(".address").height($(document.body).height());
+    
 // 初始化调用的函数
     setTimeWheel();
 //首页绑定事件
@@ -256,6 +270,29 @@ $(function(){
         $("#myorder-selectdiv").slideUp();
         myorder.myorderScreen();
     })
+// 订单详情页的操作
+    $("#details-return").bind("touch click",function(){
+        window.location.hash =  "#myorder";
+    })
+    // 看位置操作
+    // 看出发的位置
+    $("#details-clicklookdp").bind("touch click",function(){
+        // 设置地图页的样式
+        $(".busMap-city").hide();//隐藏
+        $(".busMap-dz").hide();
+        window.location.hash ="#busMap";
+        var result =  {P:parseFloat(details.detailsData.aLat),R:parseFloat(details.detailsData.aLng),lat:parseFloat(details.detailsData.aLat),lng:parseFloat(details.detailsData.aLng)};
+        container.onclick(result);
+    })
+    // 看到达的位置
+    $("#details-clicklookar").bind('touch click',function(){
+        // 设置地图页的样式
+        $(".busMap-city").hide();//隐藏
+        $(".busMap-dz").hide();
+        window.location.hash ="#busMap";
+        var result =  {P:parseFloat(details.detailsData.dLat),R:parseFloat(details.detailsData.dLng),lat:parseFloat(details.detailsData.dLat),lng:parseFloat(details.detailsData.dLng)};
+        container.onclick(result);
+    })
 // 定位
     container.dwlocationg();
 // 监控路由
@@ -304,6 +341,9 @@ $(function(){
             details.newPage();
             $(".details").show();
         }else if ( hashval ==="#busMap" ){
+            $(".busMap-city").show();//显示
+            $(".busMap-dz").show();
+
             obtainData.busMap = hashzhi;
             if(hashzhi==="dpcity"){
                 $(".busMap-hdright").text("选择起点");
@@ -377,20 +417,41 @@ $(function(){
             var myorder_od = "myorder-od"+i;
             $("#myorder-od").attr("id",myorder_od);
             // 状态（-2:待退款；-1:取消；0：下单；1：完成；2：待付款）
+            $("#myorder-odbutton").empty();
             // 结果，还要添加什么按钮
             var odstatus = "";
             if(val.status===-2){
-                odstatus = "待退款";
+                odstatus = "已退款";
+                $("#myorder-odbutton").append('<span class="tjorder-myorderts">如有疑问请拨打客服电话</span>');
             }else if (val.status===-1){
                 odstatus = "已取消";
+                $("#myorder-odbutton").append('<span class="tjorder-myorderts">如需包车,请重新下单!</span>');
             }else if (val.status===0){
-                odstatus = "已下单";
+                odstatus = "已下单";        
+                // 以下单的话，有个取消按钮，其他没有
+                $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
+                $("#myorder-ddcancel").bind("touch click",function(){
+                    myorder.myorderqx(val.uid,val.uid);
+                })
             }else if (val.status===1){
                 odstatus = "已完成";
+                $("#myorder-odbutton").append('<span class="tjorder-myorderts">欢迎您再次使用!</span>');
             }else if (val.status===2){
+                // 待付款下，有个取消的按钮和支付的按钮
                 odstatus = "待付款";
+                $("#myorder-odbutton").append('<span id="myorder-qrpaymonney" class="tjorder-submitbutton">确认支付</span><span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
+                $("#myorder-ddcancel").bind("touch click",function(){
+                    myorder.myorderqx(val.uid,val.id);
+                })
+                $("#myorder-qrpaymonney").bind("touch click",function(){
+                    paymentModule.payMoney(parseFloat(val.price),val.uid,val.id);
+                })
             }
+            var myorder_odbutton = "myorder-odbutton"+i;
+            $("#myorder-odbutton").attr("id",myorder_odbutton);
+
             $("#myorder-odstatus").text(odstatus);
+
             var myorder_odstatus = "myorder-odstatus"+i;
             $("#myorder-odstatus").attr("id",myorder_odstatus);
             // 城际市内
@@ -421,7 +482,7 @@ $(function(){
             $("#myorder-odartime").attr("id",myorder_odartime);
             // 价格
             if(val.price == null || val.price == ""){
-                $("#myorder-odprice").text("无");
+                $("#myorder-odprice").text("待确认");
             }else {
                 $("#myorder-odprice").text(val.price);
             }
@@ -451,7 +512,173 @@ $(function(){
                 $("#myorder-stsqb").css("color","#555");
             }
             $(divname).css("color","red");
+        },
+        myorderqx:function(uid,id){ //  取消的操作
+            console.log("取消",uid,id);
+            $.ajax({
+                type:"post",
+                url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/cancelChaOrder.asp",
+                data:{
+                    uid:uid,
+                    id:id
+                },
+                success:function(data){
+                    console.log("取消成功",data);
+                    // 成功后，要调用下页面渲染的数据，再次渲染一下
+                    if (data.result>0) {
+                        showMessage1btn("取消成功!","",0);
+                        myorder.myorderPage("","","");
+                    }
+                },
+                error:function(data){
+                    console.log("取消失败",data);
+                    showMessage1btn("网络出错，请重试!","",0);
+                }
+            })
         }
+    }
+ // 支付模块
+ var  paymentModule = {
+    paymentbttsj:{
+        title:"",
+        amount:0,
+        billno: "FRO",   // 生成订单号 
+        instant_channel:"wx", // 订单支付形式 
+        openid:{},  // openid的存储 
+        usource:"Wx_Kbt",   // 用户的来源 
+        FROID:111     // 发布单号，取当前信息的id值 
+    },
+    payMoney:function(moneyVal,valuid,valid){  // 只有乘客报名车主的行程才需要付钱 
+        // valuid,valid  uid值和id值   valForid：支付单号
+        console.log(moneyVal,valuid,valid)
+       var paymentbttsj =  paymentModule.paymentbttsj;
+        paymentbttsj.title = "包车付款";
+        var bSign = "";
+        var rand = "";
+        for(var i = 0; i < 3; i++){
+            var r = Math.floor(Math.random() * 10);
+            rand += r;
+        }
+        // 生成时间戳 "yyyyMMddhhmmss" 格式
+        function pad2(n) { return n < 10 ? '0' + n : n };
+        function generateTimeReqestNumber() {
+            var date = new Date();
+            return date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds());
+        }
+
+        var sjc = generateTimeReqestNumber();
+        paymentbttsj.billno = "CAO";
+        paymentbttsj.billno = paymentbttsj.billno + sjc + rand;
+        // 这里调用后那个 函数，发布单号，接受单号后，后面再继续
+        // 向后台请求 id 
+                var paymentbttsj =  paymentModule.paymentbttsj;
+                    // 参数
+                paymentbttsj.amount   = moneyVal*100;
+                var param = {"title" : paymentbttsj.title,"amount" : paymentbttsj.amount,"outtradeno" : paymentbttsj.billno};
+                // 地址
+                var url = "../../../common/getBSign-kongbatong.asp";
+                // sfcsj.passenger 存储着用户的信息 
+                paymentbttsj.openid = {
+                    uid:valuid,
+                    phone:newPageData.phone,
+                    usource:paymentbttsj.usource
+                };
+                console.log(param);
+                $.post(url,param,function(data){
+
+                    if (!((typeof (data) == 'object') && data.constructor == Object)) {
+                        data = eval("(" + data + ")");
+                    }
+                    if(data.BSign) {
+                        bSign = data.BSign;
+                    BC.err = function(data) {
+                        console.log(data);
+                        //注册错误信息接受
+                        showMessage1btn(data["ERROR"],"",0);
+                    }
+                    console.log("aaaa",bSign,"aaaa",newPageData.openid,"aaaa",paymentbttsj.openid);
+                BC.click({
+                    "instant_channel" : paymentbttsj.instant_channel,
+                    "debug" : true,
+                    "need_ali_guide" : true,
+                    "use_app" : true,
+                    "title" : paymentbttsj.title, //商品名
+                    "amount" : moneyVal*100,  //总价（分）
+                    "out_trade_no" : paymentbttsj.billno, //自定义订单号
+                    "sign" : bSign, //商品信息hash值，含义和生成方式见下文
+                    "openid" : newPageData.openid,
+                    "optional" : paymentbttsj.openid //可选，自定义webhook的optional回调参数
+                },
+                {
+                    wxJsapiFinish : function(res) {
+                        switch(res.err_msg){
+                            case "get_brand_wcpay_request:ok":
+                                showMessage1btn("支付成功","",0);
+                                // 支付成功后，要刷新下页面
+
+                                break;
+                            case "get_brand_wcpay_request:fail":
+                                showMessage1btn("系统出错，请联系我们！","Back()",0);
+                                break;
+                            case "get_brand_wcpay_request:cancel":
+                                showMessage1btn("已取消支付！","Back()",0);
+                                // 取消支付
+
+                                break;
+                            }
+                        }
+                        });
+                        BC.err = function(err) {
+                            //err 为object, 例 ｛”ERROR“ : "xxxx"｝;
+                            showMessage1btn(err.ERROR,"",0);
+                        }
+                    }else{
+                        showMessage1btn("后台参数错误！","",0);
+                    }                                           
+                        // 删除dialog
+                        clearDialog();
+                    },"json")
+        }
+    }
+// 我的订单的无限滚动效果
+    var runvownerval = {
+        page:2,    // 当前页，用于向页面发送请求的页码参数 第一次发送的为2 
+        loadcount:3  // 页面展示的为第几页的数据 
+    }
+    function hdrunvowner(){
+        var uid = newPageData.uid;
+        var $runpassengerval = $('#idmyorder').infiniteScroll({     //#content是包含所有图或块的容器
+            path: function(){
+                // 如果用户滑动时，当前页面展示的数据页码小于等于后台的数据页码 
+                // 数据量很小情况下  报错了 
+                if(  runvownerval.page <= runvownerval.loadcount){
+                    // 获取全部时间的行程，失效页没有关系 
+                    return "http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders.asp?cur="+runvownerval.page+"&uid="+uid+"&coid="+"&status="+"&dateRange=";
+                }
+            },
+            history: false,
+            elementScroll:".myorder",
+            scrollThreshold:50,
+            status:".runvownerNode-load-status",
+            responseType:"json",
+            debug:true
+        });
+        $runpassengerval.on( 'load.infiniteScroll', function( event, response ) {
+            var data = response;
+            // 获取成功后，要把页面加1，方便用户在滑动，在触发获取函数
+            // 开始处理结果 
+            // 赋值最大页数 
+            runvownerval.loadcount = data.page;
+            runvownerval.page = runvownerval.page+1;
+                // 调用处理全部车主页的函数 
+                setqbVowneraa(data);
+                if( data.result>0){
+                    for(var i = 0;i<data.obj.coList.length;i++){
+                        $("#idmyorder").append(obtainData.template.myorder);
+                        myorder.myorderRender(i,data.obj.coList[i]);
+                    }
+                }
+        })
     }
 // 详情页的设置
     var details = {
@@ -535,7 +762,7 @@ $(function(){
             }else {
                 details_img = "./charteredBus/img/buscartwo.png";
             }
-            $("#details-carname").attr("src",details_img);
+            $("#details-carimg").attr("src",details_img);
             // 留言信息
             $("#details-mackera").text(val.remark);
         }
@@ -879,7 +1106,7 @@ $(function(){
         busMap:"",   // 存储busmap的值
         template:{
             address:'<div id="address-addselect" class="addselect clearfix"><span class="addselect-left iconfont iconzhifeiji1"></span><div class="addselect-right clearfix"><span class="addselect-rtone" id="address-rtone"></span><span class="addselect-rttwo" id="address-rttwo"></span></div></div>',
-            myorder:'<div id="myorder-od" class="tjorder clearfix"><a id="myorder-odahref" style="display:block;width:100%;height:100%;"><div class="tjorder-hd clearfix"> <div class="tjorder-hdleft clearfix"><span class="tjorder-hdlefticon iconfont iconkeche"></span><span id="myorder-oddistance"  class="tjorder-hdleftnr">市内</span></div><p id="myorder-odstatus" class="tjorder-hdright">出票成功</p></div><div  class="tjorder-ct clearfix"><span  id="myorder-oddpcity" class="tjorder-ctleft">常州总站(常州市)</span><span class="tjorder-ctcenter">-</span><span  id="myorder-odarcity"  class="tjorder-ctright">南京南站(南京市)</span></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">出发时间:</span><span id="myorder-oddptime" class="tjorder-datelefttime">2月2日 12:00</span></div><div class="tjorder-dateright clearfix"><span class="tjorder-daterighticon iconfont iconrenminbi1688"></span><span id="myorder-odprice" class="tjorder-daterightmoney">113</span></div></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">返程时间:</span><span id="myorder-odartime" class="tjorder-datelefttime">无返程</span></div></div><div id="myorder-odbutton" class="tjorder-button clearfix"><span class="tjorder-submitbutton">确认订单</span><span class="tjorder-submitbutton">取消订单</span></div></a></div>',
+            myorder:'<div id="myorder-od" class="tjorder clearfix"><a id="myorder-odahref" style="display:block;width:100%;"><div class="tjorder-hd clearfix"> <div class="tjorder-hdleft clearfix"><span class="tjorder-hdlefticon iconfont iconkeche"></span><span id="myorder-oddistance"  class="tjorder-hdleftnr">市内</span></div><p id="myorder-odstatus" class="tjorder-hdright">出票成功</p></div><div  class="tjorder-ct clearfix"><span  id="myorder-oddpcity" class="tjorder-ctleft">常州总站(常州市)</span><span class="tjorder-ctcenter">-</span><span  id="myorder-odarcity"  class="tjorder-ctright">南京南站(南京市)</span></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">出发时间:</span><span id="myorder-oddptime" class="tjorder-datelefttime">2月2日 12:00</span></div><div class="tjorder-dateright clearfix"><span class="tjorder-daterighticon iconfont iconrenminbi1688"></span><span id="myorder-odprice" class="tjorder-daterightmoney">113</span></div></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">返程时间:</span><span id="myorder-odartime" class="tjorder-datelefttime">无返程</span></div></div></a><div id="myorder-odbutton" class="tjorder-button clearfix"></div></div>',
             selectcar:'<div id="selectcar-car" class="selectcar-carimg clearfix"><div id="selectcar-id" style="display: none;"></div><span id="selectcar-carspan" class="iconfont icondui"></span><img id="selectcar-img" src=""><p id="selectcar-name"></p></div>',
         }
     }
@@ -1000,7 +1227,7 @@ $(function(){
                     window.location.hash = "#busMap?arcity";
                 }
                 var result =  {P:parseFloat(sjval.location.lat),R:parseFloat(sjval.location.lng),lat:parseFloat(sjval.location.P),lng:parseFloat(sjval.location.R)};
-                container.onclick(result,sjval);
+                container.onclick(result);
             }
         }
     }
@@ -1040,7 +1267,7 @@ $(function(){
                 $("#address-city").text(val.addressComponent.city);
             }
         },
-        onclick:function(result,sjval){   //用于画maker，并聚焦用。
+        onclick:function(result){   //用于画maker，并聚焦用。
             console.log(result);
             // 第一步
             document.getElementById('lnglat').value = result;

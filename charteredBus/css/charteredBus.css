@@ -519,13 +519,13 @@
         float:left;
     }   
     .myorder .tjorder-date .tjorder-dateleft .tjorder-dateleftts{
-        width: 40%;
+        width: 34%;
         display: inline-block;
         float: left;
     }
     .myorder .tjorder-date .tjorder-dateleft .tjorder-datelefttime{
         display: inline-block;
-        width: 60%;
+        width: 66%;
         float: left;
     }
     .myorder .tjorder-date .tjorder-dateright{
@@ -1013,6 +1013,7 @@
         font-size: 15px;
         color: #1e79bd;
         width: 20%;
+        margin-top: 10px;
     }
     .details .details-center .details-ctright{
         width: 80%;
@@ -1124,8 +1125,6 @@
     .details-macker{
         background: #fff;
         border-top: 1px solid #f2f2f2;
-        width: 20%;
-        float: left;
     }
     .details-macker .details-mackerleft{
         line-height: 32px;
@@ -1133,7 +1132,7 @@
         font-size: 15px;
         color: #1e79bd;
         width: 20%;
-        
+        float:left;
     }
     .details-macker .details-mackerright{
         float: right;
@@ -1149,6 +1148,35 @@
         text-indent: 26px;
         color: #2a2aaf;
     }
-    
-     
-
+/* 按钮的样式 */
+    .tjorder-myorderts{
+        width:96%;
+        float:left;
+        text-align: right;
+        line-height: 37px;
+    }
+/* 无限滚动的设置 */
+    .myorder {
+        overflow-y: auto;
+    }
+    body{
+        overflow-y:hidden;
+    }
+    .selectcar{
+        overflow-y: auto;
+    }
+    .myorder{
+        overflow-y: auto;
+    }
+    .details{
+        overflow-y: auto;
+    }
+    .selectcar{
+        overflow-y: auto;
+    }
+    .careful{
+        overflow-y: auto;
+    }
+    .address{
+        overflow-y: auto;
+    }
