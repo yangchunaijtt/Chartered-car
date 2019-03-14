@@ -435,7 +435,7 @@ $(function(){
             // 结果，还要添加什么按钮
             var odstatus = "";
             if(val.status===-2){
-                odstatus = "已退款";
+                odstatus = "待退款";
                 $("#myorder-odbutton").append('<span class="tjorder-myorderts">如有疑问请拨打客服电话</span>');
             }else if (val.status===-1){
                 odstatus = "已取消";
@@ -448,8 +448,16 @@ $(function(){
                     myorder.myorderqx(val.uid,val.uid);
                 })
             }else if (val.status===1){
-                odstatus = "已完成";
-                $("#myorder-odbutton").append('<span class="tjorder-myorderts">欢迎您再次使用!</span>');
+                odstatus = "已付款";
+                var khtime = Date.parse(val.departureTime);
+                var jttime =  Date.parse(new Date().toLocaleDateString());
+                console.log("时间比较",khtime,jttime);
+                if (parseInt(khtime) -  parseInt(jttime)  >  86400000){
+                    $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
+                    // 1也可以取消，要判断提前一天没有。
+                }else {
+                    $("#myorder-odbutton").append('<span class="tjorder-myorderts">祝您乘车愉快!</span>');
+                }
             }else if (val.status===2){
                 // 待付款下，有个取消的按钮和支付的按钮
                 odstatus = "待付款";
@@ -458,7 +466,7 @@ $(function(){
                     myorder.myorderqx(val.uid,val.id);
                 })
                 $("#myorder-qrpaymonney").bind("touch click",function(){
-                    paymentModule.payMoney(parseFloat(val.price),val.uid,val.id);
+                    paymentModule.payMoney(parseFloat(val.price),val.uid,val.id,val.OutTradeNo);
                 })
             }
             var myorder_odbutton = "myorder-odbutton"+i;
@@ -539,8 +547,11 @@ $(function(){
                 success:function(data){
                     console.log("取消成功",data);
                     // 成功后，要调用下页面渲染的数据，再次渲染一下
-                    if (data.result>0) {
+                    if (data.result == 1) {
                         showMessage1btn("取消成功!","",0);
+                        myorder.myorderPage("","","");
+                    }else if(data.result == -1) {
+                        showMessage1btn("取消失败,请重试!","",0);
                         myorder.myorderPage("","","");
                     }
                 },
@@ -556,13 +567,13 @@ $(function(){
     paymentbttsj:{
         title:"",
         amount:0,
-        billno: "FRO",   // 生成订单号 
+        billno: "",   // 生成订单号 
         instant_channel:"wx", // 订单支付形式 
         openid:{},  // openid的存储 
         usource:"Wx_Kbt",   // 用户的来源 
         FROID:111     // 发布单号，取当前信息的id值 
     },
-    payMoney:function(moneyVal,valuid,valid){  // 只有乘客报名车主的行程才需要付钱 
+    payMoney:function(moneyVal,valuid,valid,valdingdan){  // 只有乘客报名车主的行程才需要付钱 
         // valuid,valid  uid值和id值   valForid：支付单号
         console.log(moneyVal,valuid,valid)
        var paymentbttsj =  paymentModule.paymentbttsj;
@@ -581,8 +592,9 @@ $(function(){
         }
 
         var sjc = generateTimeReqestNumber();
-        paymentbttsj.billno = "CAO";
-        paymentbttsj.billno = paymentbttsj.billno + sjc + rand;
+
+        paymentbttsj.billno = valdingdan;
+
         // 这里调用后那个 函数，发布单号，接受单号后，后面再继续
         // 向后台请求 id 
                 var paymentbttsj =  paymentModule.paymentbttsj;
@@ -590,7 +602,7 @@ $(function(){
                 paymentbttsj.amount   = moneyVal*100;
                 var param = {"title" : paymentbttsj.title,"amount" : paymentbttsj.amount,"outtradeno" : paymentbttsj.billno};
                 // 地址
-                var url = "../../../common/getBSign-kongbatong.asp";
+                var url = "../../MobileWeb/common/getBSign-kongbatong.asp";
                 // sfcsj.passenger 存储着用户的信息 
                 paymentbttsj.openid = {
                     uid:valuid,
@@ -629,7 +641,7 @@ $(function(){
                             case "get_brand_wcpay_request:ok":
                                 showMessage1btn("支付成功","",0);
                                 // 支付成功后，要刷新下页面
-
+                                myorder.myorderPage("","","");
                                 break;
                             case "get_brand_wcpay_request:fail":
                                 showMessage1btn("系统出错，请联系我们！","Back()",0);
