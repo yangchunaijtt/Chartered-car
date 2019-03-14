@@ -1183,3 +1183,41 @@
     .address{
         overflow-y: auto;
     }
+/* 引入的按钮提示 css样式 */
+.mydiv {
+    background-color: #fff;
+    border: 1px solid #DCDCDC;
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 99;
+    width: 70%;
+    min-height: 120px;
+    left: 15%;
+    top: 40%;
+    margin-top: 0px;
+    position: fixed!important;
+    position: absolute;
+    border-radius: 7px;
+    padding: 10px;
+  }
+  .bg {
+    background-color: #C0C0C0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+    z-index: 1;
+    position: fixed!important;
+    position: absolute;
+  }
+  
+  /* 支付按钮的样式 */
+    .lookpaydan{
+      margin: 0 auto;
+      display: block;
+      margin-top: 10px;
+    }

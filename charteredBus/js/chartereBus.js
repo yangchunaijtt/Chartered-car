@@ -10,28 +10,27 @@ var newPageData = {
     "overflow-x":"hidden",
     "overflow-y":"hidden"
     });
-getOpenid(function(openid){
-    newPageData.uid = localCache("uid-kongbatong");
-    newPageData.openid = localCache("openid-kongbatong");
-    newPageData.phone = localCache("mobile-kongbatong");
-    newPageData.openid = openid;
-    console.log("openid",openid,newPageData.uid,newPageData.openid);
-    if(null == newPageData.uid || "" == newPageData.uid) {
-        register("http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/Register_content.html");   //返回注册登录页面
-    } else {
-        // 得到订单数据
-        myorder.myorderPage("","","");
-        // 获取车辆类型
-        selectcar.cartype();
-        // 我的订单页绑定无限滚动效果
-        hdrunvowner();
-    }
-},location.search);
+
 $(function(){
-   
+    getOpenid(function(openid){
+        newPageData.uid = localCache("uid-kongbatong");
+        newPageData.openid = localCache("openid-kongbatong");
+        newPageData.phone = localCache("mobile-kongbatong");
+        newPageData.openid = openid;
+        console.log("openid",openid,newPageData.uid,newPageData.openid);
+        if(null == newPageData.uid || "" == newPageData.uid) {
+            register("http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/Register_content.html");   //返回注册登录页面
+        } else {
+            // 得到订单数据
+            myorder.myorderPage("","","");
+            // 获取车辆类型
+            selectcar.cartype();
+            // 我的订单页绑定无限滚动效果
+            hdrunvowner();
+        }
+    },location.search);
 // 设置高度
-    // 首页大小
-    $(".bus").height(window.screen.height);
+    $(document.body).height(window.screen.height);
     // 提交订单页设置高度
     $(".selectcar").height($(document.body).height());
     // 地图页大小
@@ -386,6 +385,12 @@ $(function(){
             $(".careful").hide();
         }
     }
+// 返回的的代码
+    function register(val){
+        var nowhref = window.location.href;
+        localCache("page",nowhref);     // 存储在本地的地址
+        window.location.href = "Register_content.html";		// 发送给他的地址 	
+    }  
 // 我的订单页的操作
     var myorder = {
         coid:"",
@@ -778,57 +783,72 @@ $(function(){
     var bus = {
         newselectcar:function () {
             // 还要判断
-            var tellTips = "";
-            // if( newPageData.uid ===0 ){
-            //     tellTips ="请登录";
-            // }else if ( newPageData.openid ===0) {
-            //     tellTips ="请登录";
-            // }
-            releaseData.contact = $("#bus-personinput").val();
-    
-            releaseData.contactNumber = $("#tell-phone").val();
-            if( releaseData.fabudpData===""){
-                if( releaseData.dwlocationg===""){
-                    tellTips ="请选择出发地";
-                }
-            }else if (releaseData.fabuarData==="") {
-                tellTips ="请选择到达地";
-            }else if (releaseData.contact === ""){
+            var tellTips = 0;
+            // 获取手机号：
+            var phone = document.getElementById('tell-phone').value;
+            // 判断
+            if ( newPageData.uid ===0){
+                tellTips ="请登录";
+            }else if ( newPageData.openid ===0) {
+                tellTips ="请登录";
+            }else if ($("#bus-personinput").val()==""){
                 tellTips ="请填写联系人姓名";
-            }else if (releaseData.contactNumber===0) {
+            }else if ($("#tell-phone").val()=="") {
                 tellTips ="请填写联系人电话";
-            }
-            // 判断时间对不对
-            else if ( releaseData.useType === "单程" ) {
-                if ($("#dt-a-0").text()==="请选择上车时间"){
-                    tellTips = "请选择上车时间!";
-                }else{
-                    var cfsj =  $("#dt-a-0").attr("data-val");
-                    releaseData.departureTime = cfsj;
+            }else if ( releaseData.useType === "" ) {
+                tellTips ="请选择包车方式";
+            }else if ( releaseData.useType === "单程" ){
+                var cfsja =  $("#dt-a-0").attr("data-val");
+                if(cfsja==""){
+                    tellTips ="请选择上车时间";
                 }
             }else if ( releaseData.useType === "往返" ){
-                if($("#dt-a-0").text()==="请选择上车时间"){
-                    tellTips = "请选择出发时间!";
-                }else if($("#dt-c-1").text()==="请选择返程时间"){
-                    tellTips = "请选择返程时间!";
-                }else {
+                var cfsjb =  $("#dt-a-0").attr("data-val");
+                var mdsjb =  $("#dt-c-1").attr("data-val");
+                if(cfsjb==""){
+                    tellTips ="请选择上车时间";
+                }else if (mdsjb==""){
+                    tellTips ="请选择返程时间"; 
+                }
+            }else if (releaseData.dwlocationg===""){
+                if(releaseData.fabudpData===""){
+                    tellTips ="请选择出发地";
+                }
+            }else if (releaseData.fabudpData==="") {
+                if (releaseData.dwlocationg===""){
+                    tellTips ="请选择出发地";
+                }
+            }else if (releaseData.fabuarData===""){
+                tellTips ="请选择到达地";
+            }
+            // 验证手机号
+            else if (!(/^1[34578]\d{9}$/.test(phone))){
+                tellTips ="手机号码不正确";
+            }else if ($("#bus-dpcity").text()===$("#bus-arcity").text()) {
+                //阻止发布相同的数据
+                tellTips="注意！出发地目的地一致";
+            }
+
+            if (tellTips === 0 || tellTips==="") {
+                // 成功则赋值
+                if ( releaseData.useType === "往返") {
                     var cfsj =  $("#dt-a-0").attr("data-val");
                     var mdsj =  $("#dt-c-1").attr("data-val");
-                    if(Date.parse(mdsj)>Date.parse(cfsj)){
-                        // 赋值
-                        releaseData.departureTime = cfsj;
-                        releaseData.returnTime = mdsj;
-                    }else {
-                        tellTips = "返程时间不能小于上车时间";
-                    }
+                    // 赋值
+                    releaseData.departureTime = cfsj;
+                    releaseData.returnTime = mdsj;
+                }else if ( releaseData.useType === "单程"){
+                    var cfsj =  $("#dt-a-0").attr("data-val");
+                    // 赋值
+                    releaseData.departureTime = cfsj;
                 }
-            }
-            if (tellTips!=="") {
+                releaseData.contact = $("#bus-personinput").val();
+                releaseData.contactNumber = parseInt($("#tell-phone").val());
+                window.location.hash = "#selectcar";
+            }else {
                 showMessage1btn(tellTips,"",0);
                 console.log(tellTips);
-                return false;
             }
-            window.location.hash = "#selectcar";
         }
     }
 // 车型选择页的操作
@@ -1037,6 +1057,21 @@ $(function(){
             }else if (releaseData.useType==="往返"){
                 releaseData.useType ="Return";
             }
+            // 要阻止重复提交
+            var olddpcityname = '';
+            var oldarcityname = '';
+            if (departure==olddpcityname && oldarcityname == releaseData.fabuarData.name){
+                // 10秒后初始化下。
+                setTimeout(function(){
+                    olddpcityname = '';
+                    oldarcityname = '';
+                 },5000);
+                return false ;
+                // 阻止重复提交
+            }
+
+            var olddpcityname = departure;
+            var oldarcityname = releaseData.fabuarData.name;
             // 读取车辆类型
             $.ajax({
                 type:"post",
