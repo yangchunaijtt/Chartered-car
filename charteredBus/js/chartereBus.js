@@ -442,18 +442,16 @@ $(function(){
                 $("#myorder-odbutton").append('<span class="tjorder-myorderts">如需包车,请重新下单!</span>');
             }else if (val.status===0){
                 odstatus = "已下单";        
+                
                 // 以下单的话，有个取消按钮，其他没有
-                $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
-                $("#myorder-ddcancel").bind("touch click",function(){
-                    myorder.myorderqx(val.uid,val.uid);
-                })
+                $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton"  onclick="myorder.myorderqx(myorder.myorderData[i].uid,myorder.myorderData[i].id)">取消订单</span>');
             }else if (val.status===1){
                 odstatus = "已付款";
                 var khtime = Date.parse(val.departureTime);
                 var jttime =  Date.parse(new Date().toLocaleDateString());
                 console.log("时间比较",khtime,jttime);
                 if (parseInt(khtime) -  parseInt(jttime)  >  86400000){
-                    $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
+                    $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton"  onclick="myorder.myorderqx(myorder.myorderData[i].uid,myorder.myorderData[i].id)">取消订单</span>');
                     // 1也可以取消，要判断提前一天没有。
                 }else {
                     $("#myorder-odbutton").append('<span class="tjorder-myorderts">祝您乘车愉快!</span>');
@@ -461,13 +459,7 @@ $(function(){
             }else if (val.status===2){
                 // 待付款下，有个取消的按钮和支付的按钮
                 odstatus = "待付款";
-                $("#myorder-odbutton").append('<span id="myorder-qrpaymonney" class="tjorder-submitbutton">确认支付</span><span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
-                $("#myorder-ddcancel").bind("touch click",function(){
-                    myorder.myorderqx(val.uid,val.id);
-                })
-                $("#myorder-qrpaymonney").bind("touch click",function(){
-                    paymentModule.payMoney(parseFloat(val.price),val.uid,val.id,val.OutTradeNo);
-                })
+                $("#myorder-odbutton").append('<span id="myorder-qrpaymonney" class="tjorder-submitbutton"  onclick="paymentModule.payMoney(parseFloat(myorder.myorderData[i].price),myorder.myorderData[i].uid,myorder.myorderData[i].id,myorder.myorderData[i].OutTradeNo)">确认支付</span><span id="myorder-ddcancel" onclick="myorder.myorderqx(myorder.myorderData[i].uid,myorder.myorderData[i].id)" class="tjorder-submitbutton">取消订单</span>');
             }
             var myorder_odbutton = "myorder-odbutton"+i;
             $("#myorder-odbutton").attr("id",myorder_odbutton);
@@ -504,9 +496,23 @@ $(function(){
             $("#myorder-odartime").attr("id",myorder_odartime);
             // 价格
             if(val.price == null || val.price == ""){
-                $("#myorder-odprice").text("待确认");
+                //状态（-2:待退款；-1:取消；0：下单；1：完成；2：待付款）
+                var pricevalmoney = "";
+                if(val.status===-2){
+                    pricevalmoney ="待退款";
+                }else if (val.status===-1){
+                    pricevalmoney ="已取消";
+                }else if (val.status===0){
+                    pricevalmoney ="待确认";
+                }else if (val.status===1){
+                    pricevalmoney ="已确认";
+                }else if (val.status===2){
+                    pricevalmoney ="待付款";
+                }
+                $("#myorder-odprice").text(pricevalmoney);
             }else {
                 $("#myorder-odprice").text(val.price);
+                
             }
             var myorder_odprice = "myorder-odprice"+i;
             $("#myorder-odprice").attr("id",myorder_odprice);    
@@ -803,6 +809,12 @@ $(function(){
                 tellTips ="请登录";
             }else if ( newPageData.openid ===0) {
                 tellTips ="请登录";
+            }else if (!(/^1[34578]\d{9}$/.test(phone))){
+                // 验证手机号
+                tellTips ="手机号码不正确";
+            }else if ($("#bus-dpcity").text() == $("#bus-arcity").text()) {
+                //阻止发布相同的数据
+                tellTips="注意！出发地目的地一致";
             }else if ($("#bus-personinput").val()==""){
                 tellTips ="请填写联系人姓名";
             }else if ($("#tell-phone").val()=="") {
@@ -833,13 +845,6 @@ $(function(){
             }else if (releaseData.fabuarData===""){
                 tellTips ="请选择到达地";
             }
-            // 验证手机号
-            else if (!(/^1[34578]\d{9}$/.test(phone))){
-                tellTips ="手机号码不正确";
-            }else if ($("#bus-dpcity").text()===$("#bus-arcity").text()) {
-                //阻止发布相同的数据
-                tellTips="注意！出发地目的地一致";
-            }
 
             if (tellTips === 0 || tellTips==="") {
                 // 成功则赋值
@@ -860,6 +865,7 @@ $(function(){
             }else {
                 showMessage1btn(tellTips,"",0);
                 console.log(tellTips);
+                return false;
             }
         }
     }
@@ -1041,7 +1047,7 @@ $(function(){
                     var date = new Date();
                     return date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds());
                 }
-                var sjc = "CAO"+generateTimeReqestNumber();
+                var sjc = "CAO"+generateTimeReqestNumber()+rand;
             // 用定位数据还是搜索数据
             var dpCity="";          //出发城市
             var departure = "";     //出发地名
@@ -1114,6 +1120,8 @@ $(function(){
                     if(result.result>0){
                         showMessage1btn("提交成功!","",0);
                         setTimeout(function(){
+                            // 得到订单数据
+                            myorder.myorderPage("","","");
                            window.location.hash = "#bus";
                         },500);
                     }

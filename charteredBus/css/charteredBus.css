@@ -26,13 +26,18 @@
     }   
     .cjart-bus .bus .bus-center  .busct-depeture .busct-circletop{
         color: #7dd6ca;
+        float:left;
     }
     .cjart-bus .bus .bus-center  .busct-depeture .busct-circlebottom{
         color: #d8496e;
+        float:left;
     }
     .cjart-bus .bus .bus-center  .busct-depeture .busct-name{
         width: 86%;
         display: inline-block;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
     }
 
     .cjart-bus .bus .bus-center  .busct-depeture{
@@ -901,6 +906,9 @@
     }
     .address #add-address .addselect-right .addselect-rtone{
         display: block;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
     }
     .address #add-address .addselect-right .addselect-rttwo{
         display: block;
