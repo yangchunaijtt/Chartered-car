@@ -444,14 +444,25 @@ $(function(){
                 odstatus = "已下单";        
                 
                 // 以下单的话，有个取消按钮，其他没有
-                $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton"  onclick="myorder.myorderqx(myorder.myorderData[i].uid,myorder.myorderData[i].id)">取消订单</span>');
+                $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton"  >取消订单</span>');
+
+                $("#myorder-ddcancel").bind("touch click",function(){
+                    myorder.myorderqx(val.uid,val.id);
+                })
+                var myorder_ddcancelthree ="myorder-ddcancel"+i;
+                $("#myorder-ddcancel").attr("id",myorder_ddcancelthree);
             }else if (val.status===1){
                 odstatus = "已付款";
                 var khtime = Date.parse(val.departureTime);
                 var jttime =  Date.parse(new Date().toLocaleDateString());
                 console.log("时间比较",khtime,jttime);
                 if (parseInt(khtime) -  parseInt(jttime)  >  86400000){
-                    $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton"  onclick="myorder.myorderqx(myorder.myorderData[i].uid,myorder.myorderData[i].id)">取消订单</span>');
+                    $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
+                    $("#myorder-ddcancel").bind("touch click",function(){
+                        myorder.myorderqx(val.uid,val.id);
+                    })
+                    var myorder_ddcancelone = "myorder-ddcancel"+i;
+                    $("#myorder-ddcancel").attr("id",myorder_ddcancelone);
                     // 1也可以取消，要判断提前一天没有。
                 }else {
                     $("#myorder-odbutton").append('<span class="tjorder-myorderts">祝您乘车愉快!</span>');
@@ -459,7 +470,18 @@ $(function(){
             }else if (val.status===2){
                 // 待付款下，有个取消的按钮和支付的按钮
                 odstatus = "待付款";
-                $("#myorder-odbutton").append('<span id="myorder-qrpaymonney" class="tjorder-submitbutton"  onclick="paymentModule.payMoney(parseFloat(myorder.myorderData[i].price),myorder.myorderData[i].uid,myorder.myorderData[i].id,myorder.myorderData[i].OutTradeNo)">确认支付</span><span id="myorder-ddcancel" onclick="myorder.myorderqx(myorder.myorderData[i].uid,myorder.myorderData[i].id)" class="tjorder-submitbutton">取消订单</span>');
+                $("#myorder-odbutton").append('<span id="myorder-qrpaymonney" class="tjorder-submitbutton">确认支付</span><span id="myorder-ddcancel"  class="tjorder-submitbutton">取消订单</span>');
+                $("#myorder-qrpaymonney").bind("touch click",function(){
+                    paymentModule.payMoney(parseFloat(val.price),val.uid,val.id,val.OutTradeNo);
+                })
+                var myorder_qrpaymonneytwo = "myorder-qrpaymonney"+i;
+                $("#myorder-qrpaymonney").attr("id",myorder_qrpaymonneytwo);
+                //  绑定事件
+                $("#myorder-ddcancel").bind("touch click",function(){
+                    myorder.myorderqx(val.uid,val.id);
+                })
+                var myorder_ddcanceltwo = "myorder-ddcancel"+i;
+                $("#myorder-ddcancel").attr('id',myorder_ddcanceltwo);
             }
             var myorder_odbutton = "myorder-odbutton"+i;
             $("#myorder-odbutton").attr("id",myorder_odbutton);
@@ -556,9 +578,13 @@ $(function(){
                     if (data.result == 1) {
                         showMessage1btn("取消成功!","",0);
                         myorder.myorderPage("","","");
+                        // 我的订单页绑定无限滚动效果
+                        hdrunvowner();
                     }else if(data.result == -1) {
                         showMessage1btn("取消失败,请重试!","",0);
                         myorder.myorderPage("","","");
+                        // 我的订单页绑定无限滚动效果
+                        hdrunvowner();
                     }
                 },
                 error:function(data){
@@ -648,6 +674,8 @@ $(function(){
                                 showMessage1btn("支付成功","",0);
                                 // 支付成功后，要刷新下页面
                                 myorder.myorderPage("","","");
+                                // 我的订单页绑定无限滚动效果
+                                hdrunvowner();
                                 break;
                             case "get_brand_wcpay_request:fail":
                                 showMessage1btn("系统出错，请联系我们！","Back()",0);
@@ -678,14 +706,13 @@ $(function(){
         loadcount:3  // 页面展示的为第几页的数据 
     }
     function hdrunvowner(){
-        var uid = newPageData.uid;
         var $runpassengerval = $('#idmyorder').infiniteScroll({     //#content是包含所有图或块的容器
             path: function(){
                 // 如果用户滑动时，当前页面展示的数据页码小于等于后台的数据页码 
                 // 数据量很小情况下  报错了 
                 if(  runvownerval.page <= runvownerval.loadcount){
                     // 获取全部时间的行程，失效页没有关系 
-                    return "http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders.asp?cur="+runvownerval.page+"&uid="+uid+"&coid="+"&status="+"&dateRange=";
+                    return "http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders_get.asp?cur="+runvownerval.page+"&uid="+newPageData.uid+"&coid="+"&status="+"&dateRange=";
                 }
             },
             history: false,
@@ -1122,6 +1149,8 @@ $(function(){
                         setTimeout(function(){
                             // 得到订单数据
                             myorder.myorderPage("","","");
+                            // 我的订单页绑定无限滚动效果
+                            hdrunvowner();
                            window.location.hash = "#bus";
                         },500);
                     }
