@@ -281,7 +281,6 @@
     .selectcar    .selectcar-cardiv{
         width: 100%;
         overflow: hidden;
-        height: 107px;
         overflow-x: auto;
         background: #fff;
     }
@@ -293,36 +292,27 @@
         width: 12%;
         display: inline-block;
         float: left;
-        height: 96px;
+        height: 116px;
         border:1px solid #7e7d7d;
         margin-left: 0.25%;
         margin-top: 5px;
     }
     .selectcar .selectcar-car .selectcar-carimg span{
         display: block;
-
         font-size: 18px;
-        
         width: 96%;
-        
         text-align: right;
-        
         line-height: 26px;
     }
     .selectcar .selectcar-car .selectcar-carimg img{
         width: 80%;
-
-        height: 40px;
-        
+        height: 60px;
         margin: 0 auto;
-        
         display: block;
     }
     .selectcar .selectcar-car .selectcar-carimg p{
         height: 30px;
-
         line-height: 30px;
-        
         text-align: center;
     }
     /* 东西设置 */
@@ -334,11 +324,8 @@
     }
     .selectcar .selectcar-goods .selectcar-goodsleft{
         width: 26%;
-
         display: inline-block;
-        
         float: left;
-        
         margin-left: 12px;
     }
     .selectcar .selectcar-goods .selectcar-goodsleft .selectcar-goodslficonone{
@@ -346,44 +333,31 @@
     }
     .selectcar .selectcar-goods .selectcar-goodsleft .selectcar-goodslftwo{
         font-size: 12px;
-
         color: #909090;
     }
     /* 给司机留言 */
     .selectcar  .selectcar-driver{
         background: #fff;
-
         margin-top: 12px;
     }
     .selectcar  .selectcar-driver .selectcar-drtext{
         line-height: 40px;
-        
         margin-left: 12px;
-        
         font-size: 15px;
-        
         color: #383838;
-        
         height: 40px;    
-        
     }
     .selectcar  .selectcar-driver .selectcar-drtextarea{
-        width: 100%;
-
+        width: 99%;
         margin: 0;
-        
-        border: none;
         text-indent: 12px;
+        border-color: #adabab;
     }
     .selectcar  .selectcar-driver .selectcar-drxz{
         display: block;
-
         line-height: 26px;
-        
         text-align: right;
-        
         width: 96%;
-        
         float: left;
     }
 /* 信息提示页 */
@@ -1167,6 +1141,25 @@
         text-align: right;
         line-height: 37px;
     }
+/* 详情页样式设置 */
+    .details-myorderts{
+        width:100%;
+        float:left;
+        text-align: center;
+        line-height: 37px;
+    }
+    .details-submitbutton{
+        display: inline-block;
+        width: 86px;
+        height: 30px;
+        border: 1px solid #f2f2f2;
+        margin: 6px auto;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 3px;
+        font-size: 13px;
+        background: #f2f2f2;
+    }
 /* 无限滚动的设置 */
     .myorder {
         overflow-y: auto;
@@ -1229,4 +1222,17 @@
       margin: 0 auto;
       display: block;
       margin-top: 10px;
+    }
+/* 详情页按钮部分设置 */
+    .details-button{
+        border-bottom: 1px solid #f2f2f2;
+        background: #fff;
+        border-top: 1px solid #f2f2f2;
+    }
+/* 默认值 */
+    #selectcar-carspan0{
+        color: rgb(0, 141, 255);
+    }
+    #selectcar-car0{
+        border-color: rgb(0, 141, 255);
     }

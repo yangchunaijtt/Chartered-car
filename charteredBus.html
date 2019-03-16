@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>光大国旅-定制包车</title>
+    <title>空巴通-团队包车</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./charteredBus/css/react.css">
     <!-- 图标 -->
     <link rel="shortcut icon" href="./charteredBus/img/bus.jpg">   
+    <link rel="stylesheet" href="./css/bootstrap.css">
     <!-- 字体图标 -->
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_1071099_gkxg4x4brx.css">
     <!-- 时间css的引入 -->
@@ -186,12 +187,16 @@
             <span id="details-return" class="details-hdleft iconfont iconfanhui1"></span>
             <span class="details-hdright">订单详情</span>
         </div>
-        <!-- 按钮部分内容 暂时不需要-->
-        <div class="details-button clearfix" style="display: none;">
-            <!-- 添加按钮的地方 -->
-        </div>
+        <!-- 单程往返的问题 -->
         <div class="details-biaoti clearfix">
-            <span id="details-reType">单程</span>
+            <span id="details-reType"></span>
+            <span id="details-biaotitshi"></span>
+        </div>
+        <!-- 按钮部分内容 暂时不需要-->
+        <div class="details-button clearfix">
+            <div  id="details-buttonan" style="width:200px;height:100%;margin:0 auto;" class="clearfix">
+                <!-- 添加按钮的地方 -->
+            </div>
         </div>
         <!-- 支付信息 -->
         <!-- 要根据状态来改变 -->
@@ -285,7 +290,7 @@
             </div>
             <div class="busMap-cityright clearfix">
                 <span class="busMap-ctrticon iconfont iconsousuo"></span>
-                <input  id="busMap-input" class="busMap-ctrtinput businput" type="text" placeholder="请输入要查询的地址">
+                <input  id="busMap-input" class="busMap-ctrtinput businput" type="text" placeholder="点击这里,选择地址">
             </div>
         </div>
         <div class="busMap-dz clearfix">
@@ -516,7 +521,7 @@
     <!-- 无限滚动插件的使用 -->
     <script src="js/infinite-scroll.pkgd.min.js"></script>
     <!-- 转换md5引入的文件 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+    <script src="./js/sfcmd5.js"></script>
     <!-- 自己定义的js -->
     <script src="./charteredBus/js/chartereBus.js"></script>
 </body>
