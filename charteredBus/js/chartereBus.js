@@ -47,7 +47,7 @@ $(function(){
     $(".careful").height($(document.body).height());
     //城市具体地址选择页
     $(".address").height($(document.body).height());
-    
+    $(".price").height($(document.body).height());
 // 初始化调用的函数
     setTimeWheel();
 //首页绑定事件
@@ -108,6 +108,9 @@ $(function(){
     })
     $("#selectcar-tishi").bind("touch click",function(){
         window.location.hash = "#careful";
+    })
+    $("#selectcar-submitdiv").bind("touch click",function(){
+        window.location.hash = "#price";
     })
 // 定制包车页绑定事件
     $(".careful-hdicon").bind("touch click",function(){
@@ -292,6 +295,11 @@ $(function(){
         var result =  {P:parseFloat(details.detailsData.aLat),R:parseFloat(details.detailsData.aLng),lat:parseFloat(details.detailsData.aLat),lng:parseFloat(details.detailsData.aLng)};
         container.onclick(result);
     })
+    // 价格页的操作
+    $("#price-return").bind("touch click",function(){
+        window.location.hash ="#selectcar";
+    })
+
 // 定位
     container.dwlocationg();
 // 监控路由
@@ -379,6 +387,9 @@ $(function(){
         }else if ( hashval ==="#careful" ){
             hashcsh();
             $(".careful").show();
+        }else if ( hashval ==="#price" ){
+            hashcsh();
+            $(".price").show();
         }
         function hashcsh(){
             $(".bus").hide();
@@ -389,6 +400,7 @@ $(function(){
             $(".myorder").hide();
             $("#searchcity").hide();
             $(".careful").hide();
+            $(".price").hide();
         }
     }
 // 返回的的代码
@@ -397,6 +409,10 @@ $(function(){
         localCache("page",nowhref);     // 存储在本地的地址
         window.location.href = "Register_content.html";		// 发送给他的地址 	
     }  
+// 价格页的操作
+    var price = {
+
+    }
 // 我的订单页的操作
     var myorder = {
         coid:"",
@@ -894,16 +910,6 @@ $(function(){
                 tellTips ="请登录";
             }else if ( newPageData.openid ===0) {
                 tellTips ="请登录";
-            }else if (!(/^1[34578]\d{9}$/.test(phone))){
-                // 验证手机号
-                tellTips ="手机号码不正确";
-            }else if ($("#bus-dpcity").text() == $("#bus-arcity").text()) {
-                //阻止发布相同的数据
-                tellTips="注意！出发地目的地一致";
-            }else if ($("#bus-personinput").val()==""){
-                tellTips ="请填写联系人姓名";
-            }else if ($("#tell-phone").val()=="") {
-                tellTips ="请填写联系人电话";
             }else if ( releaseData.useType === "" ) {
                 tellTips ="请选择包车方式";
             }else if ( releaseData.useType === "单程" ){
@@ -929,8 +935,21 @@ $(function(){
                 }
             }else if (releaseData.fabuarData===""){
                 tellTips ="请选择到达地";
+            }else if (!(/^1[34578]\d{9}$/.test(phone))){
+                // 验证手机号
+                tellTips ="手机号码不正确";
+            }else if ($("#bus-dpcity").text() == $("#bus-arcity").text()) {
+                //阻止发布相同的数据
+                tellTips="注意！出发地目的地一致";
+            }else if ($("#bus-personinput").val()==""){
+                tellTips ="请填写联系人姓名";
+            }else if ($("#tell-phone").val()=="") {
+                tellTips ="请填写联系人电话";
+            }else if ( parseInt($("#dt-c-1").attr("data-val").split("-")[2]) != parseInt($("#dt-a-0").attr("data-val").split("-")[2]) ) {
+                tellTips="目前只支持日内包车,不支付跨天包车";
             }
 
+            
             if (tellTips === 0 || tellTips==="") {
                 // 成功则赋值
                 if ( releaseData.useType === "往返") {
@@ -1074,6 +1093,38 @@ $(function(){
             $("#selectcar-departureTime").text($("#dt-a-0").attr("data-val")+"上车");
             $("#selectcar-arrival").text($("#bus-arcity").text()+"返程");
             $("#selectcar-arrivalTime").text($("#dt-c-1").attr("data-val")+"返程");
+            // 给第一个上个颜色
+            $("#selectcar-car0").css("border-color","rgb(0, 141, 255)");
+             // 价格
+             var dLng = 0;           // 出发经度
+             var dLat = 0;           // 出发纬度
+             if( releaseData.dwsjUsed === true ){
+                 // 使用定位数据
+                 dLng = releaseData.dwlocationg.position.R;
+                 dLat = releaseData.dwlocationg.position.P;
+             }else if ( releaseData.dwsjUsed === false ){
+                 // 使用搜索数据
+                 dLng =  releaseData.fabudpData.location.R;
+                 dLat =  releaseData.fabudpData.location.P;
+             }
+             var returnfs = 1;
+             if(releaseData.useType==="单程"){
+                 returnfs = 1;
+             }else if (releaseData.useType==="往返"){
+                 returnfs = 2;
+             }
+             var dpcity  = [dLng.toFixed(6),dLat.toFixed(6)];
+             var arcity =  [releaseData.fabuarData.location.lng.toFixed(6),releaseData.fabuarData.location.lat.toFixed(6)];
+             var dis = parseFloat((AMap.GeometryUtil.distanceOfLine([dpcity,arcity])*returnfs/1000).toFixed(1));
+             console.log("初始化来回一共多少公里",dis);
+             var dismoney = 0;
+             var jcmoney = parseFloat(selectcar.carTypeData[0].price);
+             if (dis>100) {
+                 dismoney = jcmoney+ dis - 100;
+             }else {
+                 dismoney =jcmoney;
+             }
+             $("#selectcar-submitmoney").text(dismoney);
         },
         clickbus:function(val,divname){
             console.log(val,divname);
@@ -1087,7 +1138,7 @@ $(function(){
             $("#selectcar-goodsmatter").text(matter);
 
             releaseData.carType =sjData.id;
-
+            releaseData.clickbus = selectcar.carTypeData[val];
             $("#selectcar-car0").css("border-color","#7e7d7d");
             $("#selectcar-car1").css("border-color","#7e7d7d");
             $("#selectcar-car2").css("border-color","#7e7d7d");
@@ -1107,6 +1158,37 @@ $(function(){
             $("#selectcar-carspan7").css("color","#555");
             $(divname).css("border-color","rgb(0, 141, 255)");
             $(spanname).css("color","rgb(0, 141, 255)");
+
+            // 价格
+            var dLng = 0;           // 出发经度
+            var dLat = 0;           // 出发纬度
+            if( releaseData.dwsjUsed === true ){
+                // 使用定位数据
+                dLng = releaseData.dwlocationg.position.R;
+                dLat = releaseData.dwlocationg.position.P;
+            }else if ( releaseData.dwsjUsed === false ){
+                // 使用搜索数据
+                dLng =  releaseData.fabudpData.location.R;
+                dLat =  releaseData.fabudpData.location.P;
+            }
+            var returnfs = 1;
+            if(releaseData.useType==="单程"){
+                returnfs = 1;
+            }else if (releaseData.useType==="往返"){
+                returnfs = 2;
+            }
+            var dpcity  = [dLng.toFixed(6),dLat.toFixed(6)];
+            var arcity =  [releaseData.fabuarData.location.lng.toFixed(6),releaseData.fabuarData.location.lat.toFixed(6)];
+            var dis =parseFloat((AMap.GeometryUtil.distanceOfLine([dpcity,arcity])*returnfs/1000).toFixed(1));
+            console.log("来回一共多少公里",dis);
+            var dismoney = 0;
+            var jcmoney = parseFloat(releaseData.clickbus.price);
+            if (dis>100) {
+                dismoney = jcmoney+ dis - 100;
+            }else {
+                dismoney = jcmoney;
+            }
+            $("#selectcar-submitmoney").text(dismoney);
         },
         tijiao:function(){
             var tellTrips = "";
@@ -1116,7 +1198,7 @@ $(function(){
             }else if ( newPageData.openid === 0){
                 tellTrips = "请登录";
             }else if ( releaseData.useType === "往返" ){
-                
+                releaseData
             }
             if(tellTrips!==""){
                 showMessage1btn(tellTrips,"",0);
@@ -1200,6 +1282,7 @@ $(function(){
                     carType:releaseData.carType,		//车辆类型
                     contact:releaseData.contact.trim(),			//联系人
                     contactNumber:releaseData.contactNumber,	    //联系人电话
+                    price:parseFloat($("#selectcar-submitmoney").text()), // 价格
                     remark:$("#textarea").val().trim(),			    //备注
                 },
                 success:function(result){
@@ -1253,8 +1336,10 @@ $(function(){
         carType:1,		//车辆类型
         contact:"",			//联系人
         contactNumber:0,	    //联系人电话
+        price:"",           //价格
         remark:"",			    //备注
         // 上面是发布需要的数据，下面是是其他数据
+        pricebutton:false,
         dwlocationg:"",         // 定位的数据
         searchMap:"",           // 搜索得到的数据
         dpsearch:"",            // 起点确认的数据
@@ -1263,6 +1348,7 @@ $(function(){
         fabuarData:"",          // 确认的到达地的数据
         dwsjUsed:true,              // 出发地用定位数据还是搜索数据,默认使用定位数据
         sfaddress:false,        // 是否点击了搜索数据
+        clickbus:"",            // 选择的车的信息数据
     }
 // 获取到数据(包含ajax，和地图数据)
     var obtainData = {
@@ -1571,7 +1657,7 @@ $(function(){
                 var today = new Array('周日','周一','周二','周三','周四','周五','周六'); 
                 //获取当前日期
                 var tmpNow = new Date();
-                tmpNow.setDate(tmpNow.getDate()+1);//获取AddDayCount天后的日期
+                tmpNow.setDate(tmpNow.getDate()+2);//获取AddDayCount天后的日期
                                     
                 var dateArray = inst.getArrayVal();
                 var week = today[sday.getDay()];  

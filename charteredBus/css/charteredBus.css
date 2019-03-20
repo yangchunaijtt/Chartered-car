@@ -4,6 +4,7 @@
         line-height: 42px;
         text-indent: 20%;
         font-size: 18px;
+        border-bottom: 1px solid #f2f2f2;    
     }
     .cjart-bus .bus .bus-header .bus-myOrder{
         display: inline-block;
@@ -145,6 +146,7 @@
         text-align: center;
         line-height: 42px;
         font-size: 18px;
+        border-bottom: 1px solid #f2f2f2;
     }
     .selectcar .selectcar-hd .selectcar-hdicon{
         display: inline-block;
@@ -402,6 +404,7 @@
         background: #fff;
         line-height: 42px;
         font-size: 18px;
+        border-bottom: 1px solid #f2f2f2;
     }
     .myorder .myorder-header .myorder-hdreturn{
         display: inline-block;
@@ -432,6 +435,7 @@
         border-radius: 5px;
         padding: 6px 14px 12px 10px;
         font-size:12px;
+        border: 1px solid #1260a0;
     }
     .myorder #idmyorder .tjorder .tjorder-hd{
         height: 24px;
@@ -478,7 +482,7 @@
         text-align: center;
     }
     .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctright{
-        width: 42%;
+        width: 35%;
         float: left;
         display: inline-block;
         overflow: hidden;
@@ -719,8 +723,8 @@
         margin-top: 1px;
     }   
     .busMap .busMap-city .busMap-cityright .busMap-ctrtinput{
-        float: right;
-        height: 19px;
+        float: left;
+        height: 32px;
         margin-top: 4px;
         text-indent: 14px;
     }
@@ -802,6 +806,7 @@
         width: 100%;
         background: #fff;
         border-top: 1px solid #f2f2f2;
+        border-bottom: 1px solid #f2f2f2;
         height: 44px;
         line-height: 44px;
         font-size: 12px;
@@ -850,6 +855,8 @@
         height: 19px;
         margin-top: 4px;
         text-indent: 14px;
+        float: left;
+        height: 32px;
     }
     /* 内容嵌套设置 */
     .address #add-address{
@@ -973,6 +980,7 @@
         line-height: 42px;
         height: 42px;
         font-size: 18px;
+        border-bottom: 1px solid #f2f2f2;
     }
     .details .details-header .details-hdleft{
         display: inline-block;
@@ -1235,4 +1243,95 @@
     }
     #selectcar-car0{
         border-color: rgb(0, 141, 255);
+    }
+/* 预估价格页面 */
+    .price{
+        overflow-y: auto;
+    }
+    .price-header{
+        background: #fff;
+        line-height: 42px;
+        font-size: 18px;
+    }
+    .price-header #price-return{
+        display: inline-block;
+        float: left;
+        width: 20%;
+        text-align: center;
+        color: #257ddc;
+        font-weight: bolder;
+    }
+    .price-header .price-bt{
+        float: right;
+        width: 80%;
+        text-align: center;
+        text-indent: -20%;
+    }
+    .price-center span{
+        height: 30px;
+        line-height: 30px;
+        background: #fff;
+        display: block;
+        font-size: 15px;
+        color: #2d2a2a;
+        text-indent: 12px;
+        border-top: 1px solid #f2f2f2;
+    }
+    .price-center p{
+        background: #e7ecf0;
+        padding-left:12px;
+        padding-right:16px;
+        font-size: 13px;
+        line-height: 28px;
+        margin-bottom: 0px;
+    }
+    /* 支付页按钮部分 */
+    .price-footer{
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        background: #fff;
+        height: 50px;
+        line-height: 50px;
+        width: 100%;
+        z-index: 999;
+        border-top: 1px solid #f2f2f2;
+    }
+    .price-ftleft{
+        display: inline-block;
+        margin-left: 12px;
+        color: #322f2f;
+        font-size: 15px;
+    }
+    .price-ftleft .price-ftleftzi{
+        display: inline-block;
+        float:left;
+    }
+    .price-ftleft #price-ftleftjmoney{
+        display: inline-block;
+        float:left;
+    }
+    #price-ftbutton{
+        width: 30%;
+        background-color: #ffb000;
+        border: 1px solid #f88500;
+        display: inline-block;
+        float: right;
+        text-align: center;
+        font-size: 17px;
+        color: #fff;
+    }
+/* 选车页的设置 */
+    #selectcar-submitdiv{
+        display: inline-block;
+        width: 70%;
+        float: left;
+        color: #f4334a;
+    }
+    #selectcar-submitdiv span{
+        display: inline-block;
+    }
+/* 其他 */
+    .price-center{
+        padding-bottom: 50px;
     }
