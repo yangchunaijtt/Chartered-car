@@ -428,6 +428,7 @@ $(function(){
                     uid:newPageData.uid,       	//用户id 
                     coid:coid,			//订单id
                     status:status,		    //状态
+                    pageSize:8,             // 首页默认取8条数据
                     dateRange:dateRange   	//日期范围（"today","weekday","month"）
                 },
                 success:function(data){
@@ -733,7 +734,7 @@ $(function(){
                 // 数据量很小情况下  报错了 
                 if(  runvownerval.page <= runvownerval.loadcount){
                     // 获取全部时间的行程，失效页没有关系 
-                    return "http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders_get.asp?cur="+runvownerval.page+"&uid="+newPageData.uid+"&coid="+"&status="+"&dateRange=";
+                    return "http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders_get.asp?cur="+runvownerval.page+"&uid="+newPageData.uid+"&coid="+"&status="+"&dateRange="+"&pageSize=";
                 }
             },
             history: false,
@@ -949,7 +950,6 @@ $(function(){
                 tellTips="目前只支持日内包车,不支付跨天包车";
             }
 
-            
             if (tellTips === 0 || tellTips==="") {
                 // 成功则赋值
                 if ( releaseData.useType === "往返") {
