@@ -2,8 +2,8 @@
         background: #fff;
         text-align: center;
         line-height: 42px;
-        text-indent: 20%;
         font-size: 18px;
+        padding-left: 42px;
         border-bottom: 1px solid #f2f2f2;    
     }
     .cjart-bus .bus .bus-header .bus-myOrder{
@@ -137,7 +137,8 @@
         text-align: center;
     }
     .bus .tell-mytrips .tell-haoma .tell-haomaright{
-        color: #2290f9
+        color: #2290f9;
+        display: inline-block;
     }
 /* 选车页面的设置 */
     /* 头部设置 */
@@ -266,7 +267,7 @@
     }
     .selectcar-submit .selectcar-submitleft{
         display: inline-block;
-        margin-left: 12px;
+        margin-left: 5px;
         color: #322f2f;
         font-size: 15px;
     }
@@ -436,6 +437,7 @@
         padding: 6px 14px 12px 10px;
         font-size:12px;
         border: 1px solid #1260a0;
+        z-index: 1;
     }
     .myorder #idmyorder .tjorder .tjorder-hd{
         height: 24px;
@@ -523,7 +525,7 @@
         font-size: 14px;
     }
     .myorder .tjorder-date .tjorder-daterightmoney{
-        width: 50%;
+        width: 60%;
         display: inline-block;
         text-align: left;
     }
@@ -912,9 +914,9 @@
         top: 42px;
         left: 0px;
         width: 100%;
-        background: #ffff;
+        background: #ffffff;
         border-bottom: 1px solid #f2f2f2;
-        z-index: 100;
+        z-index: 200;
     }
     .myorder-select  .myorder-sttop{
 
@@ -1003,10 +1005,10 @@
     }
     .details .details-center .details-ctleft{
         line-height: 32px;
-        text-indent: 16px;
         font-size: 15px;
         color: #1e79bd;
-        width: 20%;
+        width: 16%;
+        margin-left: 4%;
         margin-top: 10px;
     }
     .details .details-center .details-ctright{
@@ -1018,6 +1020,9 @@
     }
     .details .details-center .details-ctrightje{
         display: block;
+        float: left;
+        width: 85%;
+        text-indent: 0px;
     }
     .details .details-center .details-ctrighttime{
         display: block;
@@ -1039,7 +1044,8 @@
         text-indent: 16px;
         font-size: 15px;
         color: #1e79bd;
-        width: 20%;
+        width: 16%;
+        margin-left: 4%;
     }
     /* 主要设置 */
     .details .details-footer .details-ftdadiv .details-ftright{
@@ -1122,25 +1128,26 @@
     }
     .details-macker .details-mackerleft{
         line-height: 32px;
-        text-indent: 16px;
         font-size: 15px;
         color: #1e79bd;
-        width: 20%;
-        float:left;
+        width: 14%;
+        float: left;
+        margin-left: 6%;
     }
     .details-macker .details-mackerright{
         float: right;
-        width: 80%;
+        width: 74%;
         font-size: 12px;
         line-height: 32px;
-        text-indent: 20px;
+        margin-left: 6%;
     }
     /* 单程什么的 */
     .details-biaoti{
         line-height: 50px;
         font-size: 16px;
-        text-indent: 26px;
         color: #2a2aaf;
+        display: block;
+        margin-left: 34px;
     }
 /* 按钮的样式 */
     .tjorder-myorderts{
@@ -1169,16 +1176,13 @@
         background: #f2f2f2;
     }
 /* 无限滚动的设置 */
-    .myorder {
+    .myorder-gdwcdiv {
         overflow-y: auto;
     }
     body{
         overflow-y:hidden;
     }
     .selectcar{
-        overflow-y: auto;
-    }
-    .myorder{
         overflow-y: auto;
     }
     .details{
@@ -1334,4 +1338,42 @@
 /* 其他 */
     .price-center{
         padding-bottom: 50px;
+    }
+/* 包车套餐的设置 */
+    .setmeal{
+        border: 1px solid #f2f2f2;
+        border-left: none;
+        border-right: none;
+    }
+    .setmeal .setmeal-left{
+        float: left;
+        width: 19%;
+        line-height: 72px;
+        margin-left: 5%;
+    }
+    .setmeal  .setmeal-center{
+        display: inline-block;
+        background: #2577e3;
+        color: #fff;
+        width: 42%;
+        float: left;
+        border-radius: 2px;
+        margin: 13px 0px;
+        margin-left: 8%;
+        line-height: 20px;
+    }
+    .setmeal  .setmeal-center .setmeal-ctheader{
+        font-size: 14px;
+        text-align: center;
+        line-height: 25px;
+        display: block;
+    }
+    .setmeal  .setmeal-center .setmeal-ctfooter{
+        font-size: 12px;
+        display: block;
+        text-align: center;
+    }   
+/* 元符号 */
+    .details-centeryen{
+        float: left;
     }

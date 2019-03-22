@@ -9,6 +9,9 @@ address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font
 a { text-decoration:none; }
 a:hover { text-decoration:none; color:#555}
 a:focus { text-decoration:none; color:#555}
+a:active { text-decoration:none; color:#555}
+a:link{text-decoration:none;color:#555 }
+a:visited{text-decoration:none; color:#555}
 img { border:none; }
 ol,ul,li { list-style:none; }
 input, textarea, select, button { font:14px Verdana,Helvetica,Arial,sans-serif; }
@@ -21,7 +24,7 @@ html {overflow-y: scroll;}
 .right{float:right;}
 .divw{width:100%}
 .autow{ margin:0 auto;}
-a{color:#5E5E5E;}
+a{color:#5E5E5E;text-decoration:none;}
 .clear {
 	clear: both;
 	height: 0;

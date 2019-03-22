@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>空巴通-团队包车</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./charteredBus/css/react.css">
     <!-- 图标 -->
     <link rel="shortcut icon" href="./charteredBus/img/bus.jpg">   
     <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="./charteredBus/css/react.css">
     <!-- 字体图标 -->
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_1071099_gkxg4x4brx.css">
     <!-- 时间css的引入 -->
@@ -99,7 +99,7 @@
             </div>
             <div class="tell-haoma">
                 <span class="tell-haomaleft">客服热线:</span>
-                <span class="tell-haomaright">0519-8888-2002</span>
+                <a  href="tel:0519-8888-2002" class="tell-haomaright">0519-8888-2002</a>
             </div>
         </div>
     </div>
@@ -128,6 +128,10 @@
                     <span   id="selectcar-arrival" class="selectcar-tcity"></span>
                     <span  id="selectcar-arrivalTime" class="selectcar-tdate"></span>
                 </div>
+                <div  class="selectcar-tdiv clearfix">
+                    <span class="selectcar-tspan" style="background:#c8c663">路程</span>
+                    <span class="selectcar-tcity" id="selectcar-kilometre"></span>
+                </div>
             </div>
         </div>
         <!-- 选车 选择车的型号-->
@@ -147,6 +151,14 @@
                 <span class="selectcar-goodslficonone iconfont icon1"></span>
                 <span class="selectcar-goodslftwo iconfont iconcheng"></span>
                 <span id="selectcar-goodsmatter">2</span>
+            </div>
+        </div>
+        <!-- 包车套餐 -->
+        <div class="setmeal clearfix">
+            <div class="setmeal-left">包车套餐</div>
+            <div class="setmeal-center clearfix">
+                <span class="setmeal-ctheader">每天100公里5小时</span>
+                <span class="setmeal-ctfooter">(超出请参考查看细则)</span>
             </div>
         </div>
         <!-- 给司机留言 -->
@@ -177,9 +189,10 @@
         <!-- 提交订单 -->
         <div class="selectcar-submit clearfix">
             <div id="selectcar-submitdiv" class="clearfix">
-                <span class="selectcar-submitleft">预估金额(元)</span>
+                <span class="selectcar-submitleft">预估价:</span>
+                <i style="font-style: normal;margin-right: 2px;">&yen;</i>
                 <span id="selectcar-submitmoney"></span>
-                <span class="selectcar-submitspan">(可点击查看细则)</span>
+                <span class="selectcar-submitspan">(查看细则)</span>
             </div>
             <span  id="selectcar-tijiao" class="selectcar-submitright">立即包车</span>
         </div>
@@ -204,18 +217,30 @@
         </div>
         <!-- 支付信息 -->
         <!-- 要根据状态来改变 -->
+        <div  id="details-oddNumber" style="display: none;">
+            <div class="details-center clearfix" >
+                <span class="details-ctleft left" style="margin-left:0px;width:25%;margin-top:0px;line-height:40px;text-align:center;">支付单号</span>
+                <div class="details-ctright right" id="details-oddsz" style="line-height:40px;width:75%;"></div>
+            </div>
+            <div class="details-center clearfix">
+                <span class="details-ctleft left" style="margin-left:0px;width:25%;margin-top:0px;line-height:40px;text-align:center;">订单价格</span>
+                <i style="font-style: normal;margin-right: 2px;line-height:40px;margin-left: 20px;" class="details-centeryen">&yen;</i>
+                <span id="details-pricedh" class="details-ctright right" style="line-height:40px;width:60%;float:left;text-indent: 0px;"></span>
+            </div>
+        </div>
         <div class="details-center clearfix" id="details-price" style="display: none;">
             <span class="details-ctleft left">支付</span>
             <div class="details-ctright right clearfix">
+                <i style="font-style: normal;margin-right: 2px;" class="details-centeryen">&yen;</i>
                 <span id="details-priceje" class="details-ctrightje"></span>
                 <span id="details-pricetime" class="details-ctrighttime"></span>
-                <span id="details-pricedh" class="details-ctrightdh"></span>
             </div>
         </div>
         <!-- 有没退款，有退款则显示 -->
         <div class="details-center  clearfix" id="details-refund" style="display: none;">
             <span class="details-ctleft left">退款</span>
             <div class="details-ctright right clearfix">
+                <i style="font-style: normal;margin-right: 2px;" class="details-centeryen">&yen;</i>
                 <span id="details-refundje" class="details-ctrightje"></span>
                 <span id="details-refundtime" class="details-ctrighttime"></span>
                 <span id="details-refunddh" class="details-ctrightdh"></span>
@@ -289,19 +314,18 @@
             <p>包车按车收费，可根据人数和行李数选择合适的车型。</p>
             <span>价格包含</span>
             <p>1:超公里费 当日用车总里程超过100公里后，司机将按1元/公里收取超公里费。</p>
-            <p>2:套餐规定的公里数和时长数、车辆使用费、燃油费、司机餐食费、司机服务费</p>
+            <p>2:套餐规定的100公里数和5小时时长数、车辆使用费、燃油费、司机餐食费、司机服务费</p>
             <span>价格不含</span>
             <p>1:超时长费当日用车总时长超过5小时后，司机将按30元/小时标准收取超时长费。</p>
             <p>2:空驶费当日结束用车地点与出发地点间距离若超过50公里，则超出部分将按照1元/公里收取空驶费。当日套餐内公里数未用完，可抵扣空驶公里数。</p>
-            <p>3:车辆使用费、燃油费、司机餐食费、司机服务费</p>
-            <p>4:第三方收费:第三方收取的停车费、高速费、过路费、过桥费由乘客现场自付，票据自行保留。（单程用车如产生回程的高速费需另外支付，票据可联系客服快递到付）</p>
+            <p>3:第三方收费:第三方收取的停车费、高速费、过路费、过桥费由乘客现场自付，票据自行保留。（单程用车如产生回程的高速费需另外支付，票据可联系客服快递到付）</p>
             <p>注：如产生套餐不含费用项请在服务结束后，将钱（RMB或等额外币）面付司机。严禁司机额外乱收费，如发现可联系客服核实退还。</p>
             <span>取消时间</span>
             <p>出发时间前一天可免费取消。超过最晚取消时间，将收取你一定金额的违约金</p>
             <span>开具发票</span>
             <p>如需发票，由空巴通统一开具。请在支付成功后至订单详情页填写开票信息,（发票金额不含礼品卡支付金额以及客人自付第三方停车、路桥费金额）。</p>
             <span>套餐期限</span>
-            <p>团队包车只能预定一日，当日24点仍未使用自动作废。建议每日最长包车时长不超过12小时。</p>
+            <p>团队包车只能预定一日，多日建议下多个单子。建议每日最长包车时长不超过12小时。</p>
             <span>注意事项</span>
             <p>高速限行时间夜间22：00~次日05：00，请合理安排时间。</p>
         </div>
@@ -412,14 +436,16 @@
             </div>
         </div>
         <!-- 循环添加订单的地方 -->
-        <div class="clearfix" id="idmyorder">
-            
-        </div>
-        <div class="runvownerNode-load-status" style="text-align: center;color: #1212a2;">
-            <p class="infinite-scroll-request jzxsjgaa"  style="display:none">稍等...</p>
-            <p class="infinite-scroll-last jzxsjgaa" style="display:none">加载内容结束</p>
-            <p class="infinite-scroll-error jzxsjgaa" style="display:none">没有数据加载页面了！去其他地方逛逛吧！</p>
-        </div>
+        <div class="myorder-gdwcdiv clearfix" >
+            <div class="clearfix" id="idmyorder">
+
+            </div>
+            <div class="runvownerNode-load-status" style="text-align: center;color: #1212a2;">
+                <p class="infinite-scroll-request jzxsjgaa"  style="display:none">稍等...</p>
+                <p class="infinite-scroll-last jzxsjgaa" style="display:none">加载内容结束</p>
+                <p class="infinite-scroll-error jzxsjgaa" style="display:none">没有数据加载页面了！去其他地方逛逛吧！</p>
+            </div>
+        </div> 
     </div>
     <!-- 城市选择页 -->
     <div id="searchcity" class="clearfix"  style="display:none;">
@@ -480,7 +506,7 @@
             <span class="careful-ctheader">用车须知</span>
             <div class="careful-ctcenter clearfix">
                 <p>
-                    1．定制包车产品提供城市间点到点的个性化接送服务，司机会根据路况合理安排行程。如您有特殊需求：如需在多个地点上下车、有老人儿童坐车需特殊照顾等，请在人工客服电话中说明。
+                    1．定制包车产品提供城市间点到点的个性化接送服务，司机会根据路况合理安排行程。如您有特殊需求：如需在多个地点上下车、有老人儿童坐车需特殊照顾等，请在人工客服电话中说明或备注中写明。
                 </p>
                 <p>
                     2．提交用车订单后，客服人员会第一时间处理您的订单，日内将会给你来电，请您一定要接听。
@@ -497,10 +523,10 @@
             <span class="careful-ctheader">退改规则</span>
             <div class="careful-ctcenter clearfix">
                 <p>
-                1.如您因个人原因需要退单，可拨打电话0519-8888-2002为您退款。在用车前5小时申请退单，我们将为您全额退款；用车前5小时至2小时之间退单，收取支付金额的30%作为违约金；用车前2小时以内，由于司机已经就位，订单不可取消，敬请谅解。
+                1.如您因个人原因需要退单，可拨打电话0519-8888-2002为您退款。在用车前一天申请退单，我们将为您全额退款；用车前24小时内，订单不可取消，敬请谅解。
                 </p>
                 <p>
-                2. 订单不支持修改，若您需要修改订单请在用车前5小时取消订单，然后重新下单。
+                2. 订单不支持修改，若您需要修改订单请在用车前一天取消订单，然后重新下单。
                 </p>
                 <p>
                 3. 若下单时使用了红包，退单时红包不予退还
