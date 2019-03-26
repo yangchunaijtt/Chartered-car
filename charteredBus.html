@@ -157,7 +157,7 @@
         <div class="setmeal clearfix">
             <div class="setmeal-left">包车套餐</div>
             <div class="setmeal-center clearfix">
-                <span class="setmeal-ctheader">每天100公里5小时</span>
+                <span class="setmeal-ctheader">每天100公里8小时</span>
                 <span class="setmeal-ctfooter">(超出请参考查看细则)</span>
             </div>
         </div>
@@ -176,7 +176,7 @@
                     注意事项
                 </div>
                 <div class="selectcar-behdright">
-                    <p>1. 订单金额为一次用车服务的全部费用，已包含车辆使用费、司机服务费、高速费等常规费用。</p>
+                    <p>1. 订单金额为一次用车服务的全部费用，已包含车辆使用费、司机服务费等常规费用。</p>
                     <p>2. 若您的行程因上下车点过多，偏远地区绕行绕远，将由客服人员联系您进行费用补收说明。司机不得向乘客收取任何费用。</p>
                     <p>3. 9座及以上座位数车型请至少提前2天预订，以保证订单成功派车（高速限行时间夜间22：00~次日05：00）</p>
                 </div>
@@ -309,25 +309,92 @@
             <span id="price-return" class="iconfont iconfanhui1"></span>
             <span class="price-bt">预订须知</span>
         </div>
-        <div class="price-center clearfix">
-            <span>套餐说明</span>
-            <p>包车按车收费，可根据人数和行李数选择合适的车型。</p>
-            <span>价格包含</span>
-            <p>1:超公里费 当日用车总里程超过100公里后，司机将按1元/公里收取超公里费。</p>
-            <p>2:套餐规定的100公里数和5小时时长数、车辆使用费、燃油费、司机餐食费、司机服务费</p>
-            <span>价格不含</span>
-            <p>1:超时长费当日用车总时长超过5小时后，司机将按30元/小时标准收取超时长费。</p>
-            <p>2:空驶费当日结束用车地点与出发地点间距离若超过50公里，则超出部分将按照1元/公里收取空驶费。当日套餐内公里数未用完，可抵扣空驶公里数。</p>
-            <p>3:第三方收费:第三方收取的停车费、高速费、过路费、过桥费由乘客现场自付，票据自行保留。（单程用车如产生回程的高速费需另外支付，票据可联系客服快递到付）</p>
-            <p>注：如产生套餐不含费用项请在服务结束后，将钱（RMB或等额外币）面付司机。严禁司机额外乱收费，如发现可联系客服核实退还。</p>
-            <span>取消时间</span>
-            <p>出发时间前一天可免费取消。超过最晚取消时间，将收取你一定金额的违约金</p>
-            <span>开具发票</span>
-            <p>如需发票，由空巴通统一开具。请在支付成功后至订单详情页填写开票信息,（发票金额不含礼品卡支付金额以及客人自付第三方停车、路桥费金额）。</p>
-            <span>套餐期限</span>
-            <p>团队包车只能预定一日，多日建议下多个单子。建议每日最长包车时长不超过12小时。</p>
-            <span>注意事项</span>
-            <p>高速限行时间夜间22：00~次日05：00，请合理安排时间。</p>
+        <div class="price-newcenter clearfix">
+            <div class="price-ftheader clearfix">
+                <span class="price-fthdicon"></span>
+                <span class="pricce-fthdspan">套餐费用包含</span>
+            </div>
+            <div class="price-ftbodydiv clearfix">
+                <h3>套餐时间和公里</h3>
+                <p>每天8小时100公里X1天</p>
+                <p>套餐规定的100公里数和8小时时长数、车辆使用费、燃油费、司机服务费。</p>
+                <div class="price-ftbodydiv-money clearfix">
+                    <div class="price-ftbodydivleft clearfix">
+                        <h3>超公里费</h3>
+                        <p>超出部分按公里收费</p>
+                    </div>
+                    <div class="price-ftbodydivright clearfix">
+                        <i style="font-style: normal;margin-right: 2px;">&yen;</i>
+                        <span  id="price-exceedkile"></span>
+                    </div>
+                </div>
+            </div>  
+
+            <div class="price-ftheader clearfix">
+                <span class="price-fthdicon"></span>
+                <span class="pricce-fthdspan">套餐费用不含</span>
+            </div>
+
+            <div class="price-ftbodydiv clearfix">
+                <div class="price-ftbodydivtop clearfix">
+                    <div class="price-ftbodydivleft clearfix">
+                            <h3>超时长费</h3>
+                            <p>超出部分按小时收费</p>
+                        </div>
+                        <div class="price-ftbodydivright clearfix">
+                            <i style="font-style: normal;margin-right: 2px;">&yen;</i>
+                            <span  id="price-exceedtime"></span>
+                        </div>
+                </div>
+                <div class="price-ftbodydivleft clearfix">
+                        <h3>第三方收费</h3>
+                        <p>第三方收取的停车费、高速费、过路费、过桥费由包车方现场自付，票据自行保留。（单程用车如产生回程的高速费需另外支付，票据可联系客服快递到付)</p>
+                </div>
+                <div class="price-ftbodydivleft clearfix">
+                        <h3>特别说明</h3>
+                        <p>如产生套餐不含费用项请在服务结束后，将钱（RMB或等额外币）面付司机。严禁司机额外乱收费，如发现可联系客服核实退还。</p>
+                </div>
+            </div>
+          
+
+
+            <div class="price-ftheader clearfix">
+                    <span class="price-fthdicon"></span>
+                    <span class="pricce-fthdspan">取消时间</span>
+            </div>
+            
+
+            <div class="price-centerdiv clearfix">
+                 <p> 6座及6座以下可提前五小时免费取消,其他可提前一天免费取消。超过最晚取消时间，将收取您一定金额的违约金。</p>  
+            </div>  
+
+            <div class="price-ftheader clearfix">
+                    <span class="price-fthdicon"></span>
+                    <span class="pricce-fthdspan">开具发票</span>
+            </div>
+            
+            <div class="price-centerdiv clearfix">
+                 <p> 如需发票，由空巴通统一开具。请在支付成功后至订单详情页填写开票信息,（发票金额不含礼品卡支付金额以及客人自付第三方停车、路桥费金额）。</p>  
+            </div> 
+
+            <div class="price-ftheader clearfix">
+                    <span class="price-fthdicon"></span>
+                    <span class="pricce-fthdspan">套餐期限</span>
+            </div>
+            
+            <div class="price-centerdiv clearfix">
+                 <p> 团队包车只能预定一日，多日建议下多个单子。建议每日最长包车时长不超过12小时。</p>  
+            </div> 
+
+            <div class="price-ftheader clearfix">
+                    <span class="price-fthdicon"></span>
+                    <span class="pricce-fthdspan">注意事项</span>
+            </div>
+            
+            <div class="price-centerdiv clearfix">
+                 <p> 高速限行时间夜间22：00~次日05：00，请合理安排时间。</p>  
+            </div> 
+
         </div>
     </div> 
     <!-- 地图页 -->

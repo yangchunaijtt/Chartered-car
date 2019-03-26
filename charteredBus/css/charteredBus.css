@@ -1377,3 +1377,76 @@
     .details-centeryen{
         float: left;
     }
+/* 发票的样式 */
+    .price-newcenter{
+        background: #fff;
+        border-top: 1px solid #f2f2f2;
+        padding-bottom: 20px;
+    }
+    /* 头部 */
+    .price-ftheader{
+        line-height: 30px;
+        margin: 10px 0px;
+    }
+    .price-ftheader .price-fthdicon{
+        width: 4px;
+        background: #d4a007;
+        display: inline-block;
+        height: 23px;
+        border-radius: 1px;
+        margin-left: 20px;
+        margin-top: 7px;
+        float: left;
+        
+    }
+    .price-ftheader .pricce-fthdspan{
+        font-size: 19px;
+        margin-top: 4px;
+        float: left;
+        margin-left: 14px;
+        color: #0a0a0a;
+    }
+    /* 内容 */
+    .price-ftbodydiv{
+        margin: 20px;
+        border: 1px solid #f2f2f2;
+        border-radius: 14px;
+        padding: 10px;
+    }
+    /* 下部分内容 */
+    .price-centerdiv{
+        margin: 20px;
+        border: 1px solid #f2f2f2;
+        border-radius: 14px;
+        padding: 10px;
+    }
+    .price-centerdiv p{
+        text-indent: 2em;
+        color: #333;
+    }
+    /* 中间 */
+    .price-ftbodydiv h3{
+        color: #333;
+        font-size: 17px;
+        line-height: 30px;
+    }
+    .price-ftbodydiv p{
+        color:#999;
+    }
+    .price-ftbodydivleft{
+        width:65%;
+        float:left;
+    }
+    .price-ftbodydivright{
+        width:35%;
+        float:right;
+        color:#d4a007;
+        line-height: 30px;
+        font-size: 18px;
+    }
+    .price-ftbodydivright i {
+        float:left;
+    }
+    .price-ftbodydivright .price-ftbodydivright {
+        float:left;
+    }
