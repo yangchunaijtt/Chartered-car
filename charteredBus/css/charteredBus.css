@@ -148,6 +148,11 @@
         line-height: 42px;
         font-size: 18px;
         border-bottom: 1px solid #f2f2f2;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        z-index: 160;
     }
     .selectcar .selectcar-hd .selectcar-hdicon{
         display: inline-block;
@@ -369,6 +374,11 @@
         background: #fff;
         line-height: 42px;
         font-size: 18px;
+        width: 100%;
+        left: 0;
+        top: 0;
+        z-index: 180;
+        border-bottom: 1px solid #f2f2f2;
     }
     .careful .careful-header .careful-hdicon{
         display: inline-block;
@@ -785,6 +795,11 @@
         border-bottom: 1px solid #f2f2f2;
         background: #448aff;
         color: #fff;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        z-index: 180;
     }
     .address .address-header .address-hdleft{
         display: inline-block;
@@ -813,6 +828,7 @@
         line-height: 44px;
         font-size: 12px;
         z-index: 999;
+        margin-top: 42px;
     }
     .address .address-city .address-cityleft{
         display: inline-block;
@@ -983,6 +999,11 @@
         height: 42px;
         font-size: 18px;
         border-bottom: 1px solid #f2f2f2;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        z-index: 160;
     }
     .details .details-header .details-hdleft{
         display: inline-block;
@@ -1044,8 +1065,7 @@
         text-indent: 16px;
         font-size: 15px;
         color: #1e79bd;
-        width: 16%;
-        margin-left: 4%;
+        width: 20%;
     }
     /* 主要设置 */
     .details .details-footer .details-ftdadiv .details-ftright{
@@ -1148,6 +1168,7 @@
         color: #2a2aaf;
         display: block;
         margin-left: 34px;
+        margin-top: 42px;
     }
 /* 按钮的样式 */
     .tjorder-myorderts{
@@ -1194,7 +1215,7 @@
     .careful{
         overflow-y: auto;
     }
-    .address{
+    .address #add-address{
         overflow-y: auto;
     }
 /* 引入的按钮提示 css样式 */
@@ -1256,6 +1277,12 @@
         background: #fff;
         line-height: 42px;
         font-size: 18px;
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top: 0;
+        z-index: 180;
+        border-bottom: 1px solid #f2f2f2;
     }
     .price-header #price-return{
         display: inline-block;

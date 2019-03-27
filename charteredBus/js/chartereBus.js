@@ -21,34 +21,38 @@ $(function(){
         if(null == newPageData.uid || "" == newPageData.uid) {
             register("http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/Register_content.html");   //返回注册登录页面
         } else {
+            $(document.body).outerHeight($(window).outerHeight());
 			//我的订单
 			//全部行程页 车主页的高度 
 			$(".myorder").outerHeight($(document.body).outerHeight());
-			$(".myorder-gdwcdiv").outerHeight($(document.body).outerHeight()-$(".myorder-header").outerHeight());
+			$(".myorder-gdwcdiv").outerHeight($(document.body).outerHeight()-$(".myorder-header").outerHeight()-6);
             // 得到订单数据
             myorder.myorderPage("","","");
             // 获取车辆类型
             selectcar.cartype();
             // 我的订单页绑定无限滚动效果
             //hdrunvowner();
+            //城市具体地址选择页
+            $(".address").outerHeight($(document.body).outerHeight());
+            $("#add-address").outerHeight($(".address").outerHeight()-$(".address-city").outerHeight()-$(".address-header").outerHeight());
+            // 提交订单页设置高度
+            $(".selectcar").outerHeight($(document.body).outerHeight());
+
+            // 地图页大小
+            $(".busMap").outerHeight($(document.body).outerHeight());
+            $("#container").outerHeight($(document.body).outerHeight()-42);
+            // 详情页
+            $(".details").outerHeight($(document.body).outerHeight());
+
+            // 重要信息提示页
+            $(".careful").outerHeight($(document.body).outerHeight());
+            
+            $(".price").outerHeight($(document.body).outerHeight());
         }
     },location.search);
 // 设置高度
-    $(document.body).outerHeight($(window).outerHeight());
-    // 提交订单页设置高度
-    $(".selectcar").outerHeight($(document.body).outerHeight());
-    // 地图页大小
-    $(".busMap").outerHeight($(document.body).outerHeight());
-    $("#container").outerHeight($(document.body).outerHeight()-42);
-    // 详情页
-    $(".details").outerHeight($(document.body).outerHeight());
-    // 选车页
-    $(".selectcar").outerHeight($(document.body).outerHeight());
-    // 重要信息提示页
-    $(".careful").outerHeight($(document.body).outerHeight());
-    //城市具体地址选择页
-    $(".address").outerHeight($(document.body).outerHeight());
-    $(".price").outerHeight($(document.body).outerHeight());
+    
+    
 // 初始化调用的函数
     setTimeWheel();
 //首页绑定事件
@@ -462,11 +466,13 @@ $(function(){
                             $("#idmyorder").append(obtainData.template.myorder);
                             myorder.myorderRender(myorder.myorderData[i]);
                         }
- 						runvownerval.page = data.page;
-						hdrunvowner(status,dateRange);
+ 						
 						if(data.page === 1){
 							myorder.lastShow();
-						}
+						}else if (data.page>1){
+                            runvownerval.page = data.page;
+                            hdrunvowner(status,dateRange);
+                        }
                     }else{
 						myorder.errShow();
 					}
@@ -1424,6 +1430,10 @@ $(function(){
                         $("#bus-arcity").text("您要去哪儿");
                         $("#bus-personinput").val("");
                         $("#tell-phone").val("");
+                        // 地图页的初始化
+                       $("#busMap-dzname").text("请选择地址");
+                       $("#busMap-dzcityname").text("请选择地址");
+                       $("#busMap-dzcity").text("请选择城市");
                         setTimeout(function(){
                             // 得到订单数据
                             myorder.myorderPage("","","");
@@ -1609,7 +1619,7 @@ $(function(){
             // 定位功能  
             AMap.plugin('AMap.Geolocation', function() {
                 var geolocation = new AMap.Geolocation({
-                    enableHighAccuracy: true, //是否使用高精度定位，默认:true
+                    enableHighAccuracy:false, //是否使用高精度定位，默认:true
                     timeout: 10000,          //超过10秒后停止定位，默认：5s
                     buttonPosition:'RB',     //定位按钮的停靠位置
                     buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
