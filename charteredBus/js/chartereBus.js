@@ -19,9 +19,9 @@ $(function(){
         newPageData.openid = openid;
         console.log("openid",openid,newPageData.uid,newPageData.openid);
         if(null == newPageData.uid || "" == newPageData.uid) {
-            register("http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/Register_content.html");   //返回注册登录页面
+            register("//qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/Register_content.html");   //返回注册登录页面
         } else {
-            $(document.body).outerHeight($(window).outerHeight());
+            //$(document.body).outerHeight($(window).outerHeight());
 			//我的订单
 			//全部行程页 车主页的高度 
 			$(".myorder").outerHeight($(document.body).outerHeight());
@@ -447,7 +447,7 @@ $(function(){
         myorderData:"",
         myorderPage:function(coid,status,dateRange){
             $.ajax({
-                url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders.asp",
+                url:"//qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders.asp",
                 type:"post",
                 data:{
                     cur:1,       	//查看页码
@@ -522,8 +522,8 @@ $(function(){
                 $("#myorder-ddcancel").attr("id",myorder_ddcancelthree);
             }else if (val.status===1){
                 odstatus = "已付款";
-                var khtime = Date.parse(val.departureTime);
-                var jttime =  Date.parse(new Date().toLocaleDateString());
+                var khtime = Date.parse((val.departureTime).replace(/-/g,"/"));
+                var jttime =  Date.parse(new Date().toLocaleDateString().replace(/-/g,"/"));
                 console.log("时间比较",khtime,jttime);
                 if (parseInt(khtime) -  parseInt(jttime)  >  86400000){
                     $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
@@ -608,7 +608,7 @@ $(function(){
             var myorder_odprice = "myorder-odprice"+val.id;
             $("#myorder-odprice").attr("id",myorder_odprice);    
             // a标签
-            var ahref = "http://qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/charteredBus.html#details"+"?uid="+val.uid+"&id="+val.id;
+            var ahref = "//qckj.czgdly.com/bus/MobileWeb/WxWeb-kongbatong/charteredBus.html#details"+"?uid="+val.uid+"&id="+val.id;
             $("#myorder-odahref").attr("href",ahref);
             var myorder_odahref = "myorder-odahref"+val.id;
             $("#myorder-odahref").attr("id",myorder_odahref);
@@ -642,7 +642,7 @@ $(function(){
             console.log("取消",uid,id);
             $.ajax({
                 type:"post",
-                url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/cancelChaOrder.asp",
+                url:"//qckj.czgdly.com/bus/MobileWeb/madeChaOrders/cancelChaOrder.asp",
                 data:{
                     uid:uid,
                     id:id
@@ -795,7 +795,7 @@ $(function(){
                 // 数据量很小情况下  报错了 
                 if(  this.loadCount <= runvownerval.page - 2 ){
                     // 获取全部时间的行程，失效页没有关系 
-                    return "http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders_get.asp?cur="+(this.loadCount+2)+"&uid="+newPageData.uid+"&coid="+"&status="+status+"&dateRange="+dateRange+"&pageSize=8";
+                    return "//qckj.czgdly.com/bus/MobileWeb/madeChaOrders/queryPageMadeChaOrders_get.asp?cur="+(this.loadCount+2)+"&uid="+newPageData.uid+"&coid="+"&status="+status+"&dateRange="+dateRange+"&pageSize=8";
                 }
             },
 			append:".tjorder",
@@ -837,7 +837,7 @@ $(function(){
             var ida  = hashtwo[1].split("=");
             $.ajax({
                 type:"post",
-                url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/getChaOrderDetails.asp",
+                url:"//qckj.czgdly.com/bus/MobileWeb/madeChaOrders/getChaOrderDetails.asp",
                 data:{
                     uid:parseInt(uida[1]),
                     id:parseInt(ida[1]) 
@@ -885,8 +885,8 @@ $(function(){
                     $("#myorder-ddcancel").attr("id",myorder_ddcancelthree);
                 }else if (val.status===1){
                     odstatus = "(已付款)";
-                    var khtime = Date.parse(val.departureTime);
-                    var jttime =  Date.parse(new Date().toLocaleDateString());
+                    var khtime = Date.parse((val.departureTime).replace(/-/g,"/"));
+                    var jttime =  Date.parse(new Date().toLocaleDateString().replace(/-/g,"/"));
                     console.log("时间比较",khtime,jttime);
                     if (parseInt(khtime) -  parseInt(jttime)  >  86400000){
                         $("#details-buttonan").append('<span id="myorder-ddcancel" class="details-submitbutton" style="display:block;">取消订单</span>');
@@ -1034,7 +1034,7 @@ $(function(){
                 tellTips ="请填写联系人姓名";
             }else if ($("#tell-phone").val()=="") {
                 tellTips ="请填写联系人电话";
-            }else if ( Date.parse($("#dt-a-0").attr("data-val")) > Date.parse($("#dt-a-0").attr("data-val")+1000) ) {
+            }else if ( Date.parse($("#dt-a-0").attr("data-val").replace(/-/g,"/")) > Date.parse($("#dt-a-0").attr("data-val").replace(/-/g,"/")+1000) ) {
                 tellTips="时间选择出错,请注意";
             }
 
@@ -1071,7 +1071,7 @@ $(function(){
         cartype:function(){
             $.ajax({
                 type:"post",
-                url:"http://qckj.czgdly.com/bus/MobileWeb/buyTicket/readChaCarTypes.asp",
+                url:"//qckj.czgdly.com/bus/MobileWeb/buyTicket/readChaCarTypes.asp",
                 data:{
                     top:0,
                     id:""
@@ -1394,7 +1394,7 @@ $(function(){
             // 读取车辆类型
             $.ajax({
                 type:"post",
-                url:"http://qckj.czgdly.com/bus/MobileWeb/madeChaOrders/saveMadeChaOrders.asp",
+                url:"//qckj.czgdly.com/bus/MobileWeb/madeChaOrders/saveMadeChaOrders.asp",
                 data:{
                     uid:newPageData.uid,				 //用户id
                     dpCity:dpCity.trim(),			    //出发城市
@@ -1785,7 +1785,7 @@ $(function(){
             dateFormat: 'yyyy-mm-dd',
             startYear:currYear, //开始年份
             endYear:currYear + 1, //结束年份
-            stepMinute: 1,  // More info about stepMinute: http://docs.mobiscroll.com/2-16-1/datetime#!opt-stepMinute
+            stepMinute: 1,  // More info about stepMinute: //docs.mobiscroll.com/2-16-1/datetime#!opt-stepMinute
             onSelect: function (valueText, inst) {  
                 var sday = inst.getDate();  
                 var today = new Array('周日','周一','周二','周三','周四','周五','周六'); 

@@ -1,3 +1,7 @@
+/* body的高度问题 */
+    body{
+        height:100%;
+    }
     .cjart-bus .bus .bus-header{
         background: #fff;
         text-align: center;
