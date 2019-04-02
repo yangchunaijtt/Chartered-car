@@ -16,7 +16,7 @@ img { border:none; }
 ol,ul,li { list-style:none; }
 input, textarea, select, button { font:14px Verdana,Helvetica,Arial,sans-serif; }
 table { border-collapse:collapse; }
-html {overflow-y: scroll;}
+html {overflow-y: scroll;-webkit-overflow-scrolling: touch;}
 .clearfix:after {content: " "; display: block; clear:both; }
 .clearBox{clear:both;}
 .father{visibility: hidden;}

@@ -48,6 +48,8 @@ $(function(){
             $(".careful").outerHeight($(document.body).outerHeight());
             
             $(".price").outerHeight($(document.body).outerHeight());
+            // 定位功能
+            chartBus_amap();
         }
     },location.search);
 // 设置高度
@@ -345,7 +347,6 @@ $(function(){
 // 路由监控函数
     function hashChange(){
         var hash = window.location.hash;
-        console.log("路由值",window.location.hash);
         var hashone =  hash.split("?");
         var hashval = hashone[0]; // 用来判断路由
         var hashzhi = hashone[1]; // 用来取数据
@@ -995,10 +996,10 @@ $(function(){
                     tellTips ="请选择上车时间";
                 }else if (mdsjb==""){
                     tellTips ="请选择返程时间"; 
-                }else if ( parseInt($("#dt-c-1").attr("data-val").split("-")[2]) != parseInt($("#dt-a-0").attr("data-val").split("-")[2])  || parseInt($("#dt-c-1").attr("data-val").split("-")[0]) != parseInt($("#dt-a-0").attr("data-val").split("-")[0]) ||  parseInt($("#dt-c-1").attr("data-val").split("-")[1]) != parseInt($("#dt-a-0").attr("data-val").split("-")[1]) ) {
-                    tellTips="目前只支持日内包车,不支付跨天包车";
                 }
-            }else if (releaseData.dwlocationg===""){
+            }
+
+             if (releaseData.dwlocationg===""){
                 if(releaseData.fabudpData===""){
                     tellTips ="请选择出发地";
                 }
@@ -1196,43 +1197,35 @@ $(function(){
                  dLat =  releaseData.fabudpData.location.P;
              }
              var returnfs = 1;
+             var  day_time = 1;
+             var mileage = 100 ; // 送他多少里，默认一天的里数
              if(releaseData.useType==="单程"){
                  returnfs = 1;
+                 day_time = 1;
+                 mileage = 100;
              }else if (releaseData.useType==="往返"){
                  returnfs = 2;
+                 day_time = getTwoDayTime($("#dt-a-0").attr("data-val"),$("#dt-c-1").attr("data-val")) +1 ;
+                 mileage = mileage * day_time;
              }
              var dpcity  = [dLng.toFixed(6),dLat.toFixed(6)];
              var arcity =  [releaseData.fabuarData.location.lng.toFixed(6),releaseData.fabuarData.location.lat.toFixed(6)];
              var dis = parseFloat((AMap.GeometryUtil.distanceOfLine([dpcity,arcity])*returnfs/1000).toFixed(1));
-             console.log("初始化来回一共多少公里",dis);
+             console.log("初始化来回一共多少公里",dis, mileage);
              $("#selectcar-kilometre").text(dis+"(公里)");
              var dismoney = 0;
              // 超公里费
              var car_cmintiueMoney = 1;
-            if (releaseData.carType ==1){
-                car_cmintiueMoney = 1;
-            }else if (releaseData.carType ==2){
-                car_cmintiueMoney = 1.1;
-            }else if (releaseData.carType ==3){
-                car_cmintiueMoney = 1.2;
-            }else if (releaseData.carType ==4){
-                car_cmintiueMoney = 1.5;
-            }else if (releaseData.carType ==5){
-                car_cmintiueMoney = 1.8;
-            }else if (releaseData.carType ==6){
-                car_cmintiueMoney = 2.2;
-            }else if (releaseData.carType ==7){
-                car_cmintiueMoney = 2.3;
-            }else if (releaseData.carType ==8){
-                car_cmintiueMoney = 2.5;
-            }
+             car_cmintiueMoney = selectcar.carTypeData[0].disPrice;
+        
              var jcmoney = parseFloat(selectcar.carTypeData[0].price);
              releaseData.clickbus = selectcar.carTypeData[0];
-             if (dis>100) {
-                 dismoney = jcmoney+ (dis - 100)*car_cmintiueMoney;
+             if (dis>mileage) {
+                 dismoney = jcmoney+ ( dis - mileage )*car_cmintiueMoney;
              }else {
                  dismoney =jcmoney;
              }
+             dismoney =  dismoney*day_time;
              $("#selectcar-submitmoney").text(dismoney.toFixed(2));
         },
         clickbus:function(val,divname){
@@ -1271,6 +1264,7 @@ $(function(){
             // 价格
             var dLng = 0;           // 出发经度
             var dLat = 0;           // 出发纬度
+            
             if( releaseData.dwsjUsed === true ){
                 // 使用定位数据
                 dLng = releaseData.dwlocationg.position.R;
@@ -1281,41 +1275,35 @@ $(function(){
                 dLat =  releaseData.fabudpData.location.P;
             }
             var returnfs = 1;
+            var day_time = 1; // 天数，默认为1，不包天。
+            var mileage = 100 ; // 送他多少里，默认一天的里数
             if(releaseData.useType==="单程"){
                 returnfs = 1;
+                day_time = 1;
+                mileage = 100 ;
             }else if (releaseData.useType==="往返"){
                 returnfs = 2;
+                day_time = getTwoDayTime($("#dt-a-0").attr("data-val"),$("#dt-c-1").attr("data-val")) +1 ;
+                mileage =   mileage  *  day_time;
             }
             var dpcity  = [dLng.toFixed(6),dLat.toFixed(6)];
             var arcity =  [releaseData.fabuarData.location.lng.toFixed(6),releaseData.fabuarData.location.lat.toFixed(6)];
             var dis =parseFloat((AMap.GeometryUtil.distanceOfLine([dpcity,arcity])*returnfs/1000).toFixed(1));
-            console.log("来回一共多少公里",dis);
+            console.log("来回一共多少公里",dis,day_time,mileage);
             var dismoney = 0;
             // 超公里费
+          
             var car_cmintiueMoney = 1;
-            if (releaseData.carType ==1){
-                car_cmintiueMoney = 1;
-            }else if (releaseData.carType ==2){
-                car_cmintiueMoney = 1.1;
-            }else if (releaseData.carType ==3){
-                car_cmintiueMoney = 1.2;
-            }else if (releaseData.carType ==4){
-                car_cmintiueMoney = 1.5;
-            }else if (releaseData.carType ==5){
-                car_cmintiueMoney = 1.8;
-            }else if (releaseData.carType ==6){
-                car_cmintiueMoney = 2.2;
-            }else if (releaseData.carType ==7){
-                car_cmintiueMoney = 2.3;
-            }else if (releaseData.carType ==8){
-                car_cmintiueMoney = 2.5;
-            }
+            car_cmintiueMoney = releaseData.clickbus.disPrice;
+
             var jcmoney = parseFloat(releaseData.clickbus.price);
-            if (dis>100) {
-                dismoney = jcmoney+ (dis - 100)*car_cmintiueMoney;
+            if (dis>mileage) {
+                dismoney = jcmoney+ (dis - mileage)*car_cmintiueMoney;
             }else {
                 dismoney = jcmoney;
             }
+
+            dismoney = dismoney *day_time;
             $("#selectcar-submitmoney").text(dismoney.toFixed(2));
         },
         tijiao:function(){
@@ -1615,12 +1603,13 @@ $(function(){
 // 地图操作的函数
 
 // 定位功能  定位功能 
+    function chartBus_amap(){
         AMap.plugin('AMap.Geolocation', function() {
             var geolocation = new AMap.Geolocation({
-                enableHighAccuracy:false, //是否使用高精度定位，默认:true
+                enableHighAccuracy:true, //是否使用高精度定位，默认:true
                 timeout: 10000,          //超过10秒后停止定位，默认：5s
-                buttonPosition:'RB',     //定位按钮的停靠位置
-                buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                buttonPosition:'RT',     //定位按钮的停靠位置
+                buttonOffset: new AMap.Pixel(14,parseFloat($(document.body).outerHeight()*0.275)),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
                 zoomToAccuracy: true  //定位成功后是否自动调整地图视野到定位点
             });
             map.addControl(geolocation);
@@ -1633,7 +1622,8 @@ $(function(){
                 }
             });
         });
-
+    }
+        
     var container = {
         onsuccess:function(result){   // 定位成功得到的数据
             console.log("定位成功",result);
@@ -1701,11 +1691,19 @@ $(function(){
         }
         return true;
     }; 
-
-// 地图的初始化
-    var map = new AMap.Map('container', {
-        center:[119.955940,31.779140],
+    
+   // 地图的初始化
+   var map = new AMap.Map('container', {
+        center:[119.955,31.779],
         zoom:11
+    });
+    map.on('complete', function(){
+        // 地图图块加载完成后触发
+        // 位置
+        $(".amap-zoomcontrol").css({
+            "height":"94px",
+            "top":-($(document.body).outerHeight()*0.646875)+"px" 
+        });
     });
 
 
@@ -1767,10 +1765,22 @@ $(function(){
         }
     }
 
+// 获取结束时间 - 起始时间 的天数
+// startTime:起始时间  
+// endtime：结束时间
+function getTwoDayTime (startTime,endTime) {
+    startTime =   new Date(startTime);
+    endTime =   new Date(endTime);
+    var day   = 0;
+    day = parseInt((endTime.getTime() - startTime.getTime())/86400000);  // 60*60*100*42天
+    return day;
+}
+
 // 时间插件的函数
     // 时间选择所需要的数据 
     function setTimeWheel(){            
         var dd = new Date();
+        dd.setMinutes(Math.round(dd.getMinutes()/10)*10);
         var currYear = dd.getFullYear();  
         var opt={};
         //opt.datetime = { preset : 'datetime', minDate: new Date(2012,3,10,9,22), maxDate: new Date(2014,7,30,15,44), stepMinute: 5  };
@@ -1785,7 +1795,7 @@ $(function(){
             dateFormat: 'yyyy-mm-dd',
             startYear:currYear, //开始年份
             endYear:currYear + 1, //结束年份
-            stepMinute: 1,  // More info about stepMinute: //docs.mobiscroll.com/2-16-1/datetime#!opt-stepMinute
+            stepMinute: 10,  // More info about stepMinute: //docs.mobiscroll.com/2-16-1/datetime#!opt-stepMinute
             onSelect: function (valueText, inst) {  
                 var sday = inst.getDate();  
                 var today = new Array('周日','周一','周二','周三','周四','周五','周六'); 
@@ -1830,15 +1840,15 @@ $(function(){
 
 
                 if (releaseData.useType == "往返") {
-                    if ( this.id =="dt-a-0") {
-                        opt.sdatetime = {minDate: new Date($("#dt-a-0").attr("data-val"))};
-                        optSDateTime_tmp = $.extend(opt['sdatetime'], opt['sdtdefault_0']);
-                        $("#dt-c-1").mobiscroll().datetime(optSDateTime_tmp);
-                    }else if ( this.id =="dt-c-1"){
+                    if ( this.id =="dt-c-1"){
                         opt.sdatetime = {minDate:tmpNow,maxDate: new Date($("#dt-c-1").attr("data-val"))};
                         optSDateTime_tmp = $.extend(opt['sdatetime'], opt['sdtdefault_0']);
                         $("#dt-a-0").mobiscroll().datetime(optSDateTime_tmp);
-                    }
+                    }else if ( this.id =="dt-a-0" ){
+                        opt.sdatetime = {minDate:new Date($("#dt-a-0").attr("data-val"))};
+                        optSDateTime_tmp = $.extend(opt['sdatetime'], opt['sdtdefault_0']);
+                        $("#dt-c-1").mobiscroll().datetime(optSDateTime_tmp);
+                    }   
                 }else {
                     //  就是单程
                     $("#dt-a-0").mobiscroll().datetime(optSDateTime_tmp);
