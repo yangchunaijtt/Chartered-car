@@ -191,7 +191,7 @@
     }
     .selectcar-time .selectcar-timeleft .selectcar-tcity{
         display: inline-block;
-        width: 25%;
+        width: 32%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -225,9 +225,9 @@
     }   
     /* 注意事项 */
     .selectcar-be{
-        margin-top: 10px;
-        margin-bottom:80px;
+        margin-bottom: 80px;
         background: #fff;
+        border-top: 1px solid #f2f2f2;
     }
     .selectcar-be  .selectcar-behd {
         padding: 18px 24px 14px 12px;
@@ -378,11 +378,12 @@
         background: #fff;
         line-height: 42px;
         font-size: 18px;
-        width: 100%;
-        left: 0;
-        top: 0;
-        z-index: 180;
         border-bottom: 1px solid #f2f2f2;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        z-index: 180;
     }
     .careful .careful-header .careful-hdicon{
         display: inline-block;
@@ -716,7 +717,8 @@
         font-size: 12px;
         width: 20%;
         display: inline-block;
-        text-align: left;
+        text-align: right;
+        line-height: 41px;
     }
     .busMap .busMap-city .busMap-cityleft .busMap-ctlfxian{
         float:right;
@@ -852,6 +854,8 @@
         width: 20%;
         display: inline-block;
         text-align: left;
+        text-align: right;
+        line-height: 41px;
     }
     .address .address-city .address-cityleft .address-ctlfxian{
         float: right;
@@ -1228,6 +1232,7 @@
     .address #add-address{
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        padding-bottom: 76px;
     }
 /* 引入的按钮提示 css样式 */
 .mydiv {
@@ -1237,7 +1242,7 @@
     line-height: 40px;
     font-size: 16px;
     font-weight: bold;
-    z-index: 99;
+    z-index: 1200;
     width: 70%;
     min-height: 120px;
     left: 15%;
@@ -1481,7 +1486,7 @@
         float:right;
         color:#d4a007;
         line-height: 30px;
-        font-size: 18px;
+        font-size: 15px;
     }
     .price-ftbodydivright i {
         float:left;

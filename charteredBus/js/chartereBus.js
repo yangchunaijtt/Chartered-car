@@ -44,9 +44,6 @@ $(function(){
             // 详情页
             $(".details").outerHeight($(document.body).outerHeight());
 
-            // 重要信息提示页
-            $(".careful").outerHeight($(document.body).outerHeight());
-            
             $(".price").outerHeight($(document.body).outerHeight());
             // 定位功能
             chartBus_amap();
@@ -113,16 +110,11 @@ $(function(){
     $("#selectcar-return").bind("touch click",function(){
         window.location.hash = "#bus";
     })
-    $("#selectcar-tishi").bind("touch click",function(){
-        window.location.hash = "#careful";
-    })
+   
     $("#selectcar-submitdiv").bind("touch click",function(){
         window.location.hash = "#price";
     })
-// 定制包车页绑定事件
-    $(".careful-hdicon").bind("touch click",function(){
-        window.location.hash = "#selectcar";
-    })
+
 // 地图页操作
     $("#busMap-input").bind("focus",function(){
         $("#address-city").text($("#busMap-city").text());
@@ -406,9 +398,6 @@ $(function(){
             hashcsh();
             $("#searchcity-nowcity").text($("#busMap-city").text());
             $("#searchcity").show();
-        }else if ( hashval ==="#careful" ){
-            hashcsh();
-            $(".careful").show();
         }else if ( hashval ==="#price" ){
             price.newPage();
             hashcsh();
@@ -422,7 +411,6 @@ $(function(){
             $(".address").hide();
             $(".myorder").hide();
             $("#searchcity").hide();
-            $(".careful").hide();
             $(".price").hide();
         }
     }
@@ -1406,7 +1394,7 @@ $(function(){
                     // 要阻止他提交多次
                     
                     if(result.result>0){
-                        showMessage1btn("提交成功!","",0);
+                        showMessage1btn("提交成功!","myorderPageTo()",0);
                         // 提交成功要把数据初始化下
                         releaseData.contact ="";
                         releaseData.contactNumber =0;
@@ -1421,13 +1409,20 @@ $(function(){
                        $("#busMap-dzname").text("请选择地址");
                        $("#busMap-dzcityname").text("请选择地址");
                        $("#busMap-dzcity").text("请选择城市");
-                        setTimeout(function(){
-                            // 得到订单数据
-                            myorder.myorderPage("","","");
-                            // 我的订单页绑定无限滚动效果
-                            //hdrunvowner();
-                           window.location.hash = "#myorder";
-                        },500);
+
+                       // 时间的初始化
+                       releaseData.useType = "单程";
+                       $(".carcetbus-iconsleft").css({
+                           "background":"#007aff",
+                           "color": "#fff"
+                       })
+                       $(".carcetbus-iconsright").css({
+                           "background":"#fff",
+                           "color": "#383636"
+                       })
+                       $("#time-divbottom").slideUp();
+                       
+                        
                     }
                 },
                 error:function(result){
@@ -1437,7 +1432,16 @@ $(function(){
             })
         }
     }
-
+// 跳转 到 详情单页
+    function myorderPageTo(){
+        setTimeout(function(){
+            // 得到订单数据
+            myorder.myorderPage("","","");
+            // 我的订单页绑定无限滚动效果
+            //hdrunvowner();
+           window.location.hash = "#myorder";
+        },500);
+    }
 // 发布信息数据 
     var releaseData = {
         uid:0,				 //用户id
@@ -1769,10 +1773,12 @@ $(function(){
 // startTime:起始时间  
 // endtime：结束时间
 function getTwoDayTime (startTime,endTime) {
-    startTime =   new Date(startTime);
-    endTime =   new Date(endTime);
+    startTime =  new Date(startTime);
+    startTime.setHours(0,0,0,0);
+    endTime = new Date(endTime);
+    endTime.setHours(0,0,0,0);
     var day   = 0;
-    day = parseInt((endTime.getTime() - startTime.getTime())/86400000);  // 60*60*100*42天
+    day = parseInt((endTime - startTime)/86400000);  // 60*60*100*42天
     return day;
 }
 
@@ -1801,8 +1807,9 @@ function getTwoDayTime (startTime,endTime) {
                 var today = new Array('周日','周一','周二','周三','周四','周五','周六'); 
                 //获取当前日期
                 var tmpNow = new Date();
+                tmpNow.setMinutes(Math.round(dd.getMinutes()/10)*10);
                 tmpNow.setDate(tmpNow.getDate()+2);//获取AddDayCount天后的日期
-                                    
+                
                 var dateArray = inst.getArrayVal();
                 var week = today[sday.getDay()];  
                 var year = dateArray[0];
@@ -1841,11 +1848,11 @@ function getTwoDayTime (startTime,endTime) {
 
                 if (releaseData.useType == "往返") {
                     if ( this.id =="dt-c-1"){
-                        opt.sdatetime = {minDate:tmpNow,maxDate: new Date($("#dt-c-1").attr("data-val"))};
+                        opt.sdatetime = {minDate:tmpNow,maxDate: new Date(($("#dt-c-1").attr("data-val")).replace(/-/g,"/"))};
                         optSDateTime_tmp = $.extend(opt['sdatetime'], opt['sdtdefault_0']);
                         $("#dt-a-0").mobiscroll().datetime(optSDateTime_tmp);
                     }else if ( this.id =="dt-a-0" ){
-                        opt.sdatetime = {minDate:new Date($("#dt-a-0").attr("data-val"))};
+                        opt.sdatetime = {minDate:new Date(($("#dt-a-0").attr("data-val")).replace(/-/g,"/"))};
                         optSDateTime_tmp = $.extend(opt['sdatetime'], opt['sdtdefault_0']);
                         $("#dt-c-1").mobiscroll().datetime(optSDateTime_tmp);
                     }   
