@@ -152,9 +152,9 @@
         line-height: 42px;
         font-size: 18px;
         border-bottom: 1px solid #f2f2f2;
-        position: fixed;
+        /*position: fixed;
         top: 0px;
-        left: 0px;
+        left: 0px;*/
         width: 100%;
         z-index: 160;
     }
@@ -711,6 +711,9 @@
         width: 70%;
         text-align: right;
         float: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     } 
     .busMap .busMap-city .busMap-cityleft .busMap-ctlficon{
         float: left;
@@ -847,6 +850,9 @@
         width: 70%;
         text-align: right;
         float: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .address .address-city .address-cityleft .address-ctlficon{
         float: left;
@@ -1294,10 +1300,10 @@
         background: #fff;
         line-height: 42px;
         font-size: 18px;
-        position: fixed;
         width: 100%;
+        /*position: fixed;
         left: 0;
-        top: 0;
+        top: 0;*/
         z-index: 180;
         border-bottom: 1px solid #f2f2f2;
     }
@@ -1425,7 +1431,7 @@
     .price-newcenter{
         background: #fff;
         border-top: 1px solid #f2f2f2;
-        padding-bottom: 20px;
+        padding-bottom: 40px;
     }
     /* 头部 */
     .price-ftheader{
@@ -1494,3 +1500,78 @@
     .price-ftbodydivright .price-ftbodydivright {
         float:left;
     }
+
+
+/* 地图页的设置 */
+.city {
+    display: block;
+  }
+  .city .city-wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background: #fff;
+  }
+  .city .city-wrapper .cities .title {
+    height: 28px;
+    padding-left: 16px;
+    line-height: 28px;
+    background-color: #f5f5f5;
+    font-family: Helvetica;
+    font-size: 1.2rem;
+    color: #878787;
+  }
+  .city .city-wrapper .cities .item {
+    height: 44px;
+    padding: 0 16px;
+    line-height: 44px;
+    font-size: 1.6rem;
+  }
+  .city .city-wrapper .cities .item .name {
+    display: block;
+    position: relative;
+  }
+  .city .city-wrapper .cities .item .name:before,
+  .city .city-wrapper .cities .item .name:after {
+    display: block;
+    position: absolute;
+    border-top: 1px solid #e5e5e5;
+    left: 0;
+    width: 100%;
+    content: ' ';
+  }
+  .city .city-wrapper .cities .item .name:before {
+    display: none;
+    top: 0;
+  }
+  .city .city-wrapper .cities .item .name:after {
+    display: block;
+    bottom: 0;
+  }
+  .city .city-wrapper .cities .item:active {
+    background-color: #f0f0f0;
+  }
+  .city .city-wrapper .cities .item:last-child .name:after {
+    display: none;
+  }
+  .city .city-wrapper .shortcut {
+    position: absolute;
+    z-index: 30;
+    width: 40px;
+    right: 2px;
+    font-family: Helvetica;
+  }
+  .city .city-wrapper .shortcut .item {
+    height: 12px;
+    padding-top: 18px;
+    padding-left: 24px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #fa8919;
+  }
+  @media only screen and (max-height: 600px) {
+    .city .city-wrapper .shortcut .item {
+        padding-top: 18px;
+    }
+  }
