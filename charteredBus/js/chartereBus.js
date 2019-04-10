@@ -41,14 +41,12 @@ $(function(){
             $(".details").outerHeight($(document.body).outerHeight());
 
             $(".price").outerHeight($(document.body).outerHeight());
-            // 城市选择页绑定
-            screen_city.newPage();
+            
             // 定位功能
             chartBus_amap();
         }
     },location.search);
 // 设置高度
-    
     
 // 初始化调用的函数
     setTimeWheel();
@@ -364,6 +362,8 @@ $(function(){
         }else if ( hashval ==="#screenCity"){
             hashcsh();
             $(".screen-city").show();
+			// 城市选择页绑定
+            screen_city.newPage();
         }
         function hashcsh(){
             $(".bus").hide();
@@ -536,7 +536,7 @@ $(function(){
             var myorder_odartime = "myorder-odartime"+val.id;
             $("#myorder-odartime").attr("id",myorder_odartime);
             // 价格
-            if(val.price == null || val.price == ""){
+            if( null == val.price   || val.price == ""){
                 //状态（-2:待退款；-1:取消；0：下单；1：完成；2：待付款）
                 var pricevalmoney = "";
                 if(val.status===-2){
@@ -685,7 +685,7 @@ $(function(){
                     }
                     console.log("aaaa",bSign,"aaaa",newPageData.openid,"aaaa",paymentbttsj.openid);
                 BC.click({
-                    "instant_channel" : paymentbttsj.instant_channel,
+                    // "instant_channel" : paymentbttsj.instant_channel,
                     "debug" : false,
                     "need_ali_guide" : true,
                     "use_app" : true,
@@ -700,20 +700,21 @@ $(function(){
                     wxJsapiFinish : function(res) {
                         switch(res.err_msg){
                             case "get_brand_wcpay_request:ok":
-                                showMessage1btn("支付成功","",0);
+                                
                                 // 支付成功后，要刷新下页面
                                 myorder.myorderPage("","","");
                                 // 我的订单页绑定无限滚动效果
                                 //hdrunvowner();
                                 if ( pddval =="详情页") {
                                     details.newPage();
-                                }
+								}
+								showMessage1btn("支付成功","to_myorder()",0);
                                 break;
                             case "get_brand_wcpay_request:fail":
-                                showMessage1btn("系统出错，请联系我们！","Back()",0);
+                                showMessage1btn("系统出错，请联系我们！","to_myorder()",0);
                                 break;
                             case "get_brand_wcpay_request:cancel":
-                                showMessage1btn("已取消支付！","Back()",0);
+                                showMessage1btn("已取消支付！","to_myorder()",0);
                                 // 取消支付
                                 break;
                             }
@@ -721,16 +722,22 @@ $(function(){
                         });
                         BC.err = function(err) {
                             //err 为object, 例 ｛”ERROR“ : "xxxx"｝;
-                            showMessage1btn(err.ERROR,"",0);
+                            showMessage1btn(err.ERROR,"to_myorder()",0);
                         }
                     }else{
-                        showMessage1btn("后台参数错误！","",0);
+                        showMessage1btn("后台参数错误！","to_myorder()",0);
                     }                                           
                         // 删除dialog
                         clearDialog();
                     },"json")
         }
-    }
+	}
+// 跳转到我的订单页
+	function to_myorder(){
+		myorder.myorderScreen();
+		myorder.myorderPage("","","");
+		window.location.hash = "#myorder";
+	}
 // 我的订单的无限滚动效果
     var runvownerval = {
         page:2,   // 当前页，用于向页面发送请求的页码参数 第一次发送的为2 
@@ -867,7 +874,7 @@ $(function(){
                 }
                   $("#details-biaotitshi").text(odstatus);   
             // 支付
-            if(val.payPrice===null|| val.payPrice===""){
+            if( null == val.payPrice || val.payPrice===""){
                 $("#details-price").hide();
             }else {
                 // 进行渲染
@@ -1155,7 +1162,7 @@ $(function(){
                  mileage = 100;
              }else if (releaseData.useType==="往返"){
                  returnfs = 2;
-                 day_time = getTwoDayTime($("#dt-a-0").attr("data-val"),$("#dt-c-1").attr("data-val")) +1 ;
+                 day_time = getTwoDayTime($("#dt-a-0").attr("data-val").replace(/-/g,"/"),$("#dt-c-1").attr("data-val").replace(/-/g,"/")) +1 ;
                  mileage = mileage * day_time;
              }
              var dpcity  = [dLng.toFixed(6),dLat.toFixed(6)];
@@ -1233,7 +1240,7 @@ $(function(){
                 mileage = 100 ;
             }else if (releaseData.useType==="往返"){
                 returnfs = 2;
-                day_time = getTwoDayTime($("#dt-a-0").attr("data-val"),$("#dt-c-1").attr("data-val")) +1 ;
+                day_time = getTwoDayTime($("#dt-a-0").attr("data-val").replace(/-/g,"/"),$("#dt-c-1").attr("data-val").replace(/-/g,"/")) +1 ;
                 mileage =   mileage  *  day_time;
             }
             var dpcity  = [dLng.toFixed(6),dLat.toFixed(6)];
