@@ -225,7 +225,7 @@
     }   
     /* 注意事项 */
     .selectcar-be{
-        margin-bottom: 80px;
+        margin-bottom: 50px;
         background: #fff;
         border-top: 1px solid #f2f2f2;
     }
@@ -360,7 +360,7 @@
         height: 40px;    
     }
     .selectcar  .selectcar-driver .selectcar-drtextarea{
-        width: 99%;
+        width: 100%;
         margin: 0;
         text-indent: 12px;
         border-color: #adabab;
@@ -1077,7 +1077,7 @@
     }
     .details .details-footer .details-ftdadiv .details-ftleft{
         line-height: 32px;
-        text-indent: 16px;
+       text-align: center;
         font-size: 15px;
         color: #1e79bd;
         width: 20%;
@@ -1153,9 +1153,6 @@
         width: 20px;
         float: left;
     }
-    .details-car .details-carright .details-carrtdiv .details-carspan{
-        
-    }
     /* 留言*/
     .details-macker{
         background: #fff;
@@ -1165,16 +1162,16 @@
         line-height: 32px;
         font-size: 15px;
         color: #1e79bd;
-        width: 14%;
+        width: 20%;
         float: left;
-        margin-left: 6%;
+       text-align: center;
     }
     .details-macker .details-mackerright{
         float: right;
-        width: 74%;
+        width: 70%;
         font-size: 12px;
         line-height: 32px;
-        margin-left: 6%;
+        margin: 0 5%;
     }
     /* 单程什么的 */
     .details-biaoti{
@@ -1558,8 +1555,8 @@
   .city .city-wrapper .shortcut {
     position: absolute;
     z-index: 30;
-    width: 40px;
-    right: 2px;
+    width: 60px;
+    right: 0px;
     font-family: Helvetica;
   }
   .city .city-wrapper .shortcut .item {
@@ -1579,4 +1576,19 @@
 /* 样式 */
 #bc-pay-wrap{
     z-index:10000;
+}
+
+/* 当前城市 */
+.city .city-wrapper .city-wrapper-nowcity{
+    padding: 0 16px;
+    line-height: 44px;
+    font-size: 15px;
+    border-top: 1px solid #f2f2f2;
+}
+.city .city-wrapper .city-wrapper-nowcity .city-wrapper-left{
+    float: left;
+    width: 26%;
+}
+.city .city-wrapper .city-wrapper-nowcity .city-wrapper-right{
+    float:left;
 }

@@ -145,9 +145,13 @@ $(function(){
     })
     // 跳转到选择
     $("#busMap-city").bind("touch click",function(){
+		screen_city.hashVal = window.location.hash;
+		$("#city-wrapper-nowcity").text($("#busMap-city").text());
         window.location.hash = "#screenCity";
     })
     $("#address-city").bind("touch click",function(){
+		screen_city.hashVal = window.location.hash;
+		$("#city-wrapper-nowcity").text($("#address-city").text());
         window.location.hash = "#screenCity";
     })
     // Input输入事件
@@ -175,7 +179,6 @@ $(function(){
         if(remain >100){
             var num=$(".textarea").val().substr(0,100);
             $(".textarea").val(num);
-            showMessage1btn("字数超过限制!","",0);
         }else {
             var result = 100 - remain;
             $("#textarea-length").text(result+"/100");
@@ -262,8 +265,6 @@ $(function(){
     $("#price-return").bind("touch click",function(){
         window.location.hash ="#selectcar";
     })
-
-
 // 监控路由
     window.onhashchange = hashChange;
     hashChange();
@@ -386,7 +387,8 @@ $(function(){
     var price = {
         newPage:function(){
             $("#price-exceedtime").text(releaseData.clickbus.hourPrice+"元/小时");
-            $("#price-exceedkile").text(releaseData.clickbus.disPrice+"元/公里");
+			$("#price-exceedkile").text(releaseData.clickbus.disPrice+"元/公里");
+			$("#price-supermoney").text(releaseData.clickbus.emptyPrice+"元/公里");
         }
     }
 // 我的订单页的操作
@@ -444,64 +446,71 @@ $(function(){
 			$(".infinite-scroll-error").show();
 		},
         myorderRender:function(val){
-            // 还要根据订单状态，添加按钮
-
-            // 最大的div
-            var myorder_od = "myorder-od"+val.id;
-            $("#myorder-od").attr("id",myorder_od);
-            // 状态（-2:待退款；-1:取消；0：下单；1：完成；2：待付款）
-            $("#myorder-odbutton").empty();
-            // 结果，还要添加什么按钮
-            var odstatus = "";
-            if(val.status===-2){
-                odstatus = "待退款";
-                $("#myorder-odbutton").append('<span class="tjorder-myorderts">如有疑问请拨打客服电话</span>');
-            }else if (val.status===-1){
-                odstatus = "已取消";
-                $("#myorder-odbutton").append('<a href="#bus" class="tjorder-myorderts">如需包车,请重新下单!</a>');
-            }else if (val.status===0){
-                odstatus = "已下单";        
-                
-                // 以下单的话，有个取消按钮，其他没有
-                $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton"  >取消订单</span>');
-
-                $("#myorder-ddcancel").bind("touch click",function(){
-                    myorder.myorderqx(val.uid,val.id,0);
-                })
-                var myorder_ddcancelthree ="myorder-ddcancel"+val.id;
-                $("#myorder-ddcancel").attr("id",myorder_ddcancelthree);
-            }else if (val.status===1){
-                odstatus = "已付款";
-                var khtime = Date.parse((val.departureTime).replace(/-/g,"/"));
-                var jttime =  Date.parse(new Date().toLocaleDateString().replace(/-/g,"/"));
-                console.log("时间比较",khtime,jttime);
-                if (parseInt(khtime) -  parseInt(jttime)  >  86400000){
-                    $("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
-                    $("#myorder-ddcancel").bind("touch click",function(){
-                        myorder.myorderqx(val.uid,val.id,0);
-                    })
-                    var myorder_ddcancelone = "myorder-ddcancel"+val.id;
-                    $("#myorder-ddcancel").attr("id",myorder_ddcancelone);
-                    // 1也可以取消，要判断提前一天没有。
-                }else {
-                    $("#myorder-odbutton").append('<span class="tjorder-myorderts">祝您乘车愉快!</span>');
-                }
-            }else if (val.status===2){
-                // 待付款下，有个取消的按钮和支付的按钮
-                odstatus = "待付款";
-                $("#myorder-odbutton").append('<span id="myorder-qrpaymonney" class="tjorder-submitbutton">确认支付</span><span id="myorder-ddcancel"  class="tjorder-submitbutton">取消订单</span>');
-                $("#myorder-qrpaymonney").bind("touch click",function(){
-                    paymentModule.payMoney(parseFloat(val.price),val.uid,val.id,0);
-                })
-                var myorder_qrpaymonneytwo = "myorder-qrpaymonney"+val.id;
-                $("#myorder-qrpaymonney").attr("id",myorder_qrpaymonneytwo);
-                //  绑定事件
-                $("#myorder-ddcancel").bind("touch click",function(){
-                    myorder.myorderqx(val.uid,val.id,0);
-                })
-                var myorder_ddcanceltwo = "myorder-ddcancel"+val.id;
-                $("#myorder-ddcancel").attr('id',myorder_ddcanceltwo);
-            }
+			// 还要根据订单状态，添加按钮
+			// 最大的div
+			var myorder_od = "myorder-od"+val.id;
+			$("#myorder-od").attr("id",myorder_od);
+			// 结果，还要添加什么按钮
+			var odstatus = "";
+			// 状态（-2:待退款；-1:取消；0：下单；1：完成；2：待付款）
+			$("#myorder-odbutton").empty();
+			if (  Date.parse(new Date()) > (Date.parse(val.departureTime)+86400000)){
+				// 以下单的话，有个取消按钮，其他没有
+				$("#myorder-odbutton").append('<a href="#bus" class="tjorder-myorderts">如需包车,请重新下单!</a>');
+				odstatus = "已失效";
+			}else { 
+					if(val.status===-2){
+						odstatus = "待退款";
+						$("#myorder-odbutton").append('<span class="tjorder-myorderts">如有疑问请拨打客服电话</span>');
+					}else if (val.status===-1){
+						odstatus = "已取消";
+						$("#myorder-odbutton").append('<a href="#bus" class="tjorder-myorderts">如需包车,请重新下单!</a>');
+					}else if (val.status===0){
+						odstatus = "已下单";        
+					
+						// 以下单的话，有个取消按钮，其他没有
+						$("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton"  >取消订单</span>');
+						
+						$("#myorder-ddcancel").bind("touch click",function(){
+							myorder.myorderqx(val.uid,val.id,0);
+						})
+						var myorder_ddcancelthree ="myorder-ddcancel"+val.id;
+						$("#myorder-ddcancel").attr("id",myorder_ddcancelthree);
+						
+					}else if (val.status===1){
+						odstatus = "已付款";
+						var khtime = Date.parse((val.departureTime).replace(/-/g,"/"));
+						var jttime =  Date.parse(new Date().toLocaleDateString().replace(/-/g,"/"));
+						console.log("时间比较",khtime,jttime);
+						if (parseInt(khtime) -  parseInt(jttime)  >  86400000){
+							$("#myorder-odbutton").append('<span id="myorder-ddcancel" class="tjorder-submitbutton">取消订单</span>');
+							$("#myorder-ddcancel").bind("touch click",function(){
+								myorder.myorderqx(val.uid,val.id,0);
+							})
+							var myorder_ddcancelone = "myorder-ddcancel"+val.id;
+							$("#myorder-ddcancel").attr("id",myorder_ddcancelone);
+							// 1也可以取消，要判断提前一天没有。
+						}else {
+							$("#myorder-odbutton").append('<span class="tjorder-myorderts">祝您乘车愉快!</span>');
+						}
+					}else if (val.status===2){
+						// 待付款下，有个取消的按钮和支付的按钮
+						odstatus = "待付款";
+						$("#myorder-odbutton").append('<span id="myorder-qrpaymonney" class="tjorder-submitbutton">确认支付</span><span id="myorder-ddcancel"  class="tjorder-submitbutton">取消订单</span>');
+						$("#myorder-qrpaymonney").bind("touch click",function(){
+							paymentModule.payMoney(parseFloat(val.price),val.uid,val.id,0);
+						})
+						var myorder_qrpaymonneytwo = "myorder-qrpaymonney"+val.id;
+						$("#myorder-qrpaymonney").attr("id",myorder_qrpaymonneytwo);
+						//  绑定事件
+						$("#myorder-ddcancel").bind("touch click",function(){
+							myorder.myorderqx(val.uid,val.id,0);
+						})
+						var myorder_ddcanceltwo = "myorder-ddcancel"+val.id;
+						$("#myorder-ddcancel").attr('id',myorder_ddcanceltwo);
+					}
+			}
+           
             var myorder_odbutton = "myorder-odbutton"+val.id;
             $("#myorder-odbutton").attr("id",myorder_odbutton);
 
@@ -616,8 +625,13 @@ $(function(){
                     }
                 },
                 error:function(data){
-                    console.log("取消失败",data);
-                    showMessage1btn("网络出错，请重试!","",0);
+					console.log("取消失败",data);
+					if ( null == data.msg ) {
+						showMessage1btn("网络出错，请重试!","",0);
+					}else {
+						showMessage1btn(data.msg,"",0);
+					}
+                    
                 }
             })
         }
@@ -821,57 +835,63 @@ $(function(){
                     $("#details-artime").text("无返程");
                 }
             // 添加按钮的地方
-                $("#details-buttonan").empty();
-                if(val.status===-2){
-                    odstatus = "(待退款)";
-                    $("#details-buttonan").append('<span class="details-myorderts">如有疑问请拨打客服电话</span>');
-                }else if (val.status===-1){
-                    odstatus = "(已取消)";
-                    $("#details-buttonan").append('<a href="#bus" class="details-myorderts">如需包车,请重新下单!</a>');
-                }else if (val.status===0){
-                    odstatus = "(已下单)";        
-                    
-                    // 以下单的话，有个取消按钮，其他没有
-                    $("#details-buttonan").append('<span id="myorder-ddcancel" class="details-submitbutton"  style="display:block;">取消订单</span>');
-    
-                    $("#myorder-ddcancel").bind("touch click",function(){
-                        myorder.myorderqx(uida,val.id,"详情页");
-                    })
-                    
-                    var myorder_ddcancelthree ="myorder-ddcancel"+"details";
-                    $("#myorder-ddcancel").attr("id",myorder_ddcancelthree);
-                }else if (val.status===1){
-                    odstatus = "(已付款)";
-                    var khtime = Date.parse((val.departureTime).replace(/-/g,"/"));
-                    var jttime =  Date.parse(new Date().toLocaleDateString().replace(/-/g,"/"));
-                    console.log("时间比较",khtime,jttime);
-                    if (parseInt(khtime) -  parseInt(jttime)  >  86400000){
-                        $("#details-buttonan").append('<span id="myorder-ddcancel" class="details-submitbutton" style="display:block;">取消订单</span>');
-                        $("#myorder-ddcancel").bind("touch click",function(){
-                            myorder.myorderqx(uida,val.id,"详情页");
-                        })
-                        var myorder_ddcancelone = "myorder-ddcancel"+"details";
-                        $("#myorder-ddcancel").attr("id",myorder_ddcancelone);
-                        // 1也可以取消，要判断提前一天没有。
-                    }else {
-                        $("#details-buttonan").append('<span class="details-myorderts">祝您乘车愉快!</span>');
-                    }
-                }else if (val.status===2){
-                    // 待付款下，有个取消的按钮和支付的按钮
-                    odstatus = "(待付款)";
-                    $("#details-buttonan").append('<span id="myorder-qrpaymonney" class="details-submitbutton" style="float:left;">确认支付</span><span id="myorder-ddcancel"  class="details-submitbutton" style="float:right;">取消订单</span>');
-                    $("#myorder-qrpaymonney").bind("touch click",function(){
-                        paymentModule.payMoney(parseFloat(val.price),uida,val.id,"详情页");
-                    })
-                    var myorder_qrpaymonneytwo = "myorder-qrpaymonney"+"details";
-                    $("#myorder-qrpaymonney").attr("id",myorder_qrpaymonneytwo);
-                    //  绑定事件
-                    $("#myorder-ddcancel").bind("touch click",function(){
-                        myorder.myorderqx(uida,val.id,"详情页");
-                    })
-                    var myorder_ddcanceltwo = "myorder-ddcancel"+"details";
-                    $("#myorder-ddcancel").attr('id',myorder_ddcanceltwo);
-                }
+				$("#details-buttonan").empty();
+				if ( Date.parse(new Date()) > (Date.parse(val.departureTime)+86400000)) {
+					odstatus = "(已失效)";
+					$("#details-buttonan").append('<a href="#bus" class="details-myorderts">如需包车,请重新下单!</a>');
+				}else {
+					if(val.status===-2){
+						odstatus = "(待退款)";
+						$("#details-buttonan").append('<span class="details-myorderts">如有疑问请拨打客服电话</span>');
+					}else if (val.status===-1){
+						odstatus = "(已取消)";
+						$("#details-buttonan").append('<a href="#bus" class="details-myorderts">如需包车,请重新下单!</a>');
+					}else if (val.status===0){
+						odstatus = "(已下单)";        
+						
+						// 以下单的话，有个取消按钮，其他没有
+						$("#details-buttonan").append('<span id="myorder-ddcancel" class="details-submitbutton"  style="display:block;">取消订单</span>');
+		
+						$("#myorder-ddcancel").bind("touch click",function(){
+							myorder.myorderqx(uida,val.id,"详情页");
+						})
+						
+						var myorder_ddcancelthree ="myorder-ddcancel"+"details";
+						$("#myorder-ddcancel").attr("id",myorder_ddcancelthree);
+					}else if (val.status===1){
+						odstatus = "(已付款)";
+						var khtime = Date.parse((val.departureTime).replace(/-/g,"/"));
+						var jttime =  Date.parse(new Date().toLocaleDateString().replace(/-/g,"/"));
+						console.log("时间比较",khtime,jttime);
+						if (parseInt(khtime) -  parseInt(jttime)  >  86400000){
+							$("#details-buttonan").append('<span id="myorder-ddcancel" class="details-submitbutton" style="display:block;">取消订单</span>');
+							$("#myorder-ddcancel").bind("touch click",function(){
+								myorder.myorderqx(uida,val.id,"详情页");
+							})
+							var myorder_ddcancelone = "myorder-ddcancel"+"details";
+							$("#myorder-ddcancel").attr("id",myorder_ddcancelone);
+							// 1也可以取消，要判断提前一天没有。
+						}else {
+							$("#details-buttonan").append('<span class="details-myorderts">祝您乘车愉快!</span>');
+						}
+					}else if (val.status===2){
+						// 待付款下，有个取消的按钮和支付的按钮
+						odstatus = "(待付款)";
+						$("#details-buttonan").append('<span id="myorder-qrpaymonney" class="details-submitbutton" style="float:left;">确认支付</span><span id="myorder-ddcancel"  class="details-submitbutton" style="float:right;">取消订单</span>');
+						$("#myorder-qrpaymonney").bind("touch click",function(){
+							paymentModule.payMoney(parseFloat(val.price),uida,val.id,"详情页");
+						})
+						var myorder_qrpaymonneytwo = "myorder-qrpaymonney"+"details";
+						$("#myorder-qrpaymonney").attr("id",myorder_qrpaymonneytwo);
+						//  绑定事件
+						$("#myorder-ddcancel").bind("touch click",function(){
+							myorder.myorderqx(uida,val.id,"详情页");
+						})
+						var myorder_ddcanceltwo = "myorder-ddcancel"+"details";
+						$("#myorder-ddcancel").attr('id',myorder_ddcanceltwo);
+					}
+				}
+                
                   $("#details-biaotitshi").text(odstatus);   
             // 支付
             if( null == val.payPrice || val.payPrice===""){
@@ -954,9 +974,9 @@ $(function(){
                 }else if (mdsjb==""){
                     tellTips ="请选择返程时间"; 
                 }
-            }
-
-             if (releaseData.dwlocationg===""){
+			} 
+			
+			if (releaseData.dwlocationg===""){
                 if(releaseData.fabudpData===""){
                     tellTips ="请选择出发地";
                 }
@@ -1173,17 +1193,18 @@ $(function(){
              var dismoney = 0;
              // 超公里费
              var car_cmintiueMoney = 1;
-             car_cmintiueMoney = selectcar.carTypeData[0].disPrice;
-        
-             var jcmoney = parseFloat(selectcar.carTypeData[0].price);
+			 car_cmintiueMoney = selectcar.carTypeData[0].disPrice;
+			 
+			 var jcmoney = parseFloat(selectcar.carTypeData[0].price.replace(",",""));
+			 
              releaseData.clickbus = selectcar.carTypeData[0];
              if (dis>mileage) {
                  dismoney = jcmoney+ ( dis - mileage )*car_cmintiueMoney;
              }else {
                  dismoney =jcmoney;
              }
-             dismoney =  dismoney*day_time;
-             $("#selectcar-submitmoney").text(dismoney.toFixed(2));
+             dismoney =  (dismoney*day_time).toFixed(0);
+             $("#selectcar-submitmoney").text(dismoney);
         },
         clickbus:function(val,divname){
             console.log(val,divname);
@@ -1253,15 +1274,17 @@ $(function(){
             var car_cmintiueMoney = 1;
             car_cmintiueMoney = releaseData.clickbus.disPrice;
 
-            var jcmoney = parseFloat(releaseData.clickbus.price);
+		
+			var jcmoney = parseFloat((releaseData.clickbus.price).replace(",",""));
+
             if (dis>mileage) {
                 dismoney = jcmoney+ (dis - mileage)*car_cmintiueMoney;
             }else {
                 dismoney = jcmoney;
             }
 
-            dismoney = dismoney *day_time;
-            $("#selectcar-submitmoney").text(dismoney.toFixed(2));
+            dismoney = (dismoney *day_time).toFixed(0);
+            $("#selectcar-submitmoney").text(dismoney);
         },
         tijiao:function(){
             var tellTrips = "";
@@ -1334,7 +1357,9 @@ $(function(){
             }else{                
                 selectcar.olddpcityname = departure;
                 selectcar.oldarcityname = releaseData.fabuarData.name;
-            }
+			}
+			
+			showLodding("请稍等，提交中...");
             // 读取车辆类型
             $.ajax({
                 type:"post",
@@ -1359,11 +1384,20 @@ $(function(){
                     remark:$("#textarea").val().trim(),			    //备注
                 },
                 success:function(result){
+					 
                     console.log("添加成功的数据",result);
                     // 要阻止他提交多次
-                    
+                    /* 加载成功，取消提示按钮 */
+					 clearDialog();
+					 if ( null == data.msg ) {
+						showMessage1btn("提交成功!","myorderPageTo()",0);
+					 }else {
+						showMessage1btn(data.msg,"myorderPageTo()",0);
+					 }
+					
                     if(result.result>0){
-                        showMessage1btn("提交成功!","myorderPageTo()",0);
+
+                        
                         // 提交成功要把数据初始化下
                         releaseData.contact ="";
                         releaseData.contactNumber =0;
@@ -1395,8 +1429,15 @@ $(function(){
                     }
                 },
                 error:function(result){
-                    console.log("添加失败",result);
-                    showMessage1btn("网络出错,请重试!","",0);
+					/* 加载成功，取消提示按钮 */
+					clearDialog();
+					console.log("添加失败",result);
+					if ( null == data.msg ){
+						showMessage1btn("网络出错,请重试!","",0);
+					}else {
+						showMessage1btn(data.msg,"",0);
+					}
+                    
                 }
             })
         }
@@ -1575,6 +1616,7 @@ $(function(){
     }
 // 新城市选择页操作函数
 var screen_city = {
+	hashVal:"#busMap?dpcity",
     newPage:function(){
         var cityWrapper = document.querySelector('.city-wrapper-hook');
         var cityScroller = document.querySelector('.scroller-hook');
@@ -1623,10 +1665,21 @@ var screen_city = {
                var city_name = $(this).context.innerText.trim();
                $("#busMap-city").text(city_name);
                $("#address-city").text(city_name);
-               window.history.back(-1);
+				//  window.history.back(-1);
+			   window.location.hash = screen_city.hashVal;
             });
         });
-
+		$("#city-wrapper-div").bind("click",function(){
+            var city_wrapper_div = $("#city-wrapper-nowcity").text();
+            if (city_wrapper_div == "" || city_wrapper_div == null ||city_wrapper_div == undefined ) {
+                return false;
+            }else {
+                $("#busMap-city").text(city_wrapper_div);
+				$("#address-city").text(city_wrapper_div);
+				//window.history.back(-1);
+				window.location.hash = screen_city.hashVal;
+            }
+        })
         scroll = new window.BScroll(cityWrapper, {
             probeType: 3,
             click:true
@@ -1696,31 +1749,31 @@ var screen_city = {
 // 依赖的数组值
 var cityData = [
 	{
-		name: "★热门城市",
+        name: "★周边城市",
 		cities: [
 			{
-				name: "北京市",
-				tags: "BEIJING,北京市",
+				name: "常州市",
+				tags: "CHANGZHOU,常州市",
 				cityid: 1
+			},
+			{
+				name: "无锡市",
+				tags: "WUXI,无锡市",
+				cityid: 4
+			},
+			{
+				name: "苏州市",
+				tags: "SUZHOU,苏州市",
+				cityid: 2
 			},
 			{
 				name: "上海市",
 				tags: "SHANGHAI,上海市",
-				cityid: 4
-			},
-			{
-				name: "深圳市",
-				tags: "SHENZHEN,深圳市",
-				cityid: 2
-			},
-			{
-				name: "广州市",
-				tags: "GUANGZHOU,广州市",
 				cityid: 3
 			},
 			{
-				name: "武汉市",
-				tags: "WUHAN,武汉市",
+				name: "南京市",
+				tags: "NANJING,南京市",
 				cityid: 6
 			}
 		]
