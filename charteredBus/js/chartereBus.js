@@ -523,7 +523,8 @@ $(function(){
                 $("#myorder-oddistance").text("市内");
             }else {
                 $("#myorder-oddistance").text("城际");
-            }
+			}
+			$("#myorder-oddistance").attr("id","myorder-oddistance"+val.id);
             // 起点
             $("#myorder-oddpcity").text(val.departure);
             var myorder_oddpcity = "myorder-oddpcity"+val.id;
@@ -531,7 +532,17 @@ $(function(){
             // 终点
             $("#myorder-odarcity").text(val.arrival);
             var myorder_odarcity = "myorder-odarcity"+val.id;
-            $("#myorder-odarcity").attr("id",myorder_odarcity);
+			$("#myorder-odarcity").attr("id",myorder_odarcity);
+
+			// 起点城市
+            $("#myorder-newdpcity").text(val.dpCity);
+            var myorder_newdpcity = "myorder-newdpcity"+val.id;
+            $("#myorder-newdpcity").attr("id",myorder_newdpcity);
+            // 终点城市
+            $("#myorder-newarcity").text(val.arCity);
+            var myorder_newarcity = "myorder-newarcity"+val.id;
+			$("#myorder-newarcity").attr("id",myorder_newarcity);
+			
             // 出发时间
             $("#myorder-oddptime").text(val.departureTime);
             var myorder_oddptime = "myorder-oddptime"+val.id;
@@ -1389,10 +1400,10 @@ $(function(){
                     // 要阻止他提交多次
                     /* 加载成功，取消提示按钮 */
 					 clearDialog();
-					 if ( null == data.msg ) {
+					 if ( null == result.msg ) {
 						showMessage1btn("提交成功!","myorderPageTo()",0);
 					 }else {
-						showMessage1btn(data.msg,"myorderPageTo()",0);
+						showMessage1btn(result.msg,"myorderPageTo()",0);
 					 }
 					
                     if(result.result>0){
@@ -1432,10 +1443,10 @@ $(function(){
 					/* 加载成功，取消提示按钮 */
 					clearDialog();
 					console.log("添加失败",result);
-					if ( null == data.msg ){
+					if ( null == result.msg ){
 						showMessage1btn("网络出错,请重试!","",0);
 					}else {
-						showMessage1btn(data.msg,"",0);
+						showMessage1btn(result.msg,"",0);
 					}
                     
                 }
@@ -1489,7 +1500,7 @@ $(function(){
         busMap:"",   // 存储busmap的值
         template:{
             address:'<div id="address-addselect" class="addselect clearfix"><span class="addselect-left iconfont iconzhifeiji1"></span><div class="addselect-right clearfix"><span class="addselect-rtone" id="address-rtone"></span><span class="addselect-rttwo" id="address-rttwo"></span></div></div>',
-            myorder:'<div id="myorder-od" class="tjorder clearfix"><a id="myorder-odahref" style="display:block;width:100%;"><div class="tjorder-hd clearfix"> <div class="tjorder-hdleft clearfix"><span class="tjorder-hdlefticon iconfont iconkeche"></span><span id="myorder-oddistance"  class="tjorder-hdleftnr">市内</span></div><p id="myorder-odstatus" class="tjorder-hdright">出票成功</p></div><div  class="tjorder-ct clearfix"><span  id="myorder-oddpcity" class="tjorder-ctleft">常州总站(常州市)</span><span class="tjorder-ctcenter">-</span><span  id="myorder-odarcity"  class="tjorder-ctright">南京南站(南京市)</span></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">出发时间:</span><span id="myorder-oddptime" class="tjorder-datelefttime">2月2日 12:00</span></div><div class="tjorder-dateright clearfix"><span class="tjorder-daterighticon iconfont iconrenminbi1688"></span><span id="myorder-odprice" class="tjorder-daterightmoney">113</span></div></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">返程时间:</span><span id="myorder-odartime" class="tjorder-datelefttime">无返程</span></div></div></a><div id="myorder-odbutton" class="tjorder-button clearfix"></div></div>',
+			myorder:'<div id="myorder-od" class="tjorder clearfix"><a id="myorder-odahref" style="display:block;width:100%;"><div class="tjorder-hd clearfix"> <div class="tjorder-hdleft clearfix"><span class="tjorder-hdlefticon iconfont iconkeche"></span><span id="myorder-oddistance"  class="tjorder-hdleftnr"></span></div><p id="myorder-odstatus" class="tjorder-hdright"></p></div><div  class="tjorder-ct clearfix"><div   class="tjorder-ctleft"><span  id="myorder-newdpcity"></span><span id="myorder-oddpcity"></span></div><div class="tjorder-ctcenter">--</div><div   class="tjorder-ctright"><span id="myorder-newarcity"></span><span id="myorder-odarcity"></span></div></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">出发时间:</span><span id="myorder-oddptime" class="tjorder-datelefttime"></span></div><div class="tjorder-dateright clearfix"><span class="tjorder-daterighticon iconfont iconrenminbi1688"></span><span id="myorder-odprice" class="tjorder-daterightmoney"></span></div></div><div class="tjorder-date clearfix"><div class="tjorder-dateleft clearfix"><span class="tjorder-dateleftts">返程时间:</span><span id="myorder-odartime" class="tjorder-datelefttime"></span></div></div></a><div id="myorder-odbutton" class="tjorder-button clearfix"></div></div>',
             selectcar:'<div id="selectcar-car" class="selectcar-carimg clearfix"><div id="selectcar-id" style="display: none;"></div><span id="selectcar-carspan" class="iconfont icondui"></span><img id="selectcar-img" src=""><p id="selectcar-name"></p></div>',
         }
     }
@@ -3925,5 +3936,9 @@ function getTwoDayTime (startTime,endTime) {
         var optSDateTime_0 = $.extend(opt['sdatetime'], opt['sdtdefault_0']);
         $("#dt-a-0").mobiscroll().datetime(optSDateTime_0);  
         $("#dt-c-1").mobiscroll().datetime(optSDateTime_0); 
-    }
+	}
+	
+
+
+	
 

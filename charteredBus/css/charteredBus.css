@@ -483,28 +483,43 @@
         color: #111010;
     }
     .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctleft{
-        width: 42%;
+        width: 46%;
         float: left;
-        display: inline-block;
-        overflow: hidden;
+        text-align: center;
+    }
+    .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctleft span{
+        line-height: 30px;
+        display: block;
         text-overflow: ellipsis;
         white-space: nowrap;
-        margin-left: -34px;
+        overflow: hidden;
+        text-align: center;
     }
     .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctcenter{
         float: left;
-        width: 6%;
+        width: 8%;
         font-weight: bolder;
         font-size: 19px;
         text-align: center;
+        line-height: 60px;
+    }
+    /* 第一个 maigin-left */
+    #idmyorder:first-child .tjorder-ct .tjorder-ctleft{
+        margin-left: -20%;
     }
     .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctright{
-        width: 32%;
+        width: 46%;
         float: left;
         display: inline-block;
-        overflow: hidden;
+        text-align: center;
+    }
+    .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctright span{
+        line-height: 30px;
+        display: block;
         text-overflow: ellipsis;
         white-space: nowrap;
+        overflow: hidden;
+        text-align: center;
     }
     /* 提交的时间设置 */
     .myorder .tjorder-date{
@@ -515,7 +530,7 @@
     .myorder .tjorder-date .tjorder-dateleft {
         margin-left: 2px;
         display: inline-block;
-        width: 69%;
+        width:70%;
         float: left;
         text-indent: 0px;
     }   
@@ -531,7 +546,7 @@
     }
     .myorder .tjorder-date .tjorder-dateright{
         display: inline-block;
-        width: 30%;
+        width: 29%;
         float: right;
         text-align: right;
         color: #090909;
