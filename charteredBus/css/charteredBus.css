@@ -191,7 +191,7 @@
     }
     .selectcar-time .selectcar-timeleft .selectcar-tcity{
         display: inline-block;
-        width: 32%;
+        width: 36%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -205,11 +205,12 @@
     }
     .selectcar-time .selectcar-timeleft .selectcar-tdate{
         display: inline-block;
-        width: 53%;
+        width: 48%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        float: left;
+        float: right;
+        text-align: left;
     }
     .selectcar  .selectcar-time .selectcar-tspan{
         display: inline-block;
@@ -478,14 +479,24 @@
     }
     /* 中间设置 */
     .myorder #idmyorder .tjorder .tjorder-ct{
-        height: 24px;
+        height: 60px;
         line-height: 24px;
         color: #111010;
+        position: relative;
+    }
+    .myorder #idmyorder .tjorder .tjorder-ct:after {
+          content: "--";
+          position: absolute;
+          font-weight: bold;
+          top: 16px;
+          left: calc(50% - 12px);
+          font-size: 20px;
     }
     .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctleft{
-        width: 46%;
-        float: left;
-        text-align: center;
+          width: 46%;
+          text-align: center;
+          left: 0;
+          position: absolute;
     }
     .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctleft span{
         line-height: 30px;
@@ -504,14 +515,11 @@
         line-height: 60px;
     }
     /* 第一个 maigin-left */
-    #idmyorder:first-child .tjorder-ct .tjorder-ctleft{
-        margin-left: -20%;
-    }
     .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctright{
-        width: 46%;
-        float: left;
-        display: inline-block;
-        text-align: center;
+          width: 46%;
+          text-align: center;
+          right: 0;
+          position: absolute;
     }
     .myorder #idmyorder .tjorder .tjorder-ct .tjorder-ctright span{
         line-height: 30px;
@@ -1056,11 +1064,10 @@
     }
     .details .details-center .details-ctleft{
         line-height: 32px;
+        text-align: center;
         font-size: 15px;
         color: #1e79bd;
-        width: 16%;
-        margin-left: 4%;
-        margin-top: 10px;
+        width: 20%;
     }
     .details .details-center .details-ctright{
         width: 80%;
