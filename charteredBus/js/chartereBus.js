@@ -497,6 +497,7 @@ $(function(){
             $(".myorder").show();			
 			//我的订单
 			//全部行程页 车主页的高度 
+			myorder.myorderPage("","","");
 			$(".myorder").outerHeight($(document.body).outerHeight());
 			$(".myorder-gdwcdiv").outerHeight($(".myorder").outerHeight()-$(".myorder-header").outerHeight());
         }else if ( hashval ==="#price" ){
@@ -526,7 +527,7 @@ $(function(){
     function register(val){
         var nowhref = window.location.href;
         localCache("page",nowhref);     // 存储在本地的地址
-        window.location.href = "Register_content.html";		// 发送给他的地址 	
+        window.location.href = val;		// 发送给他的地址 	
     }  
 // 价格页的操作
     var price = {
@@ -753,8 +754,18 @@ $(function(){
             }
             $(divname).css("color","red");
         },
-        myorderqx:function(uid,id,pdval){ //  取消的操作
-            console.log("取消",uid,id);
+		myorderqx:function(uid,id,pdval){ //  取消的操作
+			uid = ""+uid;
+			id = "" + id;
+			pdval = "" + pdval;
+			showMessage2btn("确认取消订单吗?","myorder.ConfirmCancel(" + uid + "," + id + ",\"" + pdval + "\")");
+		},
+		ConfirmCancel:function(uid,id,pdval){
+			uid = parseFloat(uid);
+			id = parseFloat(id);
+
+			showLodding("请稍等,取消中...");
+			console.log("取消",uid,id);
             $.ajax({
                 type:"post",
                 url:"//qckj.czgdly.com/bus/MobileWeb/madeChaOrders/cancelChaOrder.asp",
@@ -763,6 +774,8 @@ $(function(){
                     id:id
                 },
                 success:function(data){
+					/* 加载成功，取消提示按钮 */
+					clearDialog();
                     console.log("取消成功",data);
                     // 成功后，要调用下页面渲染的数据，再次渲染一下
                     if (data.result == 1) {
@@ -781,17 +794,20 @@ $(function(){
                     }
                 },
                 error:function(data){
+					/* 加载成功，取消提示按钮 */
+					clearDialog();
 					console.log("取消失败",data);
-					if ( null == data.msg ) {
+					if ( null == data.msg || "" == data.msg ) {
 						showMessage1btn("网络出错，请重试!","",0);
 					}else {
 						showMessage1btn(data.msg,"",0);
 					}
-                    
                 }
             })
-        }
-    }
+		}
+	}
+// 取消订单的操作
+
  // 支付模块
  var  paymentModule = {
     paymentbttsj:{
@@ -807,33 +823,36 @@ $(function(){
 		// valuid,valid  uid值和id值   valForid：支付单号
 		//paymentModule.payMoney(parseFloat(val.price),val.uid,val.id,0);
 		console.log(moneyVal,valuid,valid)
-		ajax_post({
+		$.ajax({
+			type:"post",
 			url:"//qckj.czgdly.com/bus/MobileWeb/madeChaOrders/getChaOrderDetails.asp",
 			data:{
-				id:valid,       //信息id
+				id:parseFloat(valid),       //信息id
 				uid:newPageData.uid,      //用户id
+			},
+			success:function(success){
+				console.log("支付判断-成功",success)
+				showMessage1btn("","",0);
+				//状态（-2:待退款；-1:取消；0：下单；1：完成；2：待付款）
+				if (success.obj.status == -2 ){
+					showMessage1btn("订单待退款中","",0);
+				}else if (success.obj.status == -1 ){
+					showMessage1btn("订单已取消","",0);
+				}else if (success.obj.status == 0 ){
+					showMessage1btn("订单待确认中","",0);
+				}else if (success.obj.status == 1 ){
+					showMessage1btn("订单已完成","",0);
+				}else if (success.obj.status == 2 ){
+					// 执行付款程序
+					payLower();
+				}
+			},
+			error:function(error){
+				console.log("支付判断-失败",error)
+				showMessage1btn("网络出错,稍后在试","",0);
 			}
-		},function(success){
-			console.log("支付判断-成功",success)
-			showMessage1btn("","",0);
-			//状态（-2:待退款；-1:取消；0：下单；1：完成；2：待付款）
-			if (success.obj.status == -2 ){
-				showMessage1btn("订单待退款中","",0);
-			}else if (success.obj.status == -1 ){
-				showMessage1btn("订单已取消","",0);
-			}else if (success.obj.status == 0 ){
-				showMessage1btn("订单待确认中","",0);
-			}else if (success.obj.status == 1 ){
-				showMessage1btn("订单已完成","",0);
-			}else if (success.obj.status == 2 ){
-				// 执行付款程序
-				payLower();
-			}
-		},function(error){
-			console.log("支付判断-失败",error)
-			showMessage1btn("网络出错,稍后在试","",0);
-		});
-
+		})
+		
         function payLower(){
 			var paymentbttsj =  paymentModule.paymentbttsj;
 			paymentbttsj.title = "包车付款";
@@ -867,7 +886,7 @@ $(function(){
 					uid:valuid,
 					phone:newPageData.phone,
 					usource:paymentbttsj.usource,
-					caoId:valid
+					caoId:parseFloat(valid)
 				};
 				console.log(param);
 				$.post(url,param,function(data){
@@ -936,7 +955,7 @@ $(function(){
 	function to_myorder(){
 		myorder.myorderScreen();
 		myorder.myorderPage("","","");
-		window.location.hash = "#myorder";
+		window.location.reload();
 	}
 // 我的订单的无限滚动效果
     var runvownerval = {
@@ -1091,12 +1110,18 @@ $(function(){
 				}
                 if ( null != val.payDate ) {
 					$("#details-pricetime").text(val.payDate);
+				}else {
+					$("#details-pricetime").text("");
 				}
 				if ( null != val.price) {
 					$("#details-pricedh").text(val.price);
+				}else {
+					$("#details-pricedh").text("");
 				}
 				if ( null != val.outTradeNo ) {
 					$("#details-oddsz").text(val.outTradeNo);
+				}else {
+					$("#details-oddsz").text("");
 				}
                 $("#details-oddNumber").show();
                 // 存在数据则渲染
@@ -1114,12 +1139,18 @@ $(function(){
 				}
                 if ( null != val.refundDate)  {
 					$("#details-refundtime").text(val.refundDate);
+				}else {
+					$("#details-refundtime").text("");
 				}
-				if ( null != val.refundNo || "" != val.refundNo )  {
+				if ( null != val.refundNo && "" != val.refundNo )  {
 					$("#details-refunddh").text(val.refundNo+"(退款号)"); 
+				}else {
+					$("#details-refunddh").text("");
 				}
                 if ( null != val.outTradeNo ) {
 					$("#details-oddsz").text(val.outTradeNo);
+				}else{
+					$("#details-oddsz").text("");
 				}
                 $("#details-oddNumber").show();
                 $("#details-refund").show();
@@ -1667,7 +1698,7 @@ $(function(){
                     // 要阻止他提交多次
                     /* 加载成功，取消提示按钮 */
 					 clearDialog();
-					 if ( null == result.msg ) {
+					 if ( null == result.msg || "" == result.msg ) {
 						showMessage1btn("提交成功!","myorderPageTo()",0);
 					 }else {
 						showMessage1btn(result.msg,"myorderPageTo()",0);
@@ -1692,7 +1723,6 @@ $(function(){
 					$("#busMap-dzname").text("请选择地址");
 					$("#busMap-dzcityname").text("请选择地址");
 					$("#busMap-dzcity").text("请选择城市");
-
 					// 时间的初始化
 					releaseData.useType = "单程";
 					$(".carcetbus-iconsleft").css({
@@ -1710,7 +1740,7 @@ $(function(){
 					/* 加载成功，取消提示按钮 */
 					clearDialog();
 					console.log("添加失败",result);
-					if ( null == result.msg ){
+					if ( null == result.msg || "" == result.msg ){
 						showMessage1btn("网络出错,请重试!","",0);
 					}else {
 						showMessage1btn(result.msg,"",0);
@@ -4257,12 +4287,7 @@ function getTwoDayTime (startTime,endTime) {
     //     　　return obj;
     // }
 
-	function ajax_post(data,success,error){
-		$.ajax({
-			type:"post",
-			url:data.url,
-			data:data.data,
-			sucess:success,
-			error:error
-		})
-	}
+	
+
+	
+
