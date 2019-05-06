@@ -36,7 +36,7 @@ $(function(){
             // 得到订单数据
             myorder.myorderPage("","","");
             // 获取车辆类型
-            selectcar.cartype();
+            selectcar.readChaPackageTypes();
             // 我的订单页绑定无限滚动效果
             //hdrunvowner();
             //城市具体地址选择页
@@ -377,13 +377,13 @@ $(function(){
             hashcsh();
             $(".bus").show();
         }else if( hashval ==="#selectcar" ){
-			if ( hashzhi != "price") {
-				selectcar.newPage();
-			}
+          if ( hashzhi != "price") {
+            selectcar.newPage();
+          }
             hashcsh();
             $(".selectcar").show(); 
-			$(".selectcar-content").outerHeight($(".selectcar").outerHeight()-$(".selectcar-hd").outerHeight()-$(".selectcar-submit").outerHeight());
-			$(".selectcar-content").css("overflow-y","scroll");
+            $(".selectcar-content").outerHeight($(".selectcar").outerHeight()-$(".selectcar-hd").outerHeight()-$(".selectcar-submit").outerHeight());
+            $(".selectcar-content").css("overflow-y","scroll");
         }else if ( hashval ==="#details" ){
             hashcsh();
             details.newPage();
@@ -1274,20 +1274,69 @@ $(function(){
         }
     }
 // 车型选择页的操作
+    // 注意事项：
+    // 以后会是多个套餐，目前按一个套餐来计算。当添加套餐时，在添加更多内容。
     var  selectcar  = {
         // 要阻止重复提交
         olddpcityname:'',
         oldarcityname:'',
-        carTypeData:"",     // 存储的数据
-		choseTypeData:"",  // 存储被选中的数据
-		selectcar_kilometre:0,  // 距离
-        cartype:function(){
+        carTypeData:"",     // 存储的数据                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+        choseTypeData:"",  // 存储被选中的数据
+        selectcar_kilometre:0,  // 距离
+        setmeal:"",       // 套餐的数据
+        readChaPackageTypes:function(){
+          $.ajax({
+            type:"post",
+            url:"//qckj.czgdly.com/bus/MobileWeb/buyTicket/readChaPackageTypes.asp",
+            data:{
+              id:"",
+            },
+            success:function(data){
+              console.log("套餐success",data);
+              if ( data.result > 0 ){
+                // 默认为第一个套餐
+                $("#setmeal-ctheader").text(data.obj.lilist[0].name);
+                selectcar.cartype(data.obj.lilist[0].id);
+                selectcar.setmeal = data.obj.lilist;
+
+                for (var i = 0;i<data.obj.lilist.length;i++) {
+                  $("#select").append('<option value="'+data.obj.lilist[i].id+'" id="setmeal">'+"套餐"+data.obj.lilist[i].id+'</option>');
+                } 
+                // 默认为第一个套餐
+                $("#select").find("option[text='套餐1']").attr("selected",true); 
+
+                $("#select").change(function(){
+
+                  selectcar.setMeal($('#select option:selected') .val());
+                })
+              }
+            },
+            error:function(data){
+              
+              console.log("套餐error",data);
+              
+            }
+          })
+        },
+        setMeal:function(id){
+          console.log("选择的套餐",id);
+          id = parseInt(id);
+          var select_data =  selectcar.setmeal.find(function(value, indexes, arr){  if( id == arr[indexes].id){return value}});
+          $("#setmeal-ctheader").text(select_data.name);
+          
+          console.log("选择套餐的数据",select_data);
+          selectcar.newPage();
+          selectcar.cartype(id);
+          
+        },
+        cartype:function(PTId){
             $.ajax({
                 type:"post",
                 url:"//qckj.czgdly.com/bus/MobileWeb/buyTicket/readChaCarTypes.asp",
                 data:{
                     top:0,
-                    id:""
+                    id:"",
+                    PTId:PTId
                 },
                 success:function(data){
                     console.log("车辆类型数据",data);
@@ -1387,113 +1436,112 @@ $(function(){
             $("#selectcar-dpcity").text(releaseData.dpCity);
             $("#selectcar-arcity").text(releaseData.arCity);
             if( releaseData.useType === "单程" ){
-				$("#selectcar-arrivalTime").text("无返程");
+			        $("#selectcar-arrivalTime").text("无返程");
             }else if ( releaseData.useType === "往返" ) {
-				$("#selectcar-arrivalTime").text($("#dt-c-1").attr("data-val")+"返程");
+				      $("#selectcar-arrivalTime").text($("#dt-c-1").attr("data-val")+"返程");
             }
             $("#selectcar-departure").text($("#bus-dpcity").text());
             $("#selectcar-departureTime").text($("#dt-a-0").attr("data-val")+"上车");
             $("#selectcar-arrival").text($("#bus-arcity").text());
-		   
-			
 
-			// 其他取消掉
-			$(".selectcar-carimg").css("border-color","#7e7d7d");
-			$(".selectcar-carimg>span").css("color","#555");
-			// 给第一个上个颜色
-			$("#selectcar-car0").css("border-color","rgb(0, 141, 255)");
-			$("#selectcar-carspan0").css("color","rgb(0, 141, 255)");
-			// 返回左侧
-			$(".selectcar-cardiv").animate({ scrollLeft: 0 }, 10);  //返回左边
-			// 行李形式
-			// 车辆类型
+          // 其他取消掉
+          $(".selectcar-carimg").css("border-color","#7e7d7d");
+          $(".selectcar-carimg>span").css("color","#555");
+          // 给第一个上个颜色
+          $("#selectcar-car0").css("border-color","rgb(0, 141, 255)");
+          $("#selectcar-carspan0").css("color","rgb(0, 141, 255)");
+          // 返回左侧
+          $(".selectcar-cardiv").animate({ scrollLeft: 0 }, 10);  //返回左边
+        // 行李形式
+        // 车辆类型
             var people = selectcar.carTypeData[0].pseats;
             var matter = selectcar.carTypeData[0].trunks;
             $("#selectcar-goodspeople").text(people);
             $("#selectcar-goodsmatter").text(matter);
              // 价格
-             var dLng = 0;           // 出发经度
-			 var dLat = 0;           // 出发纬度
-			 var fabudpData = releaseData.fabudpData;
-			 if ( fabudpData.isOk  ) {
-				if ( fabudpData.isLocation ) {
-					dLng = fabudpData.data.position.R;
-					dLat = fabudpData.data.position.P;
-				}else {
-					dLng =  fabudpData.data.location.R;
-					dLat =  fabudpData.data.location.P;
-				}
-			 }
+            var dLng = 0;           // 出发经度
+            var dLat = 0;           // 出发纬度
+            var fabudpData = releaseData.fabudpData;
+            if ( fabudpData.isOk  ) {
+              if ( fabudpData.isLocation ) {
+                dLng = fabudpData.data.position.R;
+                dLat = fabudpData.data.position.P;
+              }else {
+                dLng =  fabudpData.data.location.R;
+                dLat =  fabudpData.data.location.P;
+              }
+            }
              
-             var returnfs = 1;
-             var  day_time = 1;
-             var mileage = 100 ; // 送他多少里，默认一天的里数
-             if(releaseData.useType==="单程"){
-                 returnfs = 1;
-                 day_time = 1;
-                 mileage = 100;
-             }else if (releaseData.useType==="往返"){
-                 returnfs = 2;
-                 day_time = getTwoDayTime($("#dt-a-0").attr("data-val").replace(/-/g,"/"),$("#dt-c-1").attr("data-val").replace(/-/g,"/")) +1 ;
-                 mileage = mileage * day_time;
-             }
-			 var dpcity  = [dLng.toFixed(6),dLat.toFixed(6)];
+            var returnfs = 1;
+            var  day_time = 1;
+            var mileage = 100 ; // 送他多少里，默认一天的里数
+            if(releaseData.useType==="单程"){
+                returnfs = 1;
+                day_time = 1;
+                mileage = 100;
+            }else if (releaseData.useType==="往返"){
+                returnfs = 2;
+                day_time = getTwoDayTime($("#dt-a-0").attr("data-val").replace(/-/g,"/"),$("#dt-c-1").attr("data-val").replace(/-/g,"/")) +1 ;
+                mileage = mileage * day_time;
+            }
 
-			 var fabuarData = releaseData.fabuarData.data;
-			 var arcity = "" ;
-			 if (releaseData.fabuarData.isOk) {
-				if (releaseData.fabuarData.isLocation) {
-					arcity =  [fabuarData.position.lng.toFixed(6),fabuarData.position.lat.toFixed(6)];
-				}else {
-					arcity =  [fabuarData.location.lng.toFixed(6),fabuarData.location.lat.toFixed(6)];
-				}
-			 }
-			//  var dis = parseFloat((AMap.GeometryUtil.distanceOfLine([dpcity,arcity])*returnfs/1000).toFixed(1));
-			var dis = 0 ;  // 距离
+            var dpcity  = [dLng.toFixed(6),dLat.toFixed(6)];
+
+            var fabuarData = releaseData.fabuarData.data;
+            var arcity = "" ;
+            if (releaseData.fabuarData.isOk) {
+              if (releaseData.fabuarData.isLocation) {
+                arcity =  [fabuarData.position.lng.toFixed(6),fabuarData.position.lat.toFixed(6)];
+              }else {
+                arcity =  [fabuarData.location.lng.toFixed(6),fabuarData.location.lat.toFixed(6)];
+              }
+            }
+            //  var dis = parseFloat((AMap.GeometryUtil.distanceOfLine([dpcity,arcity])*returnfs/1000).toFixed(1));
+            var dis = 0 ;  // 距离
 
             showLodding("计算预估价中...");
-			 // 距离
-			 function get_path () {
-				var get_url = '//restapi.amap.com/v3/direction/driving?key=f2ac4e16093bd03c67c74b39e765b244&originid=&destinationid=&extensions=base&strategy=2&waypoints=&avoidpolygons=&avoidroad=&origin='+dpcity+'&destination='+arcity;
-				$.get(get_url,function(data,status){
-					if (data.status == 1 || data.status=="1" ) {
-						dis = parseFloat((parseFloat(data.route.paths[0].distance)*returnfs/1000).toFixed(1));
-						Calculation();
+            // 距离
+            function get_path () {
+              var get_url = '//restapi.amap.com/v3/direction/driving?key=f2ac4e16093bd03c67c74b39e765b244&originid=&destinationid=&extensions=base&strategy=2&waypoints=&avoidpolygons=&avoidroad=&origin='+dpcity+'&destination='+arcity;
+              $.get(get_url,function(data,status){
+                if (data.status == 1 || data.status=="1" ) {
+                  dis = parseFloat((parseFloat(data.route.paths[0].distance)*returnfs/1000).toFixed(1));
+                  Calculation();
+                              // 清除
+                              clearDialog();
+                }else {
+                  get_path ();
+                              // 清除
+                              clearDialog();
+                }
+                console.log("请求距离",data,status);
                         // 清除
-                        clearDialog();
-					}else {
-						get_path ();
-                        // 清除
-                        clearDialog();
-					}
-				   console.log("请求距离",data,status);
-                   // 清除
-                        clearDialog();
-				});
-			 }
-			get_path ();
+                              clearDialog();
+              });
+            }
+			      get_path ();
 			 
-			 // 算出钱
-			function Calculation(){
-				selectcar.selectcar_kilometre = dis;
-				console.log("初始化来回一共多少公里",dis, mileage);
-				$("#selectcar-kilometre").text(dis+"(公里)");
-				var dismoney = 0;
-				// 超公里费
-				var car_cmintiueMoney = 1;
-				car_cmintiueMoney = selectcar.carTypeData[0].disPrice;
-				
-				var jcmoney = parseFloat(selectcar.carTypeData[0].price.replace(",",""))*day_time;
-				
-				releaseData.clickbus = selectcar.carTypeData[0];
-				if (dis>mileage) {
-					dismoney = jcmoney+ ( dis - mileage )*car_cmintiueMoney;
-				}else {
-					dismoney =jcmoney;
-				}
-				dismoney =  dismoney.toFixed(0);
-				$("#selectcar-submitmoney").text(dismoney);
-			}
+            // 算出钱
+            function Calculation(){
+              selectcar.selectcar_kilometre = dis;
+              console.log("初始化来回一共多少公里",dis, mileage);
+              $("#selectcar-kilometre").text(dis+"(公里)");
+              var dismoney = 0;
+              // 超公里费
+              var car_cmintiueMoney = 1;
+              car_cmintiueMoney = selectcar.carTypeData[0].disPrice;
+              
+              var jcmoney = parseFloat(selectcar.carTypeData[0].price.replace(",",""))*day_time;
+              
+              releaseData.clickbus = selectcar.carTypeData[0];
+              if (dis>mileage) {
+                dismoney = jcmoney+ ( dis - mileage )*car_cmintiueMoney;
+              }else {
+                dismoney =jcmoney;
+              }
+              dismoney =  dismoney.toFixed(0);
+              $("#selectcar-submitmoney").text(dismoney);
+            }
         },
         clickbus:function(val,divname){
             console.log(val,divname);
@@ -1509,44 +1557,45 @@ $(function(){
             releaseData.carType =sjData.id;
             releaseData.clickbus = selectcar.carTypeData[val];
           
-			$(".selectcar-carimg").css("border-color","#7e7d7d");
-			
-			$(".selectcar-carimg>span").css("color","#555");
-			
-			
-            $(divname).css("border-color","rgb(0, 141, 255)");
-            $(spanname).css("color","rgb(0, 141, 255)");
+          $(".selectcar-carimg").css("border-color","#7e7d7d");
+          
+          $(".selectcar-carimg>span").css("color","#555");
+          
+          
+                $(divname).css("border-color","rgb(0, 141, 255)");
+                $(spanname).css("color","rgb(0, 141, 255)");
 
-            // 价格
-			var  day_time = 1;
-			var mileage = 100 ; // 送他多少里，默认一天的里数
-			if(releaseData.useType==="单程"){
-				day_time = 1;
-				mileage = 100;
-			}else if (releaseData.useType==="往返"){
-				day_time = getTwoDayTime($("#dt-a-0").attr("data-val").replace(/-/g,"/"),$("#dt-c-1").attr("data-val").replace(/-/g,"/")) +1 ;
-				mileage = mileage * day_time;
-			}
+                // 价格
+          var  day_time = 1;
+          var mileage = 100 ; // 送他多少里，默认一天的里数
+
+          if(releaseData.useType==="单程"){
+            day_time = 1;
+            mileage = 100;
+          }else if (releaseData.useType==="往返"){
+            day_time = getTwoDayTime($("#dt-a-0").attr("data-val").replace(/-/g,"/"),$("#dt-c-1").attr("data-val").replace(/-/g,"/")) +1 ;
+            mileage = mileage * day_time;
+          }
 			
-			// 算出钱
-		   function Calculation(){
-				var dis = selectcar.selectcar_kilometre ;  // 距离
-			   var dismoney = 0;
-			   // 超公里费
-			   var car_cmintiueMoney = 1;
-			   car_cmintiueMoney = sjData.disPrice;
-			   var jcmoney = parseFloat(sjData.price.replace(",",""))*day_time;
-			   releaseData.clickbus = sjData;
-			   if (dis>mileage) {
-				   dismoney = jcmoney+ ( dis - mileage )*car_cmintiueMoney;
-			   }else {
-				   dismoney =jcmoney;
-			   }
-			   dismoney =  dismoney.toFixed(0);
-			   $("#selectcar-submitmoney").text(dismoney);
-			   console.log("点击的数据",car_cmintiueMoney,mileage);
-		   };
-		   Calculation();
+			    // 算出钱
+          function Calculation(){
+            var dis = selectcar.selectcar_kilometre ;  // 距离
+            var dismoney = 0;
+            // 超公里费
+            var car_cmintiueMoney = 1;
+            car_cmintiueMoney = sjData.disPrice;
+            var jcmoney = parseFloat(sjData.price.replace(",",""))*day_time;
+            releaseData.clickbus = sjData;
+            if (dis>mileage) {
+              dismoney = jcmoney+ ( dis - mileage )*car_cmintiueMoney;
+            }else {
+              dismoney =jcmoney;
+            }
+            dismoney =  dismoney.toFixed(0);
+            $("#selectcar-submitmoney").text(dismoney);
+            console.log("点击的数据",car_cmintiueMoney,mileage);
+          };
+		      Calculation();
         },
         tijiao:function(){
             var tellTrips = "";

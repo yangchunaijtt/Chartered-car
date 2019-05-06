@@ -1414,6 +1414,15 @@
         border-left: none;
         border-right: none;
     }
+    .setmeal #select{
+        display: inline-block;
+        background: #006eff;
+        color: #fff;
+        float: left;
+        border-radius: 2px;
+        line-height: 30px;
+        margin-top: 26px;
+    }
     .setmeal .setmeal-left{
         float: left;
         width: 19%;
