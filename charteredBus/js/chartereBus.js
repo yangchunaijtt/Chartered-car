@@ -12,6 +12,11 @@ var newPageData = {
     "overflow-y":"hidden"
     });
 
+  
+  //  * 5.8号修改记录
+  //  * 1：1241行判断  if ( releaseData.fabuarData.isOk )...
+  //  * 2:1343 setMeal_touch, selectcar 的里面一些函数
+  
 $(function(){
     getOpenid(function(openid){
 		// nowusermsg.newPageHash = window.location.hash;
@@ -37,6 +42,8 @@ $(function(){
             myorder.myorderPage("","","");
             // 获取车辆类型
             selectcar.readChaPackageTypes();
+            // 定位功能
+            chartBus_amap();
             // 我的订单页绑定无限滚动效果
             //hdrunvowner();
             //城市具体地址选择页
@@ -53,8 +60,7 @@ $(function(){
 
             $(".price").outerHeight($(document.body).outerHeight());
             
-            // 定位功能
-            chartBus_amap();
+            
         }
     },location.search);
 // 设置高度
@@ -1210,7 +1216,7 @@ $(function(){
                 }else if (mdsjb==""){
                     tellTips ="请选择返程时间"; 
                 }
-			} 
+		      	} 
 			
 			
             if (releaseData.fabudpData.data=="") {
@@ -1229,11 +1235,32 @@ $(function(){
                         tellTips ="跨市,不能选择夜里2点到5点";
                     }
                 }
-            }else if (( null == releaseData.fabuarData.data.location || null == releaseData.fabuarData.data.location.lng) &&  (null == releaseData.fabuarData.data.position  ||null == releaseData.fabuarData.data.position.lng )) {
-					tellTips ="请重新选择目的地";
-			}else if ( (null == releaseData.fabudpData.data.location || null == releaseData.fabudpData.data.location.R )  &&  (null == releaseData.fabudpData.data.position || null == releaseData.fabudpData.data.position.lng) ){
-					tellTips ="请重新选择出发地";
-			}
+            }
+           
+            
+            if ( releaseData.fabuarData.isOk ){
+              if ( releaseData.fabuarData.isLocation){
+                if ( fabuarData.data.position  ||null == releaseData.fabuarData.data.position.lng ){
+                  tellTips ="请重新选择目的地";
+                }
+              }else {
+                if (  null == releaseData.fabuarData.data.location || null == releaseData.fabuarData.data.location.lng   ){
+                  tellTips ="请重新选择目的地";
+                }
+              }
+              
+            }
+            if ( releaseData.fabudpData.isOk ){
+              if ( releaseData.fabudpData.isLocation){
+                if ( fabudpData.data.position  ||null == releaseData.fabudpData.data.position.lng ){
+                  tellTips ="请重新选择出发地";
+                }
+              }else {
+                if (  null == releaseData.fabudpData.data.location || null == releaseData.fabudpData.data.location.lng   ){
+                  tellTips ="请重新选择出发地";
+                }
+              }
+            }
 			
 			
             if (!(/^1[34578]\d{9}$/.test(phone))){
@@ -1280,10 +1307,10 @@ $(function(){
         // 要阻止重复提交
         olddpcityname:'',
         oldarcityname:'',
-        carTypeData:"",     // 存储的数据                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+        carTypeData:[],     // 存储的数据                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
         choseTypeData:"",  // 存储被选中的数据
         selectcar_kilometre:0,  // 距离
-        setmeal:"",       // 套餐的数据
+        setmealArr:"",       // 套餐的数据
         readChaPackageTypes:function(){
           $.ajax({
             type:"post",
@@ -1294,42 +1321,101 @@ $(function(){
             success:function(data){
               console.log("套餐success",data);
               if ( data.result > 0 ){
-                // 默认为第一个套餐
-                $("#setmeal-ctheader").text(data.obj.lilist[0].name);
-                selectcar.cartype(data.obj.lilist[0].id);
-                selectcar.setmeal = data.obj.lilist;
-
+                selectcar.setmealArr = data.obj.lilist;
+                $("#scroll-wraper").outerWidth($(document.body).outerHeight()*data.obj.lilist.length);
+                $("#scroll-wraper").empty();
                 for (var i = 0;i<data.obj.lilist.length;i++) {
-                  $("#select").append('<option value="'+data.obj.lilist[i].id+'" id="setmeal">'+"套餐"+data.obj.lilist[i].id+'</option>');
+                  $("#scroll-wraper").append('<div id="scroll-item-div" class="scroll-item-div clearfix"><div class="scroll-item" id="scroll-item"><div class="name" id="setmeal-name">套餐'+data.obj.lilist[i].id+'</div><div class="content" id="setmeal-ctheader">'+data.obj.lilist[i].name+'</div><div class="tell">超出请参考预订须知</div></div></div>');
+                  // 绑上是数组的第几个数组元素
+                  selectcar.setMeal_bind(i);
                 } 
+                
+                // 调用滑动效果
+                selectcar.setMeal_touch();
                 // 默认为第一个套餐
-                $("#select").find("option[text='套餐1']").attr("selected",true); 
-
-                $("#select").change(function(){
-
-                  selectcar.setMeal($('#select option:selected') .val());
-                })
+                selectcar.cartype(data.obj.lilist[0].id,false);
               }
             },
             error:function(data){
-              
               console.log("套餐error",data);
-              
             }
           })
         },
-        setMeal:function(id){
-          console.log("选择的套餐",id);
-          id = parseInt(id);
-          var select_data =  selectcar.setmeal.find(function(value, indexes, arr){  if( id == arr[indexes].id){return value}});
-          $("#setmeal-ctheader").text(select_data.name);
-          
-          console.log("选择套餐的数据",select_data);
-          selectcar.newPage();
-          selectcar.cartype(id);
-          
+        setMeal_touch:function(){
+          var nowitem = 1;  // 当前是第几个，默认第一个
+          var startX = 0;
+          var endX = 0;
+          var bodyWidth = parseFloat($(document.body).outerHeight());
+          $("#scroll-wraper").bind("touchstart",function(e){
+            startX = e.originalEvent.changedTouches[0].pageX,
+            startY = e.originalEvent.changedTouches[0].pageY;
+          })
+
+          $("#scroll-wraper").bind("touchend",function(e){
+            endX = e.originalEvent.changedTouches[0].pageX;
+             
+             if (nowitem == 1 ){
+                
+                if ( endX < startX ) {
+                  // 鼠标向左
+                  // 想向右滑
+                  nowitem ++ ;
+                }
+             }else if (nowitem == selectcar.setmealArr.length) {
+                // 最后一页只能往左
+                if ( endX > startX){
+                  // 鼠标向右
+                  nowitem  -- ;
+               }
+             } else if ( nowitem >1 && nowitem < selectcar.setmealArr.length ) {
+                // 1:0
+                // 2: -667
+                // 3: -667*2 
+                if ( endX < startX ) {
+                  // 鼠标向左滑 endX > startX
+                  nowitem ++ ;
+                  
+                }else  if ( endX > startX){
+                  // 鼠标向右滑 endX < startX
+                  // 图片要 减
+                  nowitem  -- ;
+                }
+
+             }else if (nowitem <1) {
+               nowitem = 1;
+             }
+             $("#scroll-wraper").css("transform","translateX("+-(nowitem-1)*bodyWidth+"px)");
+              //  调用
+             selectcar.filp(nowitem);
+             console.log("滑动",nowitem,startX,endX);
+
+          })
         },
-        cartype:function(PTId){
+        filp:function(id){
+            // 1
+            // 要请求 0的数据
+           id = id - 1 ;
+
+          $("#scroll-item-div>.scroll-item").css("background","#fff");
+          $(".scroll-item>.name").css("color","#2577e3");
+          $(".scroll-item>.content").css("color","#9c622a");
+          $(".scroll-item>.tell").css("color","#999");
+
+          $("#scroll-item"+id).css("background","#2577e3");
+          $("#scroll-item"+id+">.name").css("color","#fff");
+          $("#scroll-item"+id+">.content").css("color","#fff");
+          $("#scroll-item"+id+">.tell").css("color","#fff");
+          var select_data =  selectcar.setmealArr.find(function(value, indexes, arr){  if( id == indexes){return value}});// 得到目前是第几个套餐
+          console.log("选择套餐的数据",select_data,"选择的套餐",select_data.id);
+          selectcar.cartype(select_data.id,true);
+        },
+        setMeal_bind(id){
+          // 赋宽度
+          $("#scroll-item-div").outerWidth($(document.body).outerHeight());
+          $("#scroll-item-div").attr("id","scroll-item-div"+id);
+          $("#scroll-item").attr("id","scroll-item"+id);
+        },
+        cartype:function(PTId,isnewPage){
             $.ajax({
                 type:"post",
                 url:"//qckj.czgdly.com/bus/MobileWeb/buyTicket/readChaCarTypes.asp",
@@ -1340,6 +1426,7 @@ $(function(){
                 },
                 success:function(data){
                     console.log("车辆类型数据",data);
+                    selectcar.carTypeData = [];
                     selectcar.carTypeData = data.obj.lilist;
                     if(data.result>0){
                         $("#selectcar-addcar").empty();
@@ -1348,6 +1435,9 @@ $(function(){
                             selectcar.selectcarRender(i,data.obj.lilist[i]);
                         }
                         selectcar.selectcarBind();
+                        if ( null != isnewPage && isnewPage){
+                          selectcar.newPage();
+                        }
                     }
                 },
                 error:function(data){
@@ -1484,7 +1574,7 @@ $(function(){
                 day_time = getTwoDayTime($("#dt-a-0").attr("data-val").replace(/-/g,"/"),$("#dt-c-1").attr("data-val").replace(/-/g,"/")) +1 ;
                 mileage = mileage * day_time;
             }
-
+            
             var dpcity  = [dLng.toFixed(6),dLat.toFixed(6)];
 
             var fabuarData = releaseData.fabuarData.data;
