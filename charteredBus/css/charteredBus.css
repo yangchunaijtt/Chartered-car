@@ -1447,7 +1447,7 @@
     }
     .setmeal  .scroll-wraper .scroll-item{
       position: relative;
-      left: 100px;
+      left: calc(100%/2 - 105px);
       display: inline-block;
       border: 1px solid #fff;
       background: #fff;
@@ -1457,6 +1457,10 @@
       border-radius: 4px;
       margin: 13px auto;
       line-height: 20px;
+      background: -webkit-linear-gradient(left,#413ceb,#59b0ff);
+      background: linear-gradient(90deg,#413ceb,#59b0ff);
+      box-shadow: 0 2px 5px rgba(98,180,255,.4);
+      color: #fff;
     }
     .scroll-item-div{
       display: inline-block;
@@ -1467,36 +1471,25 @@
       font-size: 16px;
       font-weight: 700;
       line-height: 30px;
+      color: #fff;
     }
     .setmeal .scroll .scroll-wraper .scroll-item .content{
       text-align: left;
       line-height: 26px;
       text-indent: 10px;
       color: #9c622a;
+      color: #fff;
     }
     .setmeal .scroll .scroll-wraper .scroll-item .tell{
       color: #999;
       font-size: 12px;
       text-align: left;
-      border-top: 1px solid #999;
+      border-top: 1px solid #fff;
       text-indent: 10px;
       line-height: 20px;
-    }
-    /* 默认选择第一个套餐 */
-    .setmeal .scroll .scroll-wraper #scroll-item-div0 #scroll-item0{
-      background: #2577e3;
       color: #fff;
     }
-    .setmeal .scroll .scroll-wraper  #scroll-item-div0 #scroll-item0 .name{
-      color:#fff
-    }
-    .setmeal .scroll .scroll-wraper #scroll-item-div0 #scroll-item0 .content{
-      color:#fff
-    }
-    .setmeal .scroll .scroll-wraper #scroll-item-div0 #scroll-item0 .tell{
-      color:#fff
-    }
-    
+   
     .setmeal .line-div .text{
       font-size: 15px;
       color: #999;

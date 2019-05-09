@@ -1240,7 +1240,7 @@ $(function(){
             
             if ( releaseData.fabuarData.isOk ){
               if ( releaseData.fabuarData.isLocation){
-                if ( fabuarData.data.position  ||null == releaseData.fabuarData.data.position.lng ){
+                if ( null ==  releaseData.fabuarData.data.position  ||null == releaseData.fabuarData.data.position.lng ){
                   tellTips ="请重新选择目的地";
                 }
               }else {
@@ -1252,7 +1252,7 @@ $(function(){
             }
             if ( releaseData.fabudpData.isOk ){
               if ( releaseData.fabudpData.isLocation){
-                if ( fabudpData.data.position  ||null == releaseData.fabudpData.data.position.lng ){
+                if ( null ==  releaseData.fabudpData.data.position  || null == releaseData.fabudpData.data.position.lng ){
                   tellTips ="请重新选择出发地";
                 }
               }else {
@@ -1322,10 +1322,13 @@ $(function(){
               console.log("套餐success",data);
               if ( data.result > 0 ){
                 selectcar.setmealArr = data.obj.lilist;
-                $("#scroll-wraper").outerWidth($(document.body).outerHeight()*data.obj.lilist.length);
+                
+                $("#scroll-wraper").outerWidth($(document.body).outerWidth()*data.obj.lilist.length);
+                
                 $("#scroll-wraper").empty();
                 for (var i = 0;i<data.obj.lilist.length;i++) {
                   $("#scroll-wraper").append('<div id="scroll-item-div" class="scroll-item-div clearfix"><div class="scroll-item" id="scroll-item"><div class="name" id="setmeal-name">套餐'+data.obj.lilist[i].id+'</div><div class="content" id="setmeal-ctheader">'+data.obj.lilist[i].name+'</div><div class="tell">超出请参考预订须知</div></div></div>');
+                 
                   // 绑上是数组的第几个数组元素
                   selectcar.setMeal_bind(i);
                 } 
@@ -1345,10 +1348,9 @@ $(function(){
           var nowitem = 1;  // 当前是第几个，默认第一个
           var startX = 0;
           var endX = 0;
-          var bodyWidth = parseFloat($(document.body).outerHeight());
+          var bodyWidth = parseFloat($(document.body).outerWidth());
           $("#scroll-wraper").bind("touchstart",function(e){
-            startX = e.originalEvent.changedTouches[0].pageX,
-            startY = e.originalEvent.changedTouches[0].pageY;
+            startX = e.originalEvent.changedTouches[0].pageX;
           })
 
           $("#scroll-wraper").bind("touchend",function(e){
@@ -1395,25 +1397,19 @@ $(function(){
             // 1
             // 要请求 0的数据
            id = id - 1 ;
-
-          $("#scroll-item-div>.scroll-item").css("background","#fff");
-          $(".scroll-item>.name").css("color","#2577e3");
-          $(".scroll-item>.content").css("color","#9c622a");
-          $(".scroll-item>.tell").css("color","#999");
-
-          $("#scroll-item"+id).css("background","#2577e3");
-          $("#scroll-item"+id+">.name").css("color","#fff");
-          $("#scroll-item"+id+">.content").css("color","#fff");
-          $("#scroll-item"+id+">.tell").css("color","#fff");
+           
           var select_data =  selectcar.setmealArr.find(function(value, indexes, arr){  if( id == indexes){return value}});// 得到目前是第几个套餐
           console.log("选择套餐的数据",select_data,"选择的套餐",select_data.id);
           selectcar.cartype(select_data.id,true);
         },
         setMeal_bind(id){
           // 赋宽度
-          $("#scroll-item-div").outerWidth($(document.body).outerHeight());
+          $("#scroll-item-div").outerWidth($(document.body).outerWidth());
           $("#scroll-item-div").attr("id","scroll-item-div"+id);
+          // 计算下 left
+          $("#scroll-item").css("left",($(document.body).outerWidth()-210)/2);
           $("#scroll-item").attr("id","scroll-item"+id);
+          
         },
         cartype:function(PTId,isnewPage){
             $.ajax({
